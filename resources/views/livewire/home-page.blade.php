@@ -1,6 +1,6 @@
 <div>
     <!-- Hero -->
-    <div class="w-full h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-20 py-6 mx-auto">
+    <div class="w-full h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-14 py-6 mx-auto">
         <!-- Grid -->
         <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
             <div class="lg:col-span-3">
