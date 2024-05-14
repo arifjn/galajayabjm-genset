@@ -4,7 +4,7 @@
         <div class="relative md:flex md:items-center md:justify-between">
             <div class="flex items-center justify-between">
                 <a class="inline-flex items-center gap-x-4 text-xl font-semibold dark:text-white" href="#">
-                    <img class="w-10 h-auto" src="https://galajaya.com/favicon.ico" alt="Logo">
+                    <img class="w-8 h-auto" src="{{ url('storage', 'assets/logo/gjb.png') }}" alt="Logo">
                     <span class="uppercase">GalaJaya</span>
                 </a>
                 <div class="md:hidden">
