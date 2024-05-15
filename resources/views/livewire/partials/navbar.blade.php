@@ -1,6 +1,6 @@
 <!-- ========== HEADER ========== -->
 <header class="flex flex-wrap sticky top-0 bg-slate-900 md:justify-start md:flex-nowrap z-50 w-full py-5">
-    <nav class="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6 md:px-8 mx-auto"
+    <nav class="relative max-w-7xl w-full flex flex-wrap md:grid md:grid-cols-12 basis-full items-center px-4 md:px-6 mx-auto"
         aria-label="Global">
         <div class="md:col-span-3">
             <!-- Logo -->
@@ -27,7 +27,7 @@
                 Login
             </button>
             <button type="button"
-                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-orange-500 text-black hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 hidden lg:block">
+                class="py-2 px-3 lg:inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-orange-500 text-black hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 hidden">
                 Register
             </button>
 
@@ -84,7 +84,7 @@
                         href="#">Contact us</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300 rounded-xl border border-transparent bg-orange-500 text-black hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 py-2 px-3 lg:hidden block w-full text-center"
+                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300 rounded-xl border border-transparent bg-orange-500 hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 py-2 px-3 lg:hidden w-full text-center"
                         href="#">Register</a>
                 </div>
             </div>

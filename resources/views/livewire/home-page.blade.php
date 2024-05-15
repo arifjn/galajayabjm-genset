@@ -188,7 +188,7 @@
                             src="https://galajaya.com/_ld/3/91617811.jpg" alt="Image Description">
                     </div>
                     <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                        <h3 class="text-lg font-bold text-gray-800">
                             Perkins 150 kVA
                         </h3>
                         <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
@@ -209,7 +209,7 @@
                             src="https://galajaya.com/_ld/3/06940037.jpg" alt="Image Description">
                     </div>
                     <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                        <h3 class="text-lg font-bold text-gray-800">
                             Cummins 250 kVA
                         </h3>
                         <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
@@ -230,7 +230,7 @@
                             src="https://galajaya.com/_ld/3/75522913.jpg" alt="Image Description">
                     </div>
                     <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                        <h3 class="text-lg font-bold text-gray-800">
                             Perkins 100 kVA
                         </h3>
                         <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
@@ -251,7 +251,7 @@
                             src="https://galajaya.com/_ld/3/53179417.jpg" alt="Image Description">
                     </div>
                     <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                        <h3 class="text-lg font-bold text-gray-800">
                             Yanmar 60 kVA
                         </h3>
                         <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
