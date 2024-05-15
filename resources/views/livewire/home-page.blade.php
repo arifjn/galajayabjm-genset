@@ -162,7 +162,7 @@
         <div class="max-w-full mx-auto">
             <div class="text-center">
                 <div class="relative flex flex-col items-center">
-                    <h1 class="text-5xl font-bold text-gray-800"> Product </h1>
+                    <h1 class="text-5xl font-bold text-gray-800"> Products </h1>
                     <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
                         <div class="flex-1 h-2 bg-orange-200">
                         </div>
@@ -172,8 +172,8 @@
                         </div>
                     </div>
                 </div>
-                <p class="mb-12 text-base text-center text-gray-500 text-sm lg:text-base px-4">
-                    Tersedia dimulai dari Genset baru 10 KVA hingga 1.000 KVA untuk Industri, Perkantoran, Restoran,
+                <p class="mb-12 text-center text-gray-500 text-sm lg:text-base px-4 lg:px-20">
+                    Tersedia mulai dari Genset baru 10 KVA hingga 1.000 KVA untuk Industri, Perkantoran, Restoran,
                     Cafe, Perhotelan, Pabrik, Pertambangan dan lainnya.
                 </p>
             </div>
@@ -181,56 +181,586 @@
         <div class="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-0">
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
 
-                <div class="bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <a href="" class="">
-                        <img src="https://i.pinimg.com/originals/a0/97/c3/a097c3c89b6d9a14f52f9515395d5220.png"
-                            alt="" class="object-cover w-full h-64 rounded-t-lg">
-                    </a>
-                    <div class="p-5 text-center">
-                        <a href="" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-                            Apple
+                <div
+                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
+                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
+                            src="https://galajaya.com/_ld/3/91617811.jpg" alt="Image Description">
+                    </div>
+                    <div class="p-4 md:p-5">
+                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                            Perkins 150 kVA
+                        </h3>
+                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
+                            Engine Type : 403A-15G2
+                            <br>Silent Type
+                        </p>
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                            href="#">
+                            Detail Product
                         </a>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <a href="" class="">
-                        <img src="https://i.pinimg.com/originals/1d/35/83/1d35833251dec0ad373ad7cbbbf4f3e2.png"
-                            alt="" class="object-cover w-full h-64 rounded-t-lg">
-                    </a>
-                    <div class="p-5 text-center">
-                        <a href="" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-                            Samsung
+                <div
+                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
+                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
+                            src="https://galajaya.com/_ld/3/06940037.jpg" alt="Image Description">
+                    </div>
+                    <div class="p-4 md:p-5">
+                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                            Cummins 250 kVA
+                        </h3>
+                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
+                            Engine Type : 403A-15G2
+                            <br>Silent Type
+                        </p>
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                            href="#">
+                            Detail Product
                         </a>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <a href="" class="">
-                        <img src="https://salesindia.com/media/codazon_cache/brand/400x400/wysiwyg/codazon/main-content-22/Brand_logo/ONEPLUS_LOGO_.png"
-                            alt="" class="object-cover w-full h-64 rounded-t-lg">
-                    </a>
-                    <div class="p-5 text-center">
-                        <a href="" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-                            One Plus
+                <div
+                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
+                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
+                            src="https://galajaya.com/_ld/3/75522913.jpg" alt="Image Description">
+                    </div>
+                    <div class="p-4 md:p-5">
+                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                            Perkins 100 kVA
+                        </h3>
+                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
+                            Engine Type : 403A-15G2
+                            <br>Open Type
+                        </p>
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                            href="#">
+                            Detail Product
                         </a>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-md dark:bg-gray-800">
-                    <a href="" class="">
-                        <img src="https://i.pinimg.com/originals/72/15/96/721596edd1de9db231a385d52a9081f8.png"
-                            alt="" class="object-cover w-full h-64 rounded-t-lg">
-                    </a>
-                    <div class="p-5 text-center">
-                        <a href="" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
-                            Xiaomi
+                <div
+                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
+                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
+                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
+                            src="https://galajaya.com/_ld/3/53179417.jpg" alt="Image Description">
+                    </div>
+                    <div class="p-4 md:p-5">
+                        <h3 class="text-lg font-bold text-gray-800 text-gray-800">
+                            Yanmar 60 kVA
+                        </h3>
+                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
+                            Engine Type : 403A-15G2
+                            <br>Silent Type
+                        </p>
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                            href="#">
+                            Detail Product
                         </a>
                     </div>
                 </div>
 
             </div>
         </div>
+
+        <!-- Button -->
+        <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
+            <a href="#"
+                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                Lihat semua produk
+                <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                </svg>
+            </a>
+        </div>
+        <!-- End Button -->
+
     </section>
     <!-- End Product -->
+
+    <!-- Sales Rent & Service -->
+    <div class="bg-slate-200 py-20">
+        <div class="max-w-full mx-auto">
+            <div class="text-center ">
+                <div class="relative flex flex-col items-center">
+                    <h1 class="text-5xl font-bold text-gray-800"> Sales, Rent & Service </h1>
+                    <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+                        <div class="flex-1 h-2 bg-orange-200">
+                        </div>
+                        <div class="flex-1 h-2 bg-orange-400">
+                        </div>
+                        <div class="flex-1 h-2 bg-orange-600">
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-12 text-center text-gray-500 text-sm lg:text-base px-4 lg:px-20">
+                    Memenuhi kebutuhan pelanggan serta memberikan Solusi yang tepat demi kenyamanan dan kepuasan kepada
+                    pelanggan adalah bagian dari misi Gala Jaya Group. Kami juga menjaga hubungan dan kejujuran agar
+                    konsumen tidak khawatir membeli produk kami di Gala Jaya.
+                </p>
+            </div>
+        </div>
+
+        <!-- Icon Blocks -->
+        <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-16 lg:py-6 mx-auto">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 items-center gap-6 md:gap-10">
+
+                <!-- Card -->
+                <div class="size-full bg-white shadow-lg rounded-lg p-5">
+                    <div class="flex items-center gap-x-4 mb-3">
+                        <div
+                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
+                            <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve"
+                                width="30" height="30">
+                                <style type="text/css">
+                                    .st0 {
+                                        fill: none;
+                                    }
+                                </style>
+                                <path
+                                    d="M11.7,2c-0.1,0-0.1,0-0.2,0c0,0,0,0-0.1,0v0c-0.2,0-0.3,0-0.5,0l0.2,2c0.4,0,0.9,0,1.3,0c4,0.3,7.3,3.5,7.5,7.6 c0.2,4.4-3.2,8.2-7.6,8.4c0,0-0.1,0-0.2,0c-0.3,0-0.7,0-1,0L11,22c0.4,0,0.8,0,1.3,0c0.1,0,0.3,0,0.4,0v0c5.4-0.4,9.5-5,9.3-10.4 c-0.2-5.1-4.3-9.1-9.3-9.5v0c0,0,0,0,0,0c-0.2,0-0.3,0-0.5,0C12,2,11.9,2,11.7,2z M8.2,2.7C7.7,3,7.2,3.2,6.7,3.5l1.1,1.7 C8.1,5,8.5,4.8,8.9,4.6L8.2,2.7z M4.5,5.4c-0.4,0.4-0.7,0.9-1,1.3l1.7,1C5.4,7.4,5.7,7.1,6,6.7L4.5,5.4z M15.4,8.4l-4.6,5.2 l-2.7-2.1L7,13.2l4.2,3.2l5.8-6.6L15.4,8.4z M2.4,9c-0.2,0.5-0.3,1.1-0.3,1.6l2,0.3c0.1-0.4,0.1-0.9,0.3-1.3L2.4,9z M4.1,13l-2,0.2 c0,0.1,0,0.2,0,0.3c0.1,0.4,0.2,0.9,0.3,1.3l1.9-0.6c-0.1-0.3-0.2-0.7-0.2-1.1L4.1,13z M5.2,16.2l-1.7,1.1c0.3,0.5,0.6,0.9,1,1.3 L6,17.3C5.7,16.9,5.4,16.6,5.2,16.2z M7.8,18.8l-1.1,1.7c0.5,0.3,1,0.5,1.5,0.8l0.8-1.8C8.5,19.2,8.1,19,7.8,18.8z"
+                                    fill="#f97316" />
+                                <rect class="st0" />
+                            </svg>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="inline-flex items-center gap-x-1">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <h3 class="text-xl font-bold text-gray-800 uppercase">
+                                    1258 Proyek</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Telah terbantu atas support rental genset.
+                    </p>
+                </div>
+                <!-- End Card -->
+
+                <!-- Card -->
+                <div class="size-full bg-white shadow-lg rounded-lg p-5">
+                    <div class="flex items-center gap-x-4 mb-3">
+                        <div
+                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
+                            <svg width="30" height="30" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M15 8H11.9451L13.9191 3.39392C14.2019 2.73405 13.7179 2 13 2H8C7.59997 2 7.23843 2.2384 7.08086 2.60608L4.08086 9.60608C3.79805 10.2659 4.28208 11 5 11H6.73423L4.07207 17.6273C3.67234 18.6223 4.90667 19.4633 5.68646 18.7272L10.7099 13.9849L15.6501 9.75985C16.3559 9.156 15.9289 8 15 8ZM9.50943 8.60608C9.22663 9.26595 9.71066 10 10.4286 10H12.2929L9.37334 12.4979L7.62514 14.1477L9.14152 10.3727C9.40546 9.71569 8.92168 9 8.21359 9H6.51654L8.6594 4H11.4835L9.50943 8.60608Z"
+                                    fill="#f97316" />
+                            </svg>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="inline-flex items-center gap-x-1">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <h3 class="text-xl font-bold text-gray-800 uppercase">
+                                    1015 Tempat Usaha</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Telah terjaga dari padamnya listrik.
+                    </p>
+                </div>
+                <!-- End Card -->
+
+                <!-- Card -->
+                <div class="size-full bg-white shadow-lg rounded-lg p-5">
+                    <div class="flex items-center gap-x-4 mb-3">
+                        <div
+                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+                                    stroke="#f97316" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path
+                                    d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+                                    stroke="#f97316" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="inline-flex items-center gap-x-1">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <h3 class="text-xl font-bold text-gray-800 uppercase">
+                                    94 Kota</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Yang telah kami support dalam hal genset.
+                    </p>
+                </div>
+                <!-- End Card -->
+
+            </div>
+        </div>
+        <!-- End Icon Blocks -->
+
+        <!-- Button -->
+        <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
+            <a href="#"
+                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                Minta Penawaran
+                <svg width="20" height="20" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor"
+                        d="M128 224v512a64 64 0 0 0 64 64h640a64 64 0 0 0 64-64V224H128zm0-64h768a64 64 0 0 1 64 64v512a128 128 0 0 1-128 128H192A128 128 0 0 1 64 736V224a64 64 0 0 1 64-64z" />
+                    <path fill="currentColor"
+                        d="M904 224 656.512 506.88a192 192 0 0 1-289.024 0L120 224h784zm-698.944 0 210.56 240.704a128 128 0 0 0 192.704 0L818.944 224H205.056z" />
+                </svg>
+            </a>
+        </div>
+        <!-- End Button -->
+
+    </div>
+    <!-- End Sales Rent & Service -->
+
+    <!-- Gallery -->
+    <section class="py-20">
+        <div class="max-w-6xl px-6 py-6 mx-auto lg:py-4 md:px-6">
+            <div class="max-w-xl mx-auto">
+                <div class="text-center ">
+                    <div class="relative flex flex-col items-center">
+                        <h1 class="text-5xl font-bold text-gray-800">Gallery</h1>
+                        <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+                            <div class="flex-1 h-2 bg-orange-200">
+                            </div>
+                            <div class="flex-1 h-2 bg-orange-400">
+                            </div>
+                            <div class="flex-1 h-2 bg-orange-600">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-12 text-base text-center text-gray-500">
+                        Kami selalu berupaya melakukan yang terbaik untuk konsumen.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Photo Grid -->
+            <div class="py-6 grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
+
+                <!-- Card -->
+                <div class="group block hover:cursor-pointer">
+                    <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
+                        <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
+                            src="https://galajaya.com/_ph/1/2/347064123.jpg?1715778096" alt="Image Description">
+                    </div>
+
+                    <div class="pt-4">
+                        <h3
+                            class="relative inline-block font-medium text-lg text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 group-hover:before:scale-x-100">
+                            Cummins 250 kVA
+                        </h3>
+                        <p class="mt-1 text-gray-600 dark:text-neutral-400 text-sm">
+                            Dokumentasi Foto Rental Sewa Genset Cummins 250 KVA di Tempat Customer di lokasi Kalimantan
+                            Selatan.
+                        </p>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span
+                                class="py-1.5 px-3 bg-white text-gray-600 border border-gray-200 text-xs sm:text-sm rounded-xl dark:border-neutral-700 dark:text-neutral-400 inline-flex items-center gap-x-1">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                Kalimantan Selatan
+                            </span>
+                        </div>
+                    </div>
+                    </d>
+                    <!-- End Card -->
+
+                </div>
+                <!-- End Card Grid -->
+
+                <!-- Card -->
+                <div class="group block hover:cursor-pointer">
+                    <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
+                        <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
+                            src="https://galajaya.com/_ph/2/2/581860814.jpg?1715778251" alt="Image Description">
+                    </div>
+
+                    <div class="pt-4">
+                        <h3
+                            class="relative inline-block font-medium text-lg text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 group-hover:before:scale-x-100">
+                            Cummins 80 kVA
+                        </h3>
+                        <p class="mt-1 text-gray-600 dark:text-neutral-400 text-sm">
+                            Proses Delivery Genset 80 KVA untuk kebutuhan kapal, Kendari, Sulawesi Tenggara.
+                        </p>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span
+                                class="py-1.5 px-3 bg-white text-gray-600 border border-gray-200 text-xs sm:text-sm rounded-xl dark:border-neutral-700 dark:text-neutral-400 inline-flex items-center gap-x-1">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                Kendari, Sulawesi Tenggara
+                            </span>
+                        </div>
+                    </div>
+                    </d>
+                    <!-- End Card -->
+
+                </div>
+                <!-- End Card Grid -->
+
+                <!-- Card -->
+                <div class="group block hover:cursor-pointer">
+                    <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
+                        <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
+                            src="https://galajaya.com/_ph/1/2/821341182.jpg?1715784195" alt="Image Description">
+                    </div>
+
+                    <div class="pt-4">
+                        <h3
+                            class="relative inline-block font-medium text-lg text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 group-hover:before:scale-x-100">
+                            MWM 60 kVA
+                        </h3>
+                        <p class="mt-1 text-gray-600 dark:text-neutral-400 text-sm">
+                            Delivery Rental Genset 60 KVA untuk backup Energi Listrik Kandang Ayam, Palangkaraya,
+                            Kalimantan Tengah.
+                        </p>
+
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span
+                                class="py-1.5 px-3 bg-white text-gray-600 border border-gray-200 text-xs sm:text-sm rounded-xl dark:border-neutral-700 dark:text-neutral-400 inline-flex items-center gap-x-1">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path
+                                        d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                Palangkaraya, Kalimantan Tengah
+                            </span>
+                        </div>
+                    </div>
+                    </d>
+                    <!-- End Card -->
+
+                </div>
+
+            </div>
+            <!-- End Photo Grid -->
+
+            <!-- Button -->
+            <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
+                <a href="#"
+                    class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                    Lihat aktivitas lebih banyak
+                    <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20"
+                        height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+            <!-- End Button -->
+        </div>
+    </section>
+    <!-- End Gallery -->
+
+    <!-- About us -->
+    <div class="bg-slate-200 py-20">
+        <div class="max-w-full mx-auto">
+            <div class="text-center">
+                <div class="relative flex flex-col items-center">
+                    <h1 class="text-5xl font-bold text-gray-800"> About us </h1>
+                    <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+                        <div class="flex-1 h-2 bg-orange-200">
+                        </div>
+                        <div class="flex-1 h-2 bg-orange-400">
+                        </div>
+                        <div class="flex-1 h-2 bg-orange-600">
+                        </div>
+                    </div>
+                </div>
+                <p class="mb-4 text-center text-gray-500 text-sm lg:text-base px-6 lg:px-20">
+                    <span class="font-semibold">Gala Jaya Group</span> adalah perusahaan yang bergerak dibidang
+                    Generator Set (Genset) yang
+                    berkomitmen untuk selalu dapat memenuhi kebutuhan dan kepuasan pelanggan.
+                </p>
+            </div>
+        </div>
+
+        <!-- Grid About us -->
+        <div class="max-w-[85rem] px-6 py-4 sm:px-6 lg:px-8 lg:py-6 mx-auto">
+
+            <!-- Grid -->
+            <div class="mt-5 lg:mt-16 grid lg:grid-cols-3 gap-8 lg:gap-12">
+                <div class="lg:col-span-1">
+                    <div class="inline-flex gap-x-4 items-center">
+                        <img src="{{ url('storage', 'assets/logo/logo_only.png') }}" alt="" width="80"
+                            height="80">
+                        <h2 class="font-bold text-2xl md:text-4xl text-gray-800 uppercase">
+                            Tak Kenal <br> Maka Tak Tau!
+                        </h2>
+                    </div>
+                    <p class="mt-2 md:mt-4 text-gray-500 text-justify">
+                        Pada tahun 2007 Gala Jaya Mandiri Group berekspansi ke kota Banjarmasin dan Manado. Dan Pada
+                        Tahun 2010 bersama dengan tim inti dari PT. Gala Jaya Mandiri membentuk Group yang kedua yaitu
+                        PT. Gala Jaya Banjarmasin.
+                        PT. Gala Jaya Banjarmasin perusahaan yang bergerak di bidang Penjualan, Rental, Part dan Service
+                        Generator set dimulai dari kapasitas 10 kVA - 1000 kVA.
+                    </p>
+                </div>
+                <!-- End Col -->
+
+                <div class="lg:col-span-2">
+                    <div class="grid sm:grid-cols-2 gap-8 md:gap-12">
+                        <!-- Icon Block -->
+                        <div class="flex gap-x-5">
+                            <svg class="flex-shrink-0 mt-1 size-6 text-orange-600 dark:text-orange-500"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                            </svg>
+                            <div class="grow">
+                                <h3 class="text-2xl font-semibold text-gray-800 uppercase">
+                                    Visi
+                                </h3>
+                                <p class="mt-1 text-gray-600 text-justify">
+                                    Menjadi Perusahaan yang terus berkembang, Mampu bersaing dengan sehat dan tumbuh
+                                    kuat untuk memberikan pelayanan dengan berbagai Alternatif pilihan Produk
+                                    Berkualitas, Ekonomis dan Mudah Perawatan.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- End Icon Block -->
+
+                        <!-- Icon Block -->
+                        <div class="flex gap-x-5">
+                            <svg class="flex-shrink-0 mt-1 size-6 text-orange-600 dark:text-orange-500"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M7 10v12" />
+                                <path
+                                    d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z" />
+                            </svg>
+                            <div class="grow">
+                                <h3 class="text-2xl font-semibold text-gray-800 uppercase">
+                                    Misi
+                                </h3>
+                                <ul class="mt-1 space-y-3 text-gray-800 text-justify">
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>
+                                            Pengembangan karyawan yang berkesinambungan, membentuk team work yang solid
+                                            dan
+                                            mensejahterakan karyawan.
+                                        </span>
+                                    </li>
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>Memberikan solusi terbaik atas permasalahan pelanggan.</span>
+                                    </li>
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>
+                                            Senantiasa meningkatkan kualitas pelayanan demi tercapainya kepuasan dan
+                                            kepercayaan pelanggan.
+                                        </span>
+                                    </li>
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>Menjaga etika bisnis.</span>
+                                    </li>
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>Mengelola dan membangun perusahaan secara profesional.</span>
+                                    </li>
+                                    <li class="flex space-x-3">
+                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>Pertumbuhan modal perusahaan yang konsisten.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Icon Block -->
+
+                    </div>
+                </div>
+                <!-- End Col -->
+            </div>
+            <!-- End Grid -->
+        </div>
+        <!-- End Grid About us -->
+
+    </div>
+    <!-- End Aboutus -->
+
 </div>
