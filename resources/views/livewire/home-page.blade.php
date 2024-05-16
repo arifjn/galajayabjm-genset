@@ -761,6 +761,169 @@
         <!-- End Grid About us -->
 
     </div>
-    <!-- End Aboutus -->
+    <!-- End About us -->
+
+    <!-- Contact us -->
+    <section class="py-20">
+        <div class="max-w-6xl px-4 py-6 mx-auto lg:py-4 md:px-6">
+            <div class="max-w-xl mx-auto">
+                <div class="text-center">
+                    <div class="relative flex flex-col items-center">
+                        <h1 class="text-5xl font-bold text-gray-800"> Contact us </h1>
+                        <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+                            <div class="flex-1 h-2 bg-orange-200">
+                            </div>
+                            <div class="flex-1 h-2 bg-orange-400">
+                            </div>
+                            <div class="flex-1 h-2 bg-orange-600">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-12 text-base text-center text-gray-500">
+                        Kami siap membantu proyek anda!
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 grid items-center lg:grid-cols-2 gap-6 lg:gap-16">
+                <!-- Card -->
+                <div class="flex flex-col border rounded-xl p-4 sm:p-6 lg:p-8 border-gray-200">
+                    <h2 class="mb-6 text-xl font-semibold text-gray-800">
+                        Minta penawaran harga
+                    </h2>
+
+                    <form>
+                        <div class="grid gap-4">
+
+                            <div>
+                                <label for="nama_perusahaan" class="sr-only">Nama Perusahaan</label>
+                                <input type="text" name="nama_perusahaan" id="nama_perusahaan"
+                                    class="py-3 px-4 block w-full rounded-lg border text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Nama Perusahaan">
+                            </div>
+
+                            <div>
+                                <label for="nama_lengkap" class="sr-only">Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap" id="nama_lengkap"
+                                    class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Nama Lengkap">
+                            </div>
+
+                            <div>
+                                <label for="no_telp" class="sr-only">Nomor Telepon</label>
+                                <input type="number" name="no_telp" id="no_telp"
+                                    class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Nomor Telepon">
+                            </div>
+
+                            <div>
+                                <label for="email" class="sr-only">Email</label>
+                                <input type="email" name="email" id="email"
+                                    class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Email">
+                            </div>
+
+                            <div>
+                                <label for="subject" class="sr-only">Subject</label>
+                                <input type="text" name="subject" id="subject"
+                                    class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Subject">
+                            </div>
+
+                            <div>
+                                <label for="keterangan" class="sr-only">Keterangan</label>
+                                <textarea id="keterangan" name="keterangan" rows="4"
+                                    class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    placeholder="Keterangan"></textarea>
+                            </div>
+                        </div>
+                        <!-- End Grid -->
+
+                        <div class="mt-4 grid">
+                            <button type="submit"
+                                class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none">Minta
+                                Penawaran</button>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- End Card -->
+
+                <div class="lg:divide-y lg:divide-gray-200 px-2">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+
+                        <!-- Icon Block -->
+                        <div class="flex gap-x-7 py-6">
+                            <svg class="flex-shrink-0 size-6 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                            </svg>
+                            <div class="grow">
+                                <h3 class="font-semibold text-gray-800">Email</h3>
+                                <a href="#mailto:admin@galajaya.com" target="_blank"
+                                    class="mt-1 text-sm text-gray-500">admin@galajaya.com</a>
+                            </div>
+                        </div>
+                        <!-- End Icon Block -->
+
+                        <!-- Icon Block -->
+                        <div class=" flex gap-x-7 py-6">
+                            <svg class="flex-shrink-0 size-5 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                            </svg>
+                            <div class="grow">
+                                <h3 class="font-semibold text-gray-800">Telepon</h3>
+                                <a href="https://wa.me/+6281150503636" target="_blank"
+                                    class="mt-1 text-sm text-gray-500">+628 11 5050
+                                    3636</a>
+                            </div>
+                        </div>
+                        <!-- End Icon Block -->
+                    </div>
+
+                    <!-- Icon Block -->
+                    <div class="flex gap-x-7 py-6">
+                        <svg class="flex-shrink-0 size-6 text-gray-800" xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <div class="grow">
+                            <h3 class="font-semibold text-gray-800">Alamat</h3>
+                            <p class="mt-1 text-sm text-gray-500">Jl. Pramuka No.19, Pemurus
+                                Luar, Kec. Banjarmasin Tim., Kota Banjarmasin, Kalimantan Selatan 70238</p>
+                        </div>
+                    </div>
+                    <!-- End Icon Block -->
+
+                    <!-- Map -->
+                    <div class="relative w-full h-96">
+                        <iframe class="absolute top-0 left-0 w-full h-full"
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d31864.16290623752!2d114.629877!3d-3.345122!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2de426b76b23e73d%3A0x8a8d5b5b2d457500!2sPT.%20Gala%20Jaya%20Banjarmasin%2C%20Genset!5e0!3m2!1sid!2sid!4v1715878289816!5m2!1sid!2sid"
+                            frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" loading="lazy"
+                            tabindex="0">
+                        </iframe>
+                    </div>
+                    <!-- End Map -->
+
+                </div>
+            </div>
+
+        </div>
+        <!-- End Contact Us -->
+
+</div>
+</section>
+<!-- End Contact us -->
 
 </div>
