@@ -625,7 +625,7 @@
         </div>
 
         <!-- Grid About us -->
-        <div class="max-w-[85rem] px-6 py-4 sm:px-6 lg:px-8 lg:py-6 mx-auto">
+        <div class="max-w-[85rem] px-6 sm:px-6 lg:px-8 mx-auto mt-12">
 
             <!-- Grid -->
             <div class="mt-5 lg:mt-16 grid lg:grid-cols-3 gap-8 lg:gap-12">
@@ -759,7 +759,6 @@
             <!-- End Grid -->
         </div>
         <!-- End Grid About us -->
-
     </div>
     <!-- End About us -->
 
@@ -918,12 +917,9 @@
 
                 </div>
             </div>
-
         </div>
         <!-- End Contact Us -->
-
-</div>
-</section>
-<!-- End Contact us -->
+    </section>
+    <!-- End Contact us -->
 
 </div>

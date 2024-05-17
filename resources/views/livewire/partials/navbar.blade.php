@@ -60,27 +60,27 @@
             <div
                 class="flex flex-col gap-y-4 gap-x-0 mt-5 md:flex-row md:justify-center md:items-center md:gap-y-0 md:gap-x-7 md:mt-0">
                 <div>
-                    <a class="relative inline-block text-black before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 dark:text-white"
-                        href="#" aria-current="page">Home</a>
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('/') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative' : '' }}"
+                        href="/" aria-current="page" wire:navigate>Home</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
-                        href="#">Products</a>
+                    <a class="inline-block text-black hover:text-gray-600 text-white hover:text-neutral-300 {{ request()->is('products*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative' : '' }}"
+                        href="{{ route('products') }}" wire:navigate>Products</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
+                    <a class="inline-block text-black hover:text-gray-600 text-white hover:text-neutral-300"
                         href="#">Rent</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
+                    <a class="inline-block text-black hover:text-gray-600 text-white hover:text-neutral-300"
                         href="#">Gallery</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
+                    <a class="inline-block text-black hover:text-gray-600 text-white hover:text-neutral-300"
                         href="#">About us</a>
                 </div>
                 <div>
-                    <a class="inline-block text-black hover:text-gray-600 dark:text-white dark:hover:text-neutral-300"
+                    <a class="inline-block text-black hover:text-gray-600 text-white hover:text-neutral-300"
                         href="#">Contact us</a>
                 </div>
                 <div>
