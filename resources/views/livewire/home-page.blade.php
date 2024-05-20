@@ -1,6 +1,6 @@
 <div>
     <!-- Hero -->
-    <div class="w-full h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-14 py-6 mx-auto">
+    <section class="w-full h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-14 py-6 mx-auto">
         <!-- Grid -->
         <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
             <div class="lg:col-span-3">
@@ -154,7 +154,7 @@
             <!-- End Col -->
         </div>
         <!-- End Grid -->
-    </div>
+    </section>
     <!-- End Hero -->
 
     <!-- Product -->
@@ -270,7 +270,7 @@
 
         <!-- Button -->
         <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-            <a href="#"
+            <a href="{{ route('products') }}"
                 class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
                 Lihat semua produk
                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -287,7 +287,7 @@
     <!-- End Product -->
 
     <!-- Sales Rent & Service -->
-    <div class="bg-slate-200 py-20">
+    <section class="bg-slate-200 py-20">
         <div class="max-w-full mx-auto">
             <div class="text-center ">
                 <div class="relative flex flex-col items-center">
@@ -431,7 +431,7 @@
         </div>
         <!-- End Button -->
 
-    </div>
+    </section>
     <!-- End Sales Rent & Service -->
 
     <!-- Gallery -->
@@ -579,6 +579,7 @@
                     <!-- End Card -->
 
                 </div>
+                <!-- End Card -->
 
             </div>
             <!-- End Photo Grid -->
@@ -602,7 +603,7 @@
     <!-- End Gallery -->
 
     <!-- About us -->
-    <div class="bg-slate-200 py-20">
+    <section class="bg-slate-200 py-20">
         <div class="max-w-full mx-auto">
             <div class="text-center">
                 <div class="relative flex flex-col items-center">
@@ -759,7 +760,7 @@
             <!-- End Grid -->
         </div>
         <!-- End Grid About us -->
-    </div>
+    </section>
     <!-- End About us -->
 
     <!-- Contact us -->
@@ -788,7 +789,7 @@
                 <!-- Card -->
                 <div class="flex flex-col border rounded-xl p-4 sm:p-6 lg:p-8 border-gray-200">
                     <h2 class="mb-6 text-xl font-semibold text-gray-800">
-                        Minta penawaran harga
+                        ✨ Get in touch with us!
                     </h2>
 
                     <form>
@@ -833,15 +834,15 @@
                                 <label for="keterangan" class="sr-only">Keterangan</label>
                                 <textarea id="keterangan" name="keterangan" rows="4"
                                     class="py-3 px-4 block w-full border rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
-                                    placeholder="Keterangan"></textarea>
+                                    placeholder="Isi pesan"></textarea>
                             </div>
                         </div>
                         <!-- End Grid -->
 
                         <div class="mt-4 grid">
                             <button type="submit"
-                                class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none">Minta
-                                Penawaran</button>
+                                class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none">Kirim
+                                Pesan</button>
                         </div>
 
                     </form>
