@@ -586,7 +586,7 @@
 
             <!-- Button -->
             <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-                <a href="#"
+                <a href="{{ route('gallery') }}"
                     class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
                     Lihat aktivitas lebih banyak
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20"
@@ -628,8 +628,8 @@
         <!-- Grid About us -->
         <div class="max-w-[85rem] px-6 sm:px-6 lg:px-8 mx-auto mt-12">
 
-            <!-- Grid -->
             <div class="mt-5 lg:mt-16 grid lg:grid-cols-3 gap-8 lg:gap-12">
+                <!-- gjb -->
                 <div class="lg:col-span-1">
                     <div class="inline-flex gap-x-4 items-center">
                         <img src="{{ url('storage', 'assets/logo/logo_only.png') }}" alt="" width="80"
@@ -645,119 +645,109 @@
                         PT. Gala Jaya Banjarmasin perusahaan yang bergerak di bidang Penjualan, Rental, Part dan Service
                         Generator set dimulai dari kapasitas 10 kVA - 1000 kVA.
                     </p>
+                    <a href="{{ route('about') }}"
+                        class="mt-3 inline-flex items-center gap-x-1 text-sm text-orange-500 hover:text-orange-400 hover:underline font-semibold decoration-2">
+                        Learn more
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
+                    </a>
                 </div>
-                <!-- End Col -->
+                <!-- End gjb -->
 
                 <div class="lg:col-span-2">
                     <div class="grid sm:grid-cols-2 gap-8 md:gap-12">
-                        <!-- Icon Block -->
-                        <div class="flex gap-x-5">
-                            <svg class="flex-shrink-0 mt-1 size-6 text-orange-600 dark:text-orange-500"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-                            </svg>
-                            <div class="grow">
-                                <h3 class="text-2xl font-semibold text-gray-800 uppercase">
-                                    Visi
-                                </h3>
-                                <p class="mt-1 text-gray-600 text-justify">
-                                    Menjadi Perusahaan yang terus berkembang, Mampu bersaing dengan sehat dan tumbuh
-                                    kuat untuk memberikan pelayanan dengan berbagai Alternatif pilihan Produk
-                                    Berkualitas, Ekonomis dan Mudah Perawatan.
-                                </p>
-                            </div>
+                        <!-- visi Block -->
+                        <div class="grow">
+                            <h3 class="text-2xl font-semibold text-gray-800 text-center uppercase mb-4">
+                                Visi
+                            </h3>
+                            <p class="mt-1 text-gray-600 text-justify">
+                                Menjadi Perusahaan yang terus berkembang, Mampu bersaing dengan sehat dan tumbuh
+                                kuat untuk memberikan pelayanan dengan berbagai Alternatif pilihan Produk
+                                Berkualitas, Ekonomis dan Mudah Perawatan.
+                            </p>
                         </div>
-                        <!-- End Icon Block -->
+                        <!-- End visi Block -->
 
-                        <!-- Icon Block -->
-                        <div class="flex gap-x-5">
-                            <svg class="flex-shrink-0 mt-1 size-6 text-orange-600 dark:text-orange-500"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M7 10v12" />
-                                <path
-                                    d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z" />
-                            </svg>
-                            <div class="grow">
-                                <h3 class="text-2xl font-semibold text-gray-800 uppercase">
-                                    Misi
-                                </h3>
-                                <ul class="mt-1 space-y-3 text-gray-800 text-justify">
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>
-                                            Pengembangan karyawan yang berkesinambungan, membentuk team work yang solid
-                                            dan
-                                            mensejahterakan karyawan.
-                                        </span>
-                                    </li>
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>Memberikan solusi terbaik atas permasalahan pelanggan.</span>
-                                    </li>
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>
-                                            Senantiasa meningkatkan kualitas pelayanan demi tercapainya kepuasan dan
-                                            kepercayaan pelanggan.
-                                        </span>
-                                    </li>
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>Menjaga etika bisnis.</span>
-                                    </li>
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>Mengelola dan membangun perusahaan secara profesional.</span>
-                                    </li>
-                                    <li class="flex space-x-3">
-                                        <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        <span>Pertumbuhan modal perusahaan yang konsisten.</span>
-                                    </li>
-                                </ul>
-                            </div>
+                        <!-- misi Block -->
+                        <div class="grow">
+                            <h3 class="text-2xl font-semibold text-gray-800 text-center uppercase mb-4">
+                                Misi
+                            </h3>
+                            <ul class="mt-1 space-y-3 text-gray-800 text-justify">
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>
+                                        Pengembangan karyawan yang berkesinambungan, membentuk team work yang solid
+                                        dan
+                                        mensejahterakan karyawan.
+                                    </span>
+                                </li>
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Memberikan solusi terbaik atas permasalahan pelanggan.</span>
+                                </li>
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>
+                                        Senantiasa meningkatkan kualitas pelayanan demi tercapainya kepuasan dan
+                                        kepercayaan pelanggan.
+                                    </span>
+                                </li>
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Menjaga etika bisnis.</span>
+                                </li>
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Mengelola dan membangun perusahaan secara profesional.</span>
+                                </li>
+                                <li class="flex space-x-3">
+                                    <svg class="flex-shrink-0 size-4 mt-0.5 text-gray-800"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span>Pertumbuhan modal perusahaan yang konsisten.</span>
+                                </li>
+                            </ul>
                         </div>
-                        <!-- End Icon Block -->
+                        <!-- End misi Block -->
 
                     </div>
                 </div>
                 <!-- End Col -->
             </div>
-            <!-- End Grid -->
+
         </div>
         <!-- End Grid About us -->
     </section>
@@ -914,6 +904,10 @@
                             tabindex="0">
                         </iframe>
                     </div>
+                    <a href="https://goo.gl/maps/zfeMYxHyu51yXR4v6" target="_blank"
+                        class="bg-gray-800 hover:bg-gray-700 text-white flex justify-center p-2 uppercase text-sm">cek
+                        full
+                        map</a>
                     <!-- End Map -->
 
                 </div>
