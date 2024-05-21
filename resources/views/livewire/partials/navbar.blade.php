@@ -80,10 +80,14 @@
                         href="{{ route('gallery') }}">Gallery</a>
                 </div>
                 <div>
-                    <a wire:navigate class="inline-block text-white hover:text-neutral-300" href="#">About</a>
+                    <a wire:navigate
+                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('about') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                        href="{{ route('about') }}">About</a>
                 </div>
                 <div>
-                    <a wire:navigate class="inline-block text-white hover:text-neutral-300" href="#">Contact</a>
+                    <a wire:navigate
+                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('contact') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                        href="{{ route('contact') }}">Contact</a>
                 </div>
                 <div>
                     <a wire:navigate
