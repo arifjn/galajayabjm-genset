@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&amp;display=swap"
         rel="stylesheet">
 
-    <title>{{ $title ?? 'Gala Jaya Group' }}</title>
+    <title>{{ $title ?? 'Gala Jaya Banjarmasin - Generator Set Specialized' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>

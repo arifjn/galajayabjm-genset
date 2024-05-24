@@ -104,7 +104,7 @@
                 <p class="mb-6 text-sm text-center w-full text-gray-500">Silakan segera hubungi kami</p>
 
                 <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-green-600 text-white shadow-sm hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                    href="https://wa.me/6281150503636" target="_blank">
                     <svg class="flex-shrink-0 size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path fill="currentColor" fill-rule="evenodd"
@@ -116,8 +116,8 @@
                     0811-5050-3636
                 </a>
 
-                <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                <a href="tel: +6281150503636"
+                    class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-indigo-600 text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50 disabled:pointer-events-none">
                     <svg class="flex-shrink-0 size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -126,8 +126,8 @@
                     0811-5050-3636
                 </a>
 
-                <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-cyan-700 text-white shadow-sm hover:bg-cyan-800 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                <a href="tel: 05113275885"
+                    class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-cyan-700 text-white shadow-sm hover:bg-cyan-800 disabled:opacity-50 disabled:pointer-events-none">
                     <svg class="flex-shrink-0 size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -137,7 +137,7 @@
                 </a>
 
                 <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-orange-500 text-white shadow-sm hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                    href="https://mail.google.com/mail/u/0/?view=cm&tf=1&fs=1&to=admin@galajaya.com" target="_blank">
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -149,7 +149,7 @@
                 </a>
 
                 <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-pink-500 text-white shadow-sm hover:bg-pink-600 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                    href="https://www.instagram.com/galajayabjm_genset/" target="_blank">
                     <svg class="flex-shrink-0 size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" stroke-width="2" fill="none" viewBox="0 0 24 24">
                         <path fill="currentColor" fill-rule="evenodd"
@@ -160,7 +160,7 @@
                 </a>
 
                 <a class="m-1 py-3 px-4 inline-flex w-full items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-blue-500 text-white shadow-sm hover:bg-blue-600 disabled:opacity-50 disabled:pointer-events-none"
-                    href="#">
+                    href="https://web.facebook.com/galajayabjm?_rdc=1&_rdr" target="_blank">
                     <svg class="flex-shrink-0 size-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                         width="24" height="24" stroke-width="2" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"

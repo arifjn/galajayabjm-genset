@@ -14,7 +14,7 @@
 
         <!-- Button Group -->
         <div class="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
-            <a wire:navigate href="#"
+            <a wire:navigate href="{{ route('login') }}"
                 class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-black hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:hover:bg-white/10 dark:text-white dark:hover:text-white">
 
                 <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -26,7 +26,7 @@
 
                 Login
             </a>
-            <a wire:navigate href="#"
+            <a wire:navigate href="{{ route('register') }}"
                 class="py-2 px-3 lg:inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-orange-500 text-black hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 hidden">
                 Register
             </a>
@@ -71,8 +71,8 @@
                 </div>
                 <div>
                     <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('rent') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
-                        href="/rent">Rent</a>
+                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('service') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                        href="/service">Service</a>
                 </div>
                 <div>
                     <a wire:navigate
@@ -92,7 +92,7 @@
                 <div>
                     <a wire:navigate
                         class="inline-block text-white hover:text-neutral-300 rounded-xl border border-transparent bg-orange-500 hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500 py-2 px-3 lg:hidden w-full text-center"
-                        href="#">Register</a>
+                        href="{{ route('register') }}">Register</a>
                 </div>
             </div>
         </div>

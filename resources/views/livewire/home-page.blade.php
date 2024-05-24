@@ -270,7 +270,7 @@
 
         <!-- Button -->
         <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-            <a href="{{ route('products') }}"
+            <a wire:navigate href="{{ route('products') }}"
                 class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
                 Lihat semua produk
                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -286,153 +286,138 @@
     </section>
     <!-- End Product -->
 
-    <!-- Sales Rent & Service -->
+    <!-- layanan -->
     <section class="bg-slate-200 py-20">
-        <div class="max-w-full mx-auto">
-            <div class="text-center ">
-                <div class="relative flex flex-col items-center">
-                    <h1 class="text-5xl font-bold text-gray-800"> Sales, Rent & Service </h1>
-                    <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
-                        <div class="flex-1 h-2 bg-orange-200">
+
+        <!-- purna jual -->
+        <div class="max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-12 lg:py-20  mx-auto">
+            <!-- Grid -->
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
+                <div class="lg:col-span-8">
+                    <!-- Grid -->
+                    <div class="grid grid-cols-12 gap-2 sm:gap-6 items-center lg:-translate-x-4">
+                        <div class="col-span-4">
+                            <img class="rounded-xl"
+                                src="https://images.unsplash.com/photo-1606868306217-dbf5046868d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1981&q=80"
+                                alt="Image Description">
                         </div>
-                        <div class="flex-1 h-2 bg-orange-400">
+                        <!-- End Col -->
+
+                        <div class="col-span-3">
+                            <img class="rounded-xl"
+                                src="https://images.unsplash.com/photo-1605629921711-2f6b00c6bbf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                                alt="Image Description">
                         </div>
-                        <div class="flex-1 h-2 bg-orange-600">
+                        <!-- End Col -->
+
+                        <div class="col-span-5">
+                            <img class="rounded-xl"
+                                src="https://images.unsplash.com/photo-1600194992440-50b26e0a0309?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                                alt="Image Description">
                         </div>
+                        <!-- End Col -->
+                    </div>
+                    <!-- End Grid -->
+                </div>
+                <!-- End Col -->
+
+                <div class="mt-5 sm:mt-10 lg:mt-0 lg:col-span-4">
+                    <div class="space-y-6 sm:space-y-8">
+                        <!-- Title -->
+                        <div class="space-y-2 md:space-y-4">
+                            <h2 class="font-bold text-3xl lg:text-5xl text-gray-800">
+                                Layanan purna jual terbaik! 💯
+                            </h2>
+                            <p class="text-gray-500">
+                                Semua produk genset PT. Gala Jaya Banjarmasin di lindungi oleh kebijakan layanan purna
+                                jual
+                                yang meliputi:
+                            </p>
+                        </div>
+                        <!-- End Title -->
+
+                        <!-- List -->
+                        <ul class="space-y-2 sm:space-y-4">
+                            <li class="flex space-x-3">
+                                <!-- Solid Check -->
+                                <span
+                                    class="mt-0.5 size-5 flex justify-center items-center rounded-full text-gray-600">
+                                    <svg class="flex-shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <!-- End Solid Check -->
+
+                                <span class="text-sm sm:text-base text-gray-500">
+                                    Instalasi, testing, dan commisioning.
+                                </span>
+                            </li>
+
+                            <li class="flex space-x-3">
+                                <!-- Solid Check -->
+                                <span
+                                    class="mt-0.5 size-5 flex justify-center items-center rounded-full text-gray-600">
+                                    <svg class="flex-shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <!-- End Solid Check -->
+
+                                <span class="text-sm sm:text-base text-gray-500">
+                                    Layanan pelanggan atas keluhan genset.
+                                </span>
+                            </li>
+
+                            <li class="flex space-x-3">
+                                <!-- Solid Check -->
+                                <span
+                                    class="mt-0.5 size-5 flex justify-center items-center rounded-full text-gray-600">
+                                    <svg class="flex-shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </span>
+                                <!-- End Solid Check -->
+
+                                <span class="text-sm sm:text-base text-gray-500">
+                                    Layanan perbaikan genset di lokasi.
+                                </span>
+                            </li>
+                        </ul>
+                        <!-- End List -->
+
+                        <!-- Button -->
+                        <div class="max-w-6xl py-2 mx-auto lg:py-0 mt-8">
+                            <a href="{{ route('products') }}"
+                                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                                Minta penawaran
+                                <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" width="20" height="20"
+                                    stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                                </svg>
+                            </a>
+                        </div>
+                        <!-- End Button -->
                     </div>
                 </div>
-                <p class="mb-12 text-center text-gray-500 text-sm lg:text-base px-4 lg:px-20">
-                    Memenuhi kebutuhan pelanggan serta memberikan Solusi yang tepat demi kenyamanan dan kepuasan kepada
-                    pelanggan adalah bagian dari misi Gala Jaya Group. Kami juga menjaga hubungan dan kejujuran agar
-                    konsumen tidak khawatir membeli produk kami di Gala Jaya.
-                </p>
+                <!-- End Col -->
             </div>
+            <!-- End Grid -->
         </div>
-
-        <!-- Icon Blocks -->
-        <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-16 lg:py-6 mx-auto">
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 items-center gap-6 md:gap-10">
-
-                <!-- Card -->
-                <div class="size-full bg-white shadow-lg rounded-lg p-5">
-                    <div class="flex items-center gap-x-4 mb-3">
-                        <div
-                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
-                            <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" xml:space="preserve"
-                                width="30" height="30">
-                                <style type="text/css">
-                                    .st0 {
-                                        fill: none;
-                                    }
-                                </style>
-                                <path
-                                    d="M11.7,2c-0.1,0-0.1,0-0.2,0c0,0,0,0-0.1,0v0c-0.2,0-0.3,0-0.5,0l0.2,2c0.4,0,0.9,0,1.3,0c4,0.3,7.3,3.5,7.5,7.6 c0.2,4.4-3.2,8.2-7.6,8.4c0,0-0.1,0-0.2,0c-0.3,0-0.7,0-1,0L11,22c0.4,0,0.8,0,1.3,0c0.1,0,0.3,0,0.4,0v0c5.4-0.4,9.5-5,9.3-10.4 c-0.2-5.1-4.3-9.1-9.3-9.5v0c0,0,0,0,0,0c-0.2,0-0.3,0-0.5,0C12,2,11.9,2,11.7,2z M8.2,2.7C7.7,3,7.2,3.2,6.7,3.5l1.1,1.7 C8.1,5,8.5,4.8,8.9,4.6L8.2,2.7z M4.5,5.4c-0.4,0.4-0.7,0.9-1,1.3l1.7,1C5.4,7.4,5.7,7.1,6,6.7L4.5,5.4z M15.4,8.4l-4.6,5.2 l-2.7-2.1L7,13.2l4.2,3.2l5.8-6.6L15.4,8.4z M2.4,9c-0.2,0.5-0.3,1.1-0.3,1.6l2,0.3c0.1-0.4,0.1-0.9,0.3-1.3L2.4,9z M4.1,13l-2,0.2 c0,0.1,0,0.2,0,0.3c0.1,0.4,0.2,0.9,0.3,1.3l1.9-0.6c-0.1-0.3-0.2-0.7-0.2-1.1L4.1,13z M5.2,16.2l-1.7,1.1c0.3,0.5,0.6,0.9,1,1.3 L6,17.3C5.7,16.9,5.4,16.6,5.2,16.2z M7.8,18.8l-1.1,1.7c0.5,0.3,1,0.5,1.5,0.8l0.8-1.8C8.5,19.2,8.1,19,7.8,18.8z"
-                                    fill="#f97316" />
-                                <rect class="st0" />
-                            </svg>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center gap-x-1">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-800 uppercase">
-                                    1258 Proyek</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Telah terbantu atas support rental genset.
-                    </p>
-                </div>
-                <!-- End Card -->
-
-                <!-- Card -->
-                <div class="size-full bg-white shadow-lg rounded-lg p-5">
-                    <div class="flex items-center gap-x-4 mb-3">
-                        <div
-                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
-                            <svg width="30" height="30" viewBox="0 0 20 20" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M15 8H11.9451L13.9191 3.39392C14.2019 2.73405 13.7179 2 13 2H8C7.59997 2 7.23843 2.2384 7.08086 2.60608L4.08086 9.60608C3.79805 10.2659 4.28208 11 5 11H6.73423L4.07207 17.6273C3.67234 18.6223 4.90667 19.4633 5.68646 18.7272L10.7099 13.9849L15.6501 9.75985C16.3559 9.156 15.9289 8 15 8ZM9.50943 8.60608C9.22663 9.26595 9.71066 10 10.4286 10H12.2929L9.37334 12.4979L7.62514 14.1477L9.14152 10.3727C9.40546 9.71569 8.92168 9 8.21359 9H6.51654L8.6594 4H11.4835L9.50943 8.60608Z"
-                                    fill="#f97316" />
-                            </svg>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center gap-x-1">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-800 uppercase">
-                                    1015 Tempat Usaha</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Telah terjaga dari padamnya listrik.
-                    </p>
-                </div>
-                <!-- End Card -->
-
-                <!-- Card -->
-                <div class="size-full bg-white shadow-lg rounded-lg p-5">
-                    <div class="flex items-center gap-x-4 mb-3">
-                        <div
-                            class="inline-flex justify-center items-center size-[62px] rounded-full border-4 border-orange-50 bg-orange-100">
-                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z"
-                                    stroke="#f97316" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                                <path
-                                    d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
-                                    stroke="#f97316" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </div>
-                        <div class="flex-shrink-0">
-                            <div class="inline-flex items-center gap-x-1">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4V14M7 9H17M7 20H17" stroke="#000000" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <h3 class="text-xl font-bold text-gray-800 uppercase">
-                                    94 Kota</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 dark:text-neutral-500 text-sm">Yang telah kami support dalam hal genset.
-                    </p>
-                </div>
-                <!-- End Card -->
-
-            </div>
-        </div>
-        <!-- End Icon Blocks -->
-
-        <!-- Button -->
-        <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-            <a href="#"
-                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
-                Minta Penawaran
-                <svg width="20" height="20" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="currentColor"
-                        d="M128 224v512a64 64 0 0 0 64 64h640a64 64 0 0 0 64-64V224H128zm0-64h768a64 64 0 0 1 64 64v512a128 128 0 0 1-128 128H192A128 128 0 0 1 64 736V224a64 64 0 0 1 64-64z" />
-                    <path fill="currentColor"
-                        d="M904 224 656.512 506.88a192 192 0 0 1-289.024 0L120 224h784zm-698.944 0 210.56 240.704a128 128 0 0 0 192.704 0L818.944 224H205.056z" />
-                </svg>
-            </a>
-        </div>
-        <!-- End Button -->
+        <!-- End purna jual -->
 
     </section>
-    <!-- End Sales Rent & Service -->
+    <!-- End layanan -->
 
     <!-- Gallery -->
     <section class="py-20">
@@ -586,7 +571,7 @@
 
             <!-- Button -->
             <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-                <a href="{{ route('gallery') }}"
+                <a wire:navigate href="{{ route('gallery') }}"
                     class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
                     Lihat aktivitas lebih banyak
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20"
@@ -645,7 +630,7 @@
                         PT. Gala Jaya Banjarmasin perusahaan yang bergerak di bidang Penjualan, Rental, Part dan Service
                         Generator set dimulai dari kapasitas 10 kVA - 1000 kVA.
                     </p>
-                    <a href="{{ route('about') }}"
+                    <a wire:navigate href="{{ route('about') }}"
                         class="mt-3 inline-flex items-center gap-x-1 text-sm text-orange-500 hover:text-orange-400 hover:underline font-semibold decoration-2">
                         Learn more
                         <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"
