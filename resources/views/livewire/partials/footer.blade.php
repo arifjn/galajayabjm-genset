@@ -18,10 +18,7 @@
                 <div class="mt-3 grid space-y-3">
                     <p><a wire:navigate
                             class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            href="{{ route('products') }}">Brand</a></p>
-                    <p><a wire:navigate
-                            class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            href="{{ route('service') }}">Service</a></p>
+                            href="{{ route('gallery') }}">Gallery</a></p>
                     <p><a wire:navigate
                             class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                             href="{{ route('products') }}">All Products</a></p>
@@ -33,9 +30,6 @@
                 <h4 class="font-semibold text-gray-100">Company</h4>
 
                 <div class="mt-3 grid space-y-3">
-                    <p><a wire:navigate
-                            class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-                            href="{{ route('gallery') }}">Gallery</a></p>
                     <p><a wire:navigate
                             class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                             href="{{ route('about') }}">About us</a></p>

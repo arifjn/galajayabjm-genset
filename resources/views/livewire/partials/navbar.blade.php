@@ -71,11 +71,6 @@
                 </div>
                 <div>
                     <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('service') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
-                        href="/service">Service</a>
-                </div>
-                <div>
-                    <a wire:navigate
                         class="inline-block text-white hover:text-neutral-300 {{ request()->is('gallery*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="{{ route('gallery') }}">Gallery</a>
                 </div>
