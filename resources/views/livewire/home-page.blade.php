@@ -1,6 +1,6 @@
 <div>
     <!-- Hero -->
-    <section class="w-full h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-14 py-6 mx-auto">
+    <section class="w-full bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-16 lg:pb-20 py-6 mx-auto">
         <!-- Grid -->
         <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
             <div class="lg:col-span-3">
@@ -19,7 +19,7 @@
                             class="py-3 px-4 block w-full xl:min-w-72 border-gray-200 rounded-md text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
                             placeholder="Masukkan Brand / Kapasitas">
                     </div>
-                    <a class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                    <a class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                         href="#">
                         Cari Genset
                     </a>
@@ -147,9 +147,60 @@
             </div>
             <!-- End Col -->
 
-            <div class="lg:col-span-4 mt-10 lg:mt-0">
-                <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset.jpg') }}"
-                    alt="Generator Set Hero Image">
+            <div class="lg:col-span-4 mt-10 lg:mt-0 relative items-center"
+                data-hs-carousel='{"loadingClasses": "opacity-0","isAutoPlay": true}'>
+                {{-- <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset.jpg') }}"
+                    alt="Generator Set Hero Image"> --}}
+                <div class="hs-carousel relative overflow-hidden w-full lg:min-h-[30rem] min-h-[15rem] rounded-lg">
+                    <div
+                        class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset.jpg') }}"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="https://galajaya.com/_ph/1/2/347064123.jpg?1716641031"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="https://galajaya.com/_ph/1/549711125.jpg"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                    </div>
+                </div>
+
+                <button type="button"
+                    class="hs-carousel-prev hs-carousel:disabled:opacity-50 disabled:pointer-events-none absolute inset-y-0 start-0 inline-flex justify-center items-center w-[46px] h-full rounded-s-lg text-white hover:bg-white/10">
+                    <span class="text-2xl" aria-hidden="true">
+                        <svg class="flex-shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6"></path>
+                        </svg>
+                    </span>
+                    <span class="sr-only">Previous</span>
+                </button>
+                <button type="button"
+                    class="hs-carousel-next hs-carousel:disabled:opacity-50 disabled:pointer-events-none absolute inset-y-0 end-0 inline-flex justify-center items-center w-[46px] h-full rounded-e-lg text-white hover:bg-white/10">
+                    <span class="sr-only">Next</span>
+                    <span class="text-2xl" aria-hidden="true">
+                        <svg class="flex-shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6"></path>
+                        </svg>
+                    </span>
+                </button>
             </div>
             <!-- End Col -->
         </div>
@@ -195,7 +246,7 @@
                             Engine Type : 403A-15G2
                             <br>Silent Type
                         </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                             href="#">
                             Detail Product
                         </a>
@@ -216,7 +267,7 @@
                             Engine Type : 403A-15G2
                             <br>Silent Type
                         </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                             href="#">
                             Detail Product
                         </a>
@@ -237,7 +288,7 @@
                             Engine Type : 403A-15G2
                             <br>Open Type
                         </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                             href="#">
                             Detail Product
                         </a>
@@ -258,7 +309,7 @@
                             Engine Type : 403A-15G2
                             <br>Silent Type
                         </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-600 text-white hover:bg-orange-700 disabled:opacity-50 disabled:pointer-events-none"
+                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                             href="#">
                             Detail Product
                         </a>
@@ -271,7 +322,7 @@
         <!-- Button -->
         <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
             <a wire:navigate href="{{ route('products') }}"
-                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none border-neutral-700 justify-center">
                 Lihat semua produk
                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -397,7 +448,7 @@
                         <!-- Button -->
                         <div class="max-w-6xl py-2 mx-auto lg:py-0 mt-8">
                             <a href="{{ route('products') }}"
-                                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                                class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none border-neutral-700 justify-center">
                                 Minta penawaran
                                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="2" width="20" height="20"
@@ -445,7 +496,9 @@
             <div class="py-6 grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-12">
 
                 <!-- Card -->
-                <div class="group block hover:cursor-pointer">
+                <div class="group block hover:cursor-pointer relative">
+                    <span
+                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 absolute top-2 left-2 z-10">New</span>
                     <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
                         <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
                             src="https://galajaya.com/_ph/1/2/347064123.jpg?1715778096" alt="Image Description">
@@ -486,7 +539,9 @@
                 <!-- End Card Grid -->
 
                 <!-- Card -->
-                <div class="group block hover:cursor-pointer">
+                <div class="group block hover:cursor-pointer relative">
+                    <span
+                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 absolute top-2 left-2 z-10">New</span>
                     <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
                         <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
                             src="https://galajaya.com/_ph/2/2/581860814.jpg?1715778251" alt="Image Description">
@@ -526,7 +581,9 @@
                 <!-- End Card Grid -->
 
                 <!-- Card -->
-                <div class="group block hover:cursor-pointer">
+                <div class="group block hover:cursor-pointer relative">
+                    <span
+                        class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800 absolute top-2 left-2 z-10">New</span>
                     <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
                         <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"
                             src="https://galajaya.com/_ph/1/2/821341182.jpg?1715784195" alt="Image Description">
@@ -572,7 +629,7 @@
             <!-- Button -->
             <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
                 <a wire:navigate href="{{ route('gallery') }}"
-                    class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-gray-200 text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 justify-center">
+                    class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none border-neutral-700 justify-center">
                     Lihat aktivitas lebih banyak
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20"
                         height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
