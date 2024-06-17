@@ -103,19 +103,19 @@
                     <div>
                         <div id="tabs-with-card-1" role="tabpanel" aria-labelledby="tabs-with-card-item-1">
                             <img class="shadow-xl shadow-gray-200 rounded-xl"
-                                src="https://galajaya.com/_ph/1/2/347064123.jpg?1716278933" alt="Image Description">
+                                src="{{ url('storage', 'assets/images/sale_genset.jpg') }}" alt="Image Description">
                         </div>
 
                         <div id="tabs-with-card-2" class="hidden" role="tabpanel"
                             aria-labelledby="tabs-with-card-item-2">
                             <img class="shadow-xl shadow-gray-200 rounded-xl"
-                                src="https://galajaya.com/_ph/1/2/310022987.jpg?1716279332" alt="Image Description">
+                                src="{{ url('storage', 'assets/images/rent_genset.jpg') }}" alt="Image Description">
                         </div>
 
                         <div id="tabs-with-card-3" class="hidden" role="tabpanel"
                             aria-labelledby="tabs-with-card-item-3">
                             <img class="shadow-xl shadow-gray-200 rounded-xl"
-                                src="https://galajaya.com/_ph/3/2/311102034.jpg?1716279406" alt="Image Description">
+                                src="{{ url('storage', 'assets/images/service_genset.jpg') }}" alt="Image Description">
                         </div>
                     </div>
                     <!-- End Tab Content -->

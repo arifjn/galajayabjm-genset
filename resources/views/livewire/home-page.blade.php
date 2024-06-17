@@ -12,18 +12,20 @@
                 <p class="mt-3 text-lg text-gray-500">Kami menyediakan Genset dari 10 kVA s/d 1000 kVA, Garansi Engine,
                     Free Jasa Instalasi dan commisioning.</p>
 
-                <div class="mt-5 lg:mt-8 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
-                    <div class="w-full sm:w-auto">
-                        <label for="hero-input" class="sr-only">Search</label>
-                        <input type="text" id="hero-input" name="hero-input"
-                            class="py-3 px-4 block w-full xl:min-w-72 border-gray-200 rounded-md text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
-                            placeholder="Masukkan Brand / Kapasitas">
+                <form wire:submit.prevent='searchBox'>
+                    <div class="mt-5 lg:mt-8 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
+                        <div class="w-full sm:w-auto">
+                            <label for="search" class="sr-only">Search</label>
+                            <input type="text" id="search" wire:model="search"
+                                class="py-3 px-4 block w-full xl:min-w-72 border-gray-200 rounded-md text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                                placeholder="Masukkan Brand / Kapasitas">
+                        </div>
+                        <button type="submit"
+                            class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none">
+                            Cari Genset
+                        </button>
                     </div>
-                    <a class="w-full sm:w-auto py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                        href="#">
-                        Cari Genset
-                    </a>
-                </div>
+                </form>
 
                 <!-- Brands -->
                 <div class="mt-6 lg:mt-12">
@@ -149,8 +151,7 @@
 
             <div class="lg:col-span-4 mt-10 lg:mt-0 relative items-center"
                 data-hs-carousel='{"loadingClasses": "opacity-0","isAutoPlay": true}'>
-                {{-- <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset.jpg') }}"
-                    alt="Generator Set Hero Image"> --}}
+
                 <div class="hs-carousel relative overflow-hidden w-full lg:min-h-[30rem] min-h-[15rem] rounded-lg">
                     <div
                         class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform duration-700 opacity-0">
@@ -164,14 +165,42 @@
 
                         <!-- img -->
                         <div class="hs-carousel-slide">
-                            <img class="w-full rounded-xl" src="https://galajaya.com/_ph/1/2/347064123.jpg?1716641031"
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset2.jpg') }}"
                                 alt="Generator Set Hero Image">
                         </div>
                         <!-- end img -->
 
                         <!-- img -->
                         <div class="hs-carousel-slide">
-                            <img class="w-full rounded-xl" src="https://galajaya.com/_ph/1/549711125.jpg"
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset3.jpg') }}"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset4.jpg') }}"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset5.jpg') }}"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset6.jpg') }}"
+                                alt="Generator Set Hero Image">
+                        </div>
+                        <!-- end img -->
+
+                        <!-- img -->
+                        <div class="hs-carousel-slide">
+                            <img class="w-full rounded-xl" src="{{ url('storage', 'assets/images/hero_genset7.jpg') }}"
                                 alt="Generator Set Hero Image">
                         </div>
                         <!-- end img -->
@@ -195,8 +224,8 @@
                     <span class="sr-only">Next</span>
                     <span class="text-2xl" aria-hidden="true">
                         <svg class="flex-shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
+                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m9 18 6-6-6-6"></path>
                         </svg>
                     </span>
@@ -232,89 +261,44 @@
         <div class="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-0">
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
 
-                <div
-                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
-                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
-                            src="https://galajaya.com/_ld/3/91617811.jpg" alt="Image Description">
+                @foreach ($products as $product)
+                    <div
+                        class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
+                        <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
+                            <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
+                                src="{{ url('storage', $product->images_genset[0]) }}"
+                                alt="{{ ucwords($product->brand_engine) }} {{ $product->kapasitas }} kVA">
+                        </div>
+                        <div class="p-4 md:p-5">
+                            <h3 class="text-lg font-bold text-gray-800">
+                                {{ str()->title($product->brand_engine) }} {{ $product->kapasitas }} kVA
+                            </h3>
+                            <p class="text-gray-500 dark:text-neutral-400 text-sm">
+                                {{ str()->title($product->tipe_genset) }} Type
+                            </p>
+                            <div class="py-2">
+                                <span
+                                    class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
+                                    <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z">
+                                        </path>
+                                        <path d="m9 12 2 2 4-4"></path>
+                                    </svg>
+                                    {{ str()->title($product->status_genset) }}
+                                </span>
+                            </div>
+                            <a wire:navigate
+                                class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
+                                href="{{ route('products.show', $product->no_genset) }}">
+                                Detail Product
+                            </a>
+                        </div>
                     </div>
-                    <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800">
-                            Perkins 150 kVA
-                        </h3>
-                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
-                            Engine Type : 403A-15G2
-                            <br>Silent Type
-                        </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                            href="#">
-                            Detail Product
-                        </a>
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
-                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
-                            src="https://galajaya.com/_ld/3/06940037.jpg" alt="Image Description">
-                    </div>
-                    <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800">
-                            Cummins 250 kVA
-                        </h3>
-                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
-                            Engine Type : 403A-15G2
-                            <br>Silent Type
-                        </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                            href="#">
-                            Detail Product
-                        </a>
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
-                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
-                            src="https://galajaya.com/_ld/3/75522913.jpg" alt="Image Description">
-                    </div>
-                    <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800">
-                            Perkins 100 kVA
-                        </h3>
-                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
-                            Engine Type : 403A-15G2
-                            <br>Open Type
-                        </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                            href="#">
-                            Detail Product
-                        </a>
-                    </div>
-                </div>
-
-                <div
-                    class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
-                        <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
-                            src="https://galajaya.com/_ld/3/53179417.jpg" alt="Image Description">
-                    </div>
-                    <div class="p-4 md:p-5">
-                        <h3 class="text-lg font-bold text-gray-800">
-                            Yanmar 60 kVA
-                        </h3>
-                        <p class="my-2 text-gray-500 dark:text-neutral-400 text-sm">
-                            Engine Type : 403A-15G2
-                            <br>Silent Type
-                        </p>
-                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
-                            href="#">
-                            Detail Product
-                        </a>
-                    </div>
-                </div>
+                @endforeach
 
             </div>
         </div>
@@ -348,22 +332,19 @@
                     <!-- Grid -->
                     <div class="grid grid-cols-12 gap-2 sm:gap-6 items-center lg:-translate-x-4">
                         <div class="col-span-4">
-                            <img class="rounded-xl"
-                                src="https://images.unsplash.com/photo-1606868306217-dbf5046868d2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1981&q=80"
+                            <img class="rounded-xl" src="{{ url('storage', 'assets/images/purna_jual.jpg') }}"
                                 alt="Image Description">
                         </div>
                         <!-- End Col -->
 
                         <div class="col-span-3">
-                            <img class="rounded-xl"
-                                src="https://images.unsplash.com/photo-1605629921711-2f6b00c6bbf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                            <img class="rounded-xl" src="{{ url('storage', 'assets/images/purna_jual2.jpg') }}"
                                 alt="Image Description">
                         </div>
                         <!-- End Col -->
 
                         <div class="col-span-5">
-                            <img class="rounded-xl"
-                                src="https://images.unsplash.com/photo-1600194992440-50b26e0a0309?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"
+                            <img class="rounded-xl" src="{{ url('storage', 'assets/images/purna_jual3.jpg') }}"
                                 alt="Image Description">
                         </div>
                         <!-- End Col -->
@@ -447,7 +428,8 @@
 
                         <!-- Button -->
                         <div class="max-w-6xl py-2 mx-auto lg:py-0 mt-8">
-                            <a href="{{ route('products') }}"
+                            <button type="button"
+                                data-hs-overlay="{{ Auth::guard('customer')->user() ? '#hs-quotation' : '#hs-auth-check' }}"
                                 class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none border-neutral-700 justify-center">
                                 Minta penawaran
                                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -456,9 +438,10 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                                 </svg>
-                            </a>
+                            </button>
                         </div>
                         <!-- End Button -->
+
                     </div>
                 </div>
                 <!-- End Col -->
@@ -485,13 +468,19 @@
                 </div>
                 <!-- End Title -->
 
-                <!-- calc -->
-                <div class="space-x-3 p-3 rounded-lg mx-auto">
+                <!-- convert -->
+                <div class="space-x-3 p-3 lg:px-16 lg:w-full rounded-lg mx-auto">
                     <div>
-                        <div class="sm:flex flex rounded-lg shadow-sm border sm:flex sm:space-x-3 p-3">
-                            <input type="text"
-                                class="py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500"
-                                placeholder="Watt">
+                        <div class="lg:flex rounded-lg shadow-sm border p-3">
+
+                            <div class="relative lg:w-1/2">
+                                <input wire:model.live="input_watt" type="text" id="watt" name="watt"
+                                    class="py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500"
+                                    placeholder="Masukkan daya">
+                                <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-4">
+                                    <span class="text-gray-500 text-sm">Watt</span>
+                                </div>
+                            </div>
                             <span
                                 class="py-3 px-4 inline-flex items-center min-w-fit w-full border-transparent bg-white text-sm text-gray-500 -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:w-auto sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg">
                                 <svg class="hidden sm:block size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg"
@@ -513,9 +502,15 @@
                                     <path d="M17 4v16"></path>
                                 </svg>
                             </span>
-                            <input type="text"
-                                class="py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500"
-                                placeholder="kVA">
+                            <div class="relative lg:w-1/2">
+                                <input type="text" id="kva" disabled name="kva"
+                                    class="py-3 px-4 block w-full border-transparent rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500"
+                                    placeholder="0" value="{{ !$input_watt ? '' : $input_watt / 800 }}">
+                                <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-4">
+                                    <span class="text-gray-500 text-sm">kVA</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="flex justify-between">
@@ -523,7 +518,7 @@
                         <span class="text-sm text-gray-500 mt-2">KVA : Kilo Volts Amperes</span>
                     </div>
                 </div>
-                <!-- End calc -->
+                <!-- End convert -->
 
 
                 <!-- SVG Element -->

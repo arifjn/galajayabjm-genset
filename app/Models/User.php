@@ -3,12 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,6 +25,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tempat_lahir',
+        'tgl_lahir',
+        'no_telp',
+        'alamat',
+        'status',
+        'profile_img',
+        'is_admin',
     ];
 
     /**
@@ -41,5 +52,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'tgl_lahir' => 'date',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        /** @var Model $model */
+        static::updating(function ($model) {
+            if ($model->isDirty('profile_img') && ($model->getOriginal('profile_img') !== null)) {
+                Storage::disk('public')->delete($model->getOriginal('profile_img'));
+            }
+        });
+
+        /** @var Model $model */
+        static::deleting(function ($model) {
+            if ($model->getOriginal('profile_img')) {
+                Storage::disk('public')->delete($model->getOriginal('profile_img'));
+            }
+        });
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_admin == 1;
+    }
 }
