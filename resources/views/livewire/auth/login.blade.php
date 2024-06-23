@@ -30,7 +30,7 @@
                             <div>
                                 <label for="email" class="block text-sm mb-2">Email address</label>
                                 <div class="relative">
-                                    <input type="email" id="email" wire:model="email"
+                                    <input autofocus type="email" id="email" wire:model="email"
                                         class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('email') border-red-500 @enderror"
                                         aria-describedby="email-error">
                                     @error('email')

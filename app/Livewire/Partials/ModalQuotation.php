@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ModalQuotation extends Component
 {
-    public $name, $perusahaan, $alamat, $email, $no_telp;
+    public $subject = '', $durasi_sewa, $name, $perusahaan, $alamat, $site, $email, $no_telp, $kapasitas = '', $brand_engine = '', $keterangan;
 
     public function mount()
     {
@@ -20,6 +20,20 @@ class ModalQuotation extends Component
             $this->email = $customer->email;
             $this->no_telp = $customer->no_telp;
         }
+    }
+
+    public function save()
+    {
+        $this->validate([
+            'subject' => 'required',
+            'durasi_sewa' => 'numeric',
+            'name' => 'required',
+            'alamat' => 'required',
+            'email' => 'required|email',
+            'no_telp' => 'required',
+            'kapasitas' => 'required',
+            'brand_engine' => 'required',
+        ]);
     }
 
     public function render()

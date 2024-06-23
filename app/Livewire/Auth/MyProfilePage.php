@@ -20,7 +20,7 @@ class MyProfilePage extends Component
     public $no_telp;
     public $email;
     public $alamat;
-    public $tipe_customer;
+    public $tipe_customer = '';
     public $perusahaan;
     public $password;
     public $password_confirmation;

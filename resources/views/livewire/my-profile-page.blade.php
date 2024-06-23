@@ -183,7 +183,7 @@
                 <div class="sm:col-span-9">
                     <select wire:model='tipe_customer' id="tipe_customer"
                         class="py-3 px-4 pe-11 block w-full border-b border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('tipe_customer') border border-red-500 @enderror">
-                        <option selected disabled>Pilih Tipe Customer</option>
+                        <option value="" disabled>Pilih Tipe Customer</option>
                         <option value="perorangan" {{ $profile->tipe_customer == 'perorangan' ? 'selected' : '' }}>
                             Perorangan</option>
                         <option value="perusahaan" {{ $profile->tipe_customer == 'perusahaan' ? 'selected' : '' }}>
