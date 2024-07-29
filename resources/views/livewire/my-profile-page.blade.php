@@ -1,5 +1,5 @@
 <!-- Card Section -->
-<div class="max-w-4xl px-4 py-10 sm:px-6 lg:px-8 mx-auto"><!-- Card -->
+<div class="max-w-4xl min-h-screen px-4 py-10 sm:px-6 lg:px-8 mx-auto"><!-- Card -->
     <div class="bg-white rounded-xl shadow p-4 sm:p-7">
         <div class="mb-8 border-b pb-6">
             <h2 class="text-xl font-bold text-gray-800">
@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="sm:col-span-9">
-                    <select wire:model='tipe_customer' id="tipe_customer"
+                    <select wire:model.live='tipe_customer' id="tipe_customer"
                         class="py-3 px-4 pe-11 block w-full border-b border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('tipe_customer') border border-red-500 @enderror">
                         <option value="" disabled>Pilih Tipe Customer</option>
                         <option value="perorangan" {{ $profile->tipe_customer == 'perorangan' ? 'selected' : '' }}>
@@ -195,37 +195,39 @@
                 </div>
                 <!-- End Tipe -->
 
-                <!-- Perusahaan -->
-                <div class="sm:col-span-3">
-                    <label for="perusahaan" class="inline-block text-sm text-gray-800 mt-2.5">
-                        Perusahaan
-                    </label>
-                    <div class="hs-tooltip inline-block">
-                        <button type="button" class="hs-tooltip-toggle ms-1">
-                            <svg class="inline-block size-3 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                <path
-                                    d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                            </svg>
-                        </button>
-                        <span
-                            class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm"
-                            role="tooltip">
-                            Kosongkan form input perusahaan jika customer perorangan.
-                        </span>
+                @if ($tipe_customer == 'perusahaan')
+                    <!-- Perusahaan -->
+                    <div class="sm:col-span-3">
+                        <label for="perusahaan" class="inline-block text-sm text-gray-800 mt-2.5">
+                            Perusahaan
+                        </label>
+                        <div class="hs-tooltip inline-block">
+                            <button type="button" class="hs-tooltip-toggle ms-1">
+                                <svg class="inline-block size-3 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                    width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                    <path
+                                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                </svg>
+                            </button>
+                            <span
+                                class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm"
+                                role="tooltip">
+                                Kosongkan form input perusahaan jika customer perorangan.
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="sm:col-span-9">
-                    <input id="perusahaan" type="text" wire:model='perusahaan'
-                        class="py-2 px-3 pe-11 block w-full border-gray-200 border-b text-sm rounded-lg focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
-                        placeholder="PT. Gala Jaya Banjarmasin (Optional)">
-                    @error('perusahaan')
-                        <p class="text-xs text-red-600 mt-2" id="perusahaan-error">{{ $message }}</p>
-                    @enderror
-                </div>
-                <!-- End Perusahaan -->
+                    <div class="sm:col-span-9">
+                        <input id="perusahaan" type="text" wire:model='perusahaan'
+                            class="py-2 px-3 pe-11 block w-full border-gray-200 border-b text-sm rounded-lg focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
+                            placeholder="PT. Gala Jaya Banjarmasin (Optional)">
+                        @error('perusahaan')
+                            <p class="text-xs text-red-600 mt-2" id="perusahaan-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <!-- End Perusahaan -->
+                @endif
 
                 <div class="sm:col-span-12 bg-gray-50 border border-gray-200 text-sm text-gray-600 rounded-lg p-4 lg:mt-0 mt-3"
                     role="alert">

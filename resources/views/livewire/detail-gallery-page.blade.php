@@ -67,7 +67,7 @@
                 <div class="space-y-6">
                     @foreach ($galleries as $gallery)
                         <!-- Galeri -->
-                        <a wire:navigate class="group flex items-center gap-x-6"
+                        <a wire:navigate class="group flex items-center gap-x-6" wire:key='{{ $gallery->id }}'
                             href="{{ url('gallery', $gallery->slug) }}">
                             <div class="grow">
                                 <span

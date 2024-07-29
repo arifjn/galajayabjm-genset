@@ -77,7 +77,7 @@ class MyProfilePage extends Component
                         'email' => $this->email,
                         'alamat' => $this->alamat,
                         'tipe_customer' => $this->tipe_customer,
-                        'perusahaan' => $this->perusahaan,
+                        'perusahaan' => $this->tipe_customer == 'perusahaan' ? $this->perusahaan : '',
                         'profile_img' => $img,
                     ]
                 );
@@ -91,7 +91,7 @@ class MyProfilePage extends Component
                     'email' => $this->email,
                     'alamat' => $this->alamat,
                     'tipe_customer' => $this->tipe_customer,
-                    'perusahaan' => $this->perusahaan,
+                    'perusahaan' => $this->tipe_customer == 'perusahaan' ? $this->perusahaan : '',
                     'password' => Hash::make($this->password),
                     'profile_img' => $img,
                 ]);
@@ -109,7 +109,7 @@ class MyProfilePage extends Component
                         'email' => $this->email,
                         'alamat' => $this->alamat,
                         'tipe_customer' => $this->tipe_customer,
-                        'perusahaan' => $this->perusahaan,
+                        'perusahaan' => $this->tipe_customer == 'perusahaan' ? $this->perusahaan : '',
                     ]
                 );
             } else {
@@ -123,7 +123,7 @@ class MyProfilePage extends Component
                         'email' => $this->email,
                         'alamat' => $this->alamat,
                         'tipe_customer' => $this->tipe_customer,
-                        'perusahaan' => $this->perusahaan,
+                        'perusahaan' => $this->tipe_customer == 'perusahaan' ? $this->perusahaan : '',
                         'password' => Hash::make($this->password),
                     ]
                 );

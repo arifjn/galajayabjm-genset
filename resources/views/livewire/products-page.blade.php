@@ -1,4 +1,4 @@
-<div class="w-full py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+<div class="w-full min-h-screen py-10 px-4 sm:px-6 lg:px-8 mx-auto">
     <section class="py-4 rounded-lg">
         <div class="px-4 py-4 mx-auto max-w-7xl lg:py-6 md:px-6">
             <div class="flex flex-wrap mb-24 -mx-3">
@@ -109,7 +109,7 @@
                         <div
                             class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 items-center justify-center pt-2 lg:px-3 gap-4">
                             @foreach ($products as $product)
-                                <div
+                                <div wire:key='{{ $product->id }}'
                                     class="w-full flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
                                     <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
                                         <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
@@ -138,8 +138,7 @@
                                                 {{ str()->title($product->status_genset) }}
                                             </span>
                                         </div>
-                                        <a wire:navigate
-                                            class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
+                                        <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                                             href="{{ route('products.show', $product->no_genset) }}">
                                             Detail Product
                                         </a>

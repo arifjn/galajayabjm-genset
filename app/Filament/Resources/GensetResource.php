@@ -16,6 +16,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Actions;
+use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section as ComponentsSection;
 use Filament\Infolists\Components\TextEntry;
@@ -38,6 +40,8 @@ class GensetResource extends Resource
 
     protected static ?string $navigationLabel = 'Genset';
 
+    protected static ?string $navigationGroup = 'Data Master';
+
     protected static ?string $slug = 'genset';
 
     protected static ?string $breadcrumb = 'Genset';
@@ -58,6 +62,7 @@ class GensetResource extends Resource
                                 ->validationMessages([
                                     'required' => 'Brand Engine wajib diisi.',
                                 ])
+                                ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
                                 ->required(),
                             Group::make([
                                 TextInput::make('tipe_engine')
@@ -208,6 +213,11 @@ class GensetResource extends Resource
                         'rent' => 'warning',
                         'maintenance' => 'danger',
                     })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'ready' => 'heroicon-o-check-circle',
+                        'rent' => 'heroicon-o-bolt',
+                        'maintenance' => 'heroicon-o-wrench-screwdriver',
+                    })
                     ->sortable(),
             ])
             ->emptyStateHeading('Belum ada data! 🙁')
@@ -224,6 +234,7 @@ class GensetResource extends Resource
                         ->openUrlInNewTab()
                         ->color(Color::Rose),
                     Tables\Actions\ViewAction::make()
+                        ->modalHeading('Lihat Genset')
                         ->color(Color::Orange),
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),
@@ -274,13 +285,27 @@ class GensetResource extends Resource
                             'rent' => 'warning',
                             'maintenance' => 'danger',
                         })
+                        ->icon(fn (string $state): string => match ($state) {
+                            'ready' => 'heroicon-o-check-circle',
+                            'rent' => 'heroicon-o-bolt',
+                            'maintenance' => 'heroicon-o-wrench-screwdriver',
+                        })
                         ->label('Status'),
+                    Actions::make([
+                        Action::make('spek_genset')
+                            ->visible(fn (Genset $record) => $record->spek_genset !== null)
+                            ->label('Spesifikasi')
+                            ->icon('heroicon-o-document-text')
+                            ->url(fn (Genset $record): string => url('storage', $record->spek_genset))
+                            ->openUrlInNewTab()
+                            ->color(Color::Rose),
+                    ])
                 ])->columns(3),
                 ImageEntry::make('images_genset')
                     ->columnSpanFull()
                     ->label('Foto')
+                    ->hidden(fn (Genset $record): bool => $record->images_genset == null)
                     ->simpleLightbox(),
-
             ]);
     }
 

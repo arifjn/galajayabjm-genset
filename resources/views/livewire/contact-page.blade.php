@@ -1,5 +1,5 @@
 <!-- Contact Us -->
-<div class="w-full px-4 py-10 sm:px-6 lg:px-24 lg:py-14 mx-auto">
+<div class="w-full min-h-screen px-4 py-10 sm:px-6 lg:px-24 lg:py-14 mx-auto">
     <div class="mx-auto">
         <div class="text-center">
             <h1 class="text-3xl font-bold text-gray-800 sm:text-4xl">

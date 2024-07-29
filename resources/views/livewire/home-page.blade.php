@@ -1,6 +1,6 @@
 <div>
     <!-- Hero -->
-    <section class="w-full bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-16 lg:pb-20 py-6 mx-auto">
+    <section class="w-full min-h-screen bg-slate-200 px-4 sm:px-6 lg:px-12 lg:pt-16 lg:pb-20 py-6 mx-auto">
         <!-- Grid -->
         <div class="grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-12 lg:items-center">
             <div class="lg:col-span-3">
@@ -262,7 +262,7 @@
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
 
                 @foreach ($products as $product)
-                    <div
+                    <div wire:key='{{ $product->id }}'
                         class="flex flex-col group bg-white border shadow-sm rounded-xl overflow-hidden hover:shadow-lg transition">
                         <div class="relative pt-[50%] sm:pt-[60%] lg:pt-[80%] rounded-t-xl overflow-hidden">
                             <img class="size-full absolute top-0 start-0 object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-t-xl"
@@ -291,8 +291,7 @@
                                     {{ str()->title($product->status_genset) }}
                                 </span>
                             </div>
-                            <a wire:navigate
-                                class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
+                            <a class="mt-2 py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50 disabled:pointer-events-none"
                                 href="{{ route('products.show', $product->no_genset) }}">
                                 Detail Product
                             </a>
@@ -305,7 +304,7 @@
 
         <!-- Button -->
         <div class="text-center max-w-6xl px-4 py-2 mx-auto lg:py-0 mt-8">
-            <a wire:navigate href="{{ route('products') }}"
+            <a href="{{ route('products') }}"
                 class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border text-gray-500 hover:bg-orange-500 hover:text-white transition-all disabled:opacity-50 disabled:pointer-events-none border-neutral-700 justify-center">
                 Lihat semua produk
                 <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -604,7 +603,7 @@
                         PT. Gala Jaya Banjarmasin perusahaan yang bergerak di bidang Penjualan, Rental, Part dan Service
                         Generator set dimulai dari kapasitas 10 kVA - 1000 kVA.
                     </p>
-                    <a wire:navigate href="{{ route('about') }}"
+                    <a href="{{ route('about') }}"
                         class="mt-3 inline-flex items-center gap-x-1 text-sm text-orange-500 hover:text-orange-400 hover:underline font-semibold decoration-2">
                         Learn more
                         <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24"

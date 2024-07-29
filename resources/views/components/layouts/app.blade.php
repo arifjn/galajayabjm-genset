@@ -20,7 +20,7 @@
     @livewire('partials.footer')
 
     <!-- Quotation -->
-    @livewire('partials.modal-quotation')
+    @livewire('partials.modals.modal-quotation')
     <!-- End Quotation -->
 
     @livewireScripts
@@ -126,7 +126,7 @@
                         data-hs-overlay="#hs-auth-check">
                         Later
                     </button>
-                    <a wire:navigate href="{{ route('login') }}"
+                    <a href="{{ route('login') }}"
                         class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-ee-xl border border-transparent bg-orange-500 text-white hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none">
                         Login!
                     </a>
@@ -153,6 +153,56 @@
                 URL.revokeObjectURL(output.src) // free memory
             }
         };
+
+        // Preview File Bukti Byr
+        const uploadInput = document.getElementById('bukti_tf');
+        const filenameLabel = document.getElementById('filename');
+        const filePreview = document.getElementById('file-preview');
+
+        // Check if the event listener has been added before
+        let isEventListenerAdded = false;
+
+        uploadInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            if (file) {
+                filenameLabel.textContent = file.name;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    filePreview.innerHTML =
+                        `<iframe src="${e.target.result}" class="max-w-full rounded-lg" alt="File preview"> </iframe>`;
+                    filePreview.classList.remove('border-dashed', 'border-2', 'border-gray-400');
+
+                    // Add event listener for file preview only once
+                    if (!isEventListenerAdded) {
+                        filePreview.addEventListener('click', () => {
+                            uploadInput.click();
+                        });
+
+                        isEventListenerAdded = true;
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                filenameLabel.textContent = '';
+                filePreview.innerHTML =
+                    `<div class="bg-gray-200 h-48 rounded-lg flex items-center justify-center text-gray-500">No File preview</div>`;
+                filePreview.classList.add('border-dashed', 'border-2', 'border-gray-400');
+
+                // Remove the event listener when there's no file
+                filePreview.removeEventListener('click', () => {
+                    uploadInput.click();
+                });
+
+                isEventListenerAdded = false;
+            }
+        });
+
+        uploadInput.addEventListener('click', (event) => {
+            event.stopPropagation();
+        });
+        // End Preview File Bukti Byr
     </script>
     <!-- End Preview Image Customer Upload -->
 

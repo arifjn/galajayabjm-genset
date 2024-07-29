@@ -169,10 +169,10 @@
                             <!-- End Form Alamat -->
 
                             <!-- Form Customer -->
-                            <div>
+                            <div class="lg:col-span-2">
                                 <label for="tipe_customer" class="block text-sm mb-2">Tipe Customer</label>
                                 <div class="relative">
-                                    <select id="tipe_customer" wire:model="tipe_customer"
+                                    <select id="tipe_customer" wire:model.live="tipe_customer"
                                         class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('tipe_customer') border-red-500 @enderror">
                                         <option value="" disabled>Pilih Tipe Customer</option>
                                         <option value="perusahaan">Perusahaan</option>
@@ -186,53 +186,37 @@
                             <!-- End Form Customer -->
 
                             <!-- Form Perusahaan -->
-                            <div>
-                                <div class="flex justify-between items-center">
-                                    <div class="inline-flex items-center gap-x-0.5">
+                            @if ($tipe_customer == 'perusahaan')
+                                <div class="lg:col-span-2">
+                                    <div class="flex justify-between items-center">
                                         <label for="perusahaan" class="block text-sm">Perusahaan</label>
-                                        <div class="hs-tooltip inline-block">
-                                            <button type="button" class="hs-tooltip-toggle ms-1">
-                                                <svg class="inline-block size-3 text-gray-400"
-                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path
-                                                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                </svg>
-                                            </button>
-                                            <span
-                                                class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm"
-                                                role="tooltip">
-                                                Lewati jika bukan atas nama Perusahaan!
-                                            </span>
-                                        </div>
+                                        <span class="block mb-2 text-sm text-gray-500">Opsional</span>
                                     </div>
-                                    <span class="block mb-2 text-sm text-gray-500">Opsional</span>
-                                </div>
-                                <div class="relative">
-                                    <input type="text" id="perusahaan" wire:model="perusahaan"
-                                        class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none  @error('perusahaan') border-red-500 @enderror"
-                                        aria-describedby="perusahaan-error">
+                                    <div class="relative">
+                                        <input type="text" id="perusahaan" wire:model="perusahaan"
+                                            class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none  @error('perusahaan') border-red-500 @enderror"
+                                            aria-describedby="perusahaan-error">
+                                        @error('perusahaan')
+                                            <div
+                                                class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
+                                                <svg class="flex-shrink-0 size-4 text-red-500"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" x2="12" y1="8" y2="12">
+                                                    </line>
+                                                    <line x1="12" x2="12.01" y1="16" y2="16">
+                                                    </line>
+                                                </svg>
+                                            </div>
+                                        @enderror
+                                    </div>
                                     @error('perusahaan')
-                                        <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
-                                            <svg class="flex-shrink-0 size-4 text-red-500"
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="12" cy="12" r="10"></circle>
-                                                <line x1="12" x2="12" y1="8" y2="12">
-                                                </line>
-                                                <line x1="12" x2="12.01" y1="16" y2="16">
-                                                </line>
-                                            </svg>
-                                        </div>
+                                        <p class="text-xs text-red-600 mt-2" id="perusahaan-error">{{ $message }}</p>
                                     @enderror
                                 </div>
-                                @error('perusahaan')
-                                    <p class="text-xs text-red-600 mt-2" id="perusahaan-error">{{ $message }}</p>
-                                @enderror
-                            </div>
+                            @endif
                             <!-- End Form Perusahaan -->
 
                             <!-- Form PW -->
@@ -307,7 +291,7 @@
                             <div class="lg:col-span-2">
                                 <div class="flex justify-between items-center">
                                     <label for="profile_img" class="block text-sm font-medium mb-2">Foto</label>
-                                    <span class="block mb-2 text-sm text-gray-500">Optional</span>
+                                    <span class="block mb-2 text-sm text-gray-500">Opsional</span>
                                 </div>
                                 <div class="flex items-center space-x-6 border border-gray-200 p-3 rounded-lg">
                                     <div class="shrink-0">

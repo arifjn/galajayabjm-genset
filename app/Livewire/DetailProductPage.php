@@ -17,7 +17,7 @@ class DetailProductPage extends Component
     public function render()
     {
         return view('livewire.detail-product-page', [
-            'genset' => Genset::where('no_genset', $this->no_genset)->first(),
+            'genset' => Genset::where('no_genset', $this->no_genset)->firstOrFail(),
         ]);
     }
 }

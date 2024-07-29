@@ -16,6 +16,7 @@ use App\Livewire\MyOrderDetailPage;
 use App\Livewire\MyOrderPage;
 use App\Livewire\ProductsPage;
 use App\Livewire\SuccessPage;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomePage::class);
@@ -29,11 +30,7 @@ Route::get('/gallery/{slug}', DetailGalleryPage::class)->name('gallery.show');
 Route::get('/about', AboutPage::class)->name('about');
 Route::get('/contact', ContactPage::class)->name('contact');
 
-Route::get('/my-orders', MyOrderPage::class)->name('order');
-Route::get('/my-orders/id', MyOrderDetailPage::class)->name('order.show');
-
 Route::get('/success', SuccessPage::class)->name('success');
-Route::get('/cancel', CancelPage::class)->name('cancel');
 
 Route::middleware('guest:customer')->group(
     function () {
@@ -50,7 +47,12 @@ Route::middleware('auth:customer')->group(function () {
         return redirect()->to('/');
     });
 
-    Route::get('/profile/{customer_id}', MyProfilePage::class)
-        ->middleware('currentLogin')
-        ->name('customer-profile.show');
+    Route::middleware('currentLogin')->group(function () {
+        Route::get('/profile/{customer_id}', MyProfilePage::class)->name('customer-profile.show');
+        Route::get('/orders/{customer_id}', MyOrderPage::class)->name('order');
+        Route::get('/orders/{customer_id}/{order_id}', MyOrderDetailPage::class)->name('order.show');
+        Route::get('/orders/{customer_id}/{order_id}/cancel', CancelPage::class)
+            ->middleware('isCancelOrder')
+            ->name('cancel');
+    });
 });

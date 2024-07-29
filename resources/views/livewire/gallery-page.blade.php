@@ -1,9 +1,9 @@
-<div class="w-full mx-auto px-4 sm:px-6 lg:px-24 lg:py-20 py-16">
+<div class="w-full min-h-screen mx-auto px-4 sm:px-6 lg:px-24 lg:py-20 py-16">
     @if (count($galleries) > 0)
         <div class="grid grid-cols-1 lg:grid-cols-4 lg:gap-x-8 gap-y-8">
             @foreach ($galleries as $gallery)
                 <!-- Card -->
-                <a wire:navigate href="{{ route('gallery.show', $gallery->slug) }}"
+                <a wire:navigate href="{{ route('gallery.show', $gallery->slug) }}" wire:key='{{ $gallery->id }}'
                     class="group block hover:cursor-pointer">
                     <div class="aspect-w-16 aspect-h-12 overflow-hidden bg-gray-100 rounded-2xl">
                         <img class="group-hover:scale-105 transition-transform duration-500 ease-in-out object-cover rounded-2xl"

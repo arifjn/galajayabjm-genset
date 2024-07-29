@@ -39,6 +39,8 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationLabel = 'Customer';
 
+    protected static ?string $navigationGroup = 'Data Master';
+
     protected static ?string $slug = 'customer';
 
     protected static ?string $breadcrumb = 'Customer';
@@ -192,6 +194,7 @@ class CustomerResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
+                        ->modalHeading('Lihat Customer')
                         ->color(Color::Orange),
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),
@@ -225,6 +228,7 @@ class CustomerResource extends Resource
                 ])->columns(3),
                 ImageEntry::make('profile_img')
                     ->label('Foto')
+                    ->hidden(fn (Customer $record): bool => $record->profile_img == null)
                     ->simpleLightbox(),
             ]);
     }

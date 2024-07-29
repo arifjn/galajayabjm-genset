@@ -39,6 +39,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationLabel = 'Operator';
 
+    protected static ?string $navigationGroup = 'Data Master';
+
     protected static ?string $slug = 'operator';
 
     protected static ?string $breadcrumb = 'Operator';
@@ -186,6 +188,7 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
+                        ->modalHeading('Lihat Operator')
                         ->color(Color::Orange),
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),

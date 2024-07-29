@@ -21,6 +21,6 @@ class ListGalleries extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Gallery';
+        return 'Galeri';
     }
 }

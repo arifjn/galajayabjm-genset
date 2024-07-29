@@ -5,7 +5,7 @@
 
         <div class="md:col-span-3 flex items-center justify-between w-full">
             <!-- Logo -->
-            <a wire:navigate class="inline-flex items-center gap-x-4 text-xl font-semibold text-white" href="/"
+            <a class="inline-flex items-center gap-x-4 text-xl font-semibold text-white" href="/"
                 aria-label="Preline">
                 <img class="w-8 h-auto" src="{{ url('storage', 'assets/logo/gjb.png') }}" alt="Logo">
                 <span class="uppercase">GalaJaya</span>
@@ -39,7 +39,7 @@
         @if (!Auth::guard('customer')->user())
             <!-- Button Group -->
             <div class="flex items-center gap-x-2 ms-auto py-1 md:ps-6 md:order-3 md:col-span-3">
-                <a wire:navigate href="{{ route('login') }}"
+                <a href="{{ route('login') }}"
                     class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-gray-200 text-white hover:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none">
 
                     <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -50,7 +50,7 @@
                     </svg>
                     Login
                 </a>
-                <a wire:navigate href="{{ route('register') }}"
+                <a href="{{ route('register') }}"
                     class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl border border-transparent bg-orange-500 text-black hover:bg-orange-600 transition disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-orange-500">
                     Register
                 </a>
@@ -71,10 +71,12 @@
                                     <img class="inline-block flex-shrink-0 size-8 rounded-full object-cover"
                                         src="{{ auth()->guard('customer')->user()->profile_img ? url('storage', auth()->guard('customer')->user()->profile_img) : asset('assets/images/no-image.jpg') }}"
                                         alt="Image Description">
-                                    <span
-                                        class="absolute animate-ping bottom-0 end-0 block size-2 rounded-full ring-2 ring-white bg-green-500"></span>
-                                    <span
-                                        class="absolute bottom-0 end-0 block size-2 rounded-full ring-2 ring-white bg-green-500"></span>
+                                    @if (count($orders) > 0)
+                                        <span
+                                            class="absolute animate-ping bottom-0 end-0 block size-2 rounded-full ring-2 ring-white bg-green-500"></span>
+                                        <span
+                                            class="absolute bottom-0 end-0 block size-2 rounded-full ring-2 ring-white bg-green-500"></span>
+                                    @endif
                                 </div>
                                 <div class="ms-3 text-start">
                                     <p class="font-medium text-sm text-white">
@@ -91,17 +93,17 @@
                     </button>
                     <div
                         class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
-                        <a wire:navigate
-                            class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200"
+                        <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200"
                             href="{{ route('customer-profile.show', auth()->guard('customer')->user()->id) }}">
                             Profile
                         </a>
-                        <a wire:navigate
-                            class="flex items-center justify-between gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200"
-                            href="#">
+                        <a class="flex items-center justify-between gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200"
+                            href="{{ route('order', auth()->guard('customer')->user()->id) }}">
                             My Orders
                             <span
-                                class="inline-flex items-center gap-x-1.5 py-1 px-2.5 rounded-lg text-sm font-medium border border-teal-500 text-teal-500">0</span>
+                                class="inline-flex items-center gap-x-1.5 py-1 px-2.5 rounded-lg text-sm font-medium border border-teal-500 text-teal-500">
+                                {{ count($orders) }}
+                            </span>
                         </a>
                         <button
                             class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 w-full"
@@ -122,28 +124,23 @@
             <div
                 class="flex flex-col gap-y-4 gap-x-0 mt-5 md:flex-row md:justify-center md:items-center md:gap-y-0 md:gap-x-7 md:mt-0">
                 <div>
-                    <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('/') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('/') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="/" aria-current="page">Home</a>
                 </div>
                 <div>
-                    <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('products*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('products*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="/products">Products</a>
                 </div>
                 <div>
-                    <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('gallery*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('gallery*') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="{{ route('gallery') }}">Gallery</a>
                 </div>
                 <div>
-                    <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('about') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('about') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="{{ route('about') }}">About</a>
                 </div>
                 <div>
-                    <a wire:navigate
-                        class="inline-block text-white hover:text-neutral-300 {{ request()->is('contact') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
+                    <a class="inline-block text-white hover:text-neutral-300 {{ request()->is('contact') ? 'before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 relative before:scale-x-100' : '' }} before:absolute before:bottom-0.5 before:start-0 before:-z-[1] before:w-full before:h-1 before:bg-orange-500 before:transition before:origin-left before:scale-x-0 hover:before:scale-x-100 relative"
                         href="{{ route('contact') }}">Contact</a>
                 </div>
 
@@ -171,7 +168,7 @@
                                     Profile
                                 </a>
                                 <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-white hover:bg-gray-700 focus:ring-2 focus:ring-gray-800"
-                                    href="#">
+                                    href="{{ route('order', auth()->guard('customer')->user()->id) }}">
                                     My Orders
                                 </a>
                                 <button type="button" data-hs-overlay="#hs-sign-out-alert"

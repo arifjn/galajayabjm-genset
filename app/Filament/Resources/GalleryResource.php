@@ -33,11 +33,13 @@ class GalleryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationLabel = 'Gallery';
+    protected static ?string $navigationLabel = 'Galeri';
 
-    protected static ?string $slug = 'gallery';
+    protected static ?string $navigationGroup = 'Data Master';
 
-    protected static ?string $breadcrumb = 'Gallery';
+    protected static ?string $slug = 'galeri';
+
+    protected static ?string $breadcrumb = 'Galeri';
 
     public static function form(Form $form): Form
     {
@@ -124,6 +126,7 @@ class GalleryResource extends Resource
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make()
+                        ->modalHeading('Lihat Galeri')
                         ->color(Color::Orange),
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),

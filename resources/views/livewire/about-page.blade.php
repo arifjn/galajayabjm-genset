@@ -1,5 +1,5 @@
 <!-- About -->
-<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-12 lg:py-20 mx-auto">
+<div class="max-w-[85rem] min-h-screen px-4 py-10 sm:px-6 lg:px-12 lg:py-20 mx-auto">
     <!-- layanan -->
     <div class="relative p-6 md:p-16">
         <!-- Grid -->
