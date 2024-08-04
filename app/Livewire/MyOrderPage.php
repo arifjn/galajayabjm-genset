@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Plan;
 use App\Models\Transaction;
 use Livewire\Component;
 

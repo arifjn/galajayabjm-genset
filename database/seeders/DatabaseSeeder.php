@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'tgl_lahir' => Carbon::parse('2001-07-20'),
             'no_telp' => '089692875752',
             'alamat' => 'Jl. Saka Permai Gg. Amilin, Banjarmasin',
-            'is_admin' => true,
+            'role' => 'admin',
         ]);
     }
 }

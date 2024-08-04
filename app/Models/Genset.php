@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 
 class Genset extends Model
@@ -54,5 +55,10 @@ class Genset extends Model
                 Storage::disk('public')->delete($model->getOriginal('spek_genset'));
             }
         });
+    }
+
+    public function plans(): BelongsToMany
+    {
+        return $this->belongsToMany(Plan::class, 'genset_plan');
     }
 }

@@ -16,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Transaction::class, 'order_id')
-                ->nullable();
+            // $table->foreignIdFor(Transaction::class, 'order_id')->nullable();
+            $table->string('order_id')->references('order_id')->on('transactions')->unique()->nullable();
             $table->string('jobdesk');
             $table->date('tanggal_job');
             $table->date('tanggal_job_selesai');

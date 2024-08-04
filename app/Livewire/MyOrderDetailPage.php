@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Plan;
 use App\Models\Transaction;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -39,6 +40,7 @@ class MyOrderDetailPage extends Component
                     $q->where('id', auth()->guard('customer')->user()->id);
                 })
                 ->firstOrFail(),
+            'plan' => Plan::where('order_id', $this->order_id)->first(),
         ]);
     }
 

@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('genset_plan', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Genset::class)
+            $table->foreignId('genset_id')
                 ->nullable();
-            $table->foreignIdFor(Plan::class);
+            $table->foreignId('plan_id');
             $table->timestamps();
         });
     }

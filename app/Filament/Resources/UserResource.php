@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\PlansRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -96,7 +98,7 @@ class UserResource extends Resource
                             ->required(),
                         DatePicker::make('tgl_lahir')
                             ->label('Tanggal Lahir')
-                            ->displayFormat('d/m/Y')
+                            ->displayFormat('d F Y')
                             ->native(false)
                             ->validationMessages([
                                 'required' => 'Tanggal Lahir wajib diisi.',
@@ -179,8 +181,13 @@ class UserResource extends Resource
                         'tersedia' => 'success',
                         'bertugas' => 'danger',
                     })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'tersedia' => 'heroicon-o-check-circle',
+                        'bertugas' => 'heroicon-o-bolt',
+                    })
                     ->sortable(),
             ])
+            ->defaultSort('status', 'DESC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 //
@@ -237,7 +244,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PlansRelationManager::class,
         ];
     }
 
@@ -252,6 +259,6 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('is_admin', '!=', 1);
+        return parent::getEloquentQuery()->where('role', '!=', 'admin');
     }
 }

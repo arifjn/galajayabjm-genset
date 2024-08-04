@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -45,45 +46,52 @@ class GalleryResource extends Resource
     {
         return $form
             ->schema([
-                Section::make([
-                    Group::make([
-                        TextInput::make('title')
-                            ->label('Judul')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Judul wajib diisi.',
+                Split::make([
+                    Section::make('Konten')
+                        ->schema([
+                            Group::make([
+                                TextInput::make('title')
+                                    ->label('Judul')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Judul wajib diisi.',
+                                    ])
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation !== 'create' ? null : $set('slug', str()->slug($state))),
+                                TextInput::make('slug')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Slug wajib diisi.',
+                                    ])
+                                    ->maxLength(255)
+                                    ->disabled()
+                                    ->dehydrated(),
                             ])
-                            ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation !== 'create' ? null : $set('slug', str()->slug($state))),
-                        TextInput::make('slug')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Slug wajib diisi.',
-                            ])
-                            ->maxLength(255)
-                            ->disabled()
-                            ->dehydrated(),
-                    ])
-                        ->columns(2),
-                    TextInput::make('location')
-                        ->label('Lokasi')
-                        ->validationMessages([
-                            'required' => 'Lokasi wajib diisi.',
+                                ->columns(2),
+                            TextInput::make('location')
+                                ->label('Lokasi')
+                                ->validationMessages([
+                                    'required' => 'Lokasi wajib diisi.',
+                                ])
+                                ->required(),
+                            Textarea::make('description')
+                                ->label('Deskripsi'),
                         ])
-                        ->required(),
-                    Textarea::make('description')
-                        ->label('Deskripsi'),
-                    FileUpload::make('images')
-                        ->label('Foto')
-                        ->multiple()
-                        ->directory('gallery')
-                        ->image()
-                        ->validationMessages([
-                            'required' => 'Minimal upload 1 Foto.',
-                        ])
-                        ->required(),
-                ])
-                    ->collapsible(),
+                        ->collapsible(),
+                    Section::make('Foto Aktifitas')
+                        ->schema([
+                            FileUpload::make('images')
+                                ->label('Foto')
+                                ->multiple()
+                                ->directory('gallery')
+                                ->image()
+                                ->panelLayout('grid')
+                                ->validationMessages([
+                                    'required' => 'Minimal upload 1 Foto.',
+                                ])
+                                ->required(),
+                        ]),
+                ])->columnSpanFull()
             ]);
     }
 

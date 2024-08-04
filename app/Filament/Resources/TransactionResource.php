@@ -189,8 +189,6 @@ class TransactionResource extends Resource
                         'penawaran' => 'Proses Penawaran',
                         'pembayaran' => 'Proses Pembayaran',
                         'dibayar' => 'Dibayar',
-                        'delivery' => 'Delivery',
-                        'success' => 'Success',
                         'cancel' => 'Cancel',
                     })
                     ->sortable()
@@ -199,20 +197,18 @@ class TransactionResource extends Resource
                     ->color(fn (string $state): string => match ($state) {
                         'penawaran' => 'warning',
                         'pembayaran' => 'primary',
-                        'dibayar' => 'primary',
-                        'delivery' => 'info',
-                        'success' => 'success',
+                        'dibayar' => 'success',
                         'cancel' => 'danger',
                     })
                     ->icon(fn (string $state): string => match ($state) {
                         'penawaran' => 'heroicon-o-arrow-path',
                         'pembayaran' => 'heroicon-o-banknotes',
                         'dibayar' => 'heroicon-o-check-badge',
-                        'delivery' => 'heroicon-o-truck',
-                        'success' => 'heroicon-o-check',
                         'cancel' => 'heroicon-o-x-mark',
                     }),
             ])
+            ->defaultSort('status_transaksi', 'DESC')
+            ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 //
             ])
@@ -402,7 +398,6 @@ class TransactionResource extends Resource
                     Tables\Actions\ViewAction::make()
                         ->modalHeading('Lihat Transaksi')
                         ->color(Color::Orange),
-
                     Tables\Actions\DeleteAction::make(),
                 ]),
             ])
@@ -428,25 +423,19 @@ class TransactionResource extends Resource
                             'penawaran' => 'Proses Penawaran',
                             'pembayaran' => 'Proses Pembayaran',
                             'dibayar' => 'Dibayar',
-                            'delivery' => 'Delivery',
-                            'success' => 'Success',
                             'cancel' => 'Cancel',
                         })
                         ->badge()
                         ->color(fn (string $state): string => match ($state) {
                             'penawaran' => 'warning',
                             'pembayaran' => 'primary',
-                            'dibayar' => 'primary',
-                            'delivery' => 'info',
-                            'success' => 'success',
+                            'dibayar' => 'success',
                             'cancel' => 'danger',
                         })
                         ->icon(fn (string $state): string => match ($state) {
                             'penawaran' => 'heroicon-o-arrow-path',
                             'pembayaran' => 'heroicon-o-banknotes',
                             'dibayar' => 'heroicon-o-check-badge',
-                            'delivery' => 'heroicon-o-truck',
-                            'success' => 'heroicon-o-check',
                             'cancel' => 'heroicon-o-x-mark',
                         })
                         ->label('Status'),
@@ -519,7 +508,7 @@ class TransactionResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status_transaksi', '!=', 'cancel')->where('status_transaksi', '!=', 'success')->count();
+        return static::getModel()::where('status_transaksi', '!=', 'cancel')->where('status_transaksi', '!=', 'dibayar')->count();
     }
 
     public static function getNavigationBadgeColor(): string|array|null

@@ -107,64 +107,73 @@ class GensetResource extends Resource
                         ->collapsible(),
                 ])->columnSpanFull(),
 
-                Section::make([
-                    TextInput::make('no_genset')
-                        ->placeholder('GJB-01-200-CU')
-                        ->label('Nomor Genset')
-                        ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
-                        ->unique(table: 'gensets', column: 'no_genset', ignorable: fn ($record) => $record)
-                        ->validationMessages([
-                            'required' => 'Nomor Genset wajib diisi.',
-                            'unique' => 'Nomor Genset sudah dipakai.',
-                        ])
-                        ->required(),
-                    Group::make([
-                        Select::make('tipe_genset')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Tipe Genset wajib diisi.',
-                            ])
-                            ->native(false)
-                            ->label('Tipe Genset')
-                            ->options([
-                                'silent' => 'Silent',
-                                'open' => 'Open',
-                            ]),
-                        TextInput::make('kapasitas')
-                            ->placeholder('200')
-                            ->numeric()
-                            ->minValue(10)
-                            ->suffix('kVA')
-                            ->validationMessages([
-                                'required' => 'Kapasitas wajib diisi.',
-                            ])
-                            ->required(),
-                    ])->columns(2),
-                    Radio::make('status_genset')
-                        ->required()
-                        ->validationMessages([
-                            'required' => 'Status wajib diisi.',
-                        ])
-                        ->label('Status')
-                        ->inline()
-                        ->default('ready')
-                        ->options([
-                            'ready' => 'Ready',
-                            'rent' => 'Rent',
-                            'maintenance' => 'Maintenance'
-                        ]),
-                    FileUpload::make('images_genset')
-                        ->label('Foto Genset')
-                        ->directory('genset')
-                        ->required()
-                        ->multiple()
-                        ->image(),
-                    FileUpload::make('spek_genset')
-                        ->label('Spesifikasi (PDF)')
-                        ->directory('pdf-genset')
-                        ->maxSize(2048)
-                        ->acceptedFileTypes(['application/pdf']),
-                ]),
+                Split::make([
+                    Section::make('Genset Information')
+                        ->schema([
+                            TextInput::make('no_genset')
+                                ->placeholder('GJB-01-200-CU')
+                                ->label('Nomor Genset')
+                                ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
+                                ->unique(table: 'gensets', column: 'no_genset', ignorable: fn ($record) => $record)
+                                ->validationMessages([
+                                    'required' => 'Nomor Genset wajib diisi.',
+                                    'unique' => 'Nomor Genset sudah dipakai.',
+                                ])
+                                ->required(),
+                            Group::make([
+                                Select::make('tipe_genset')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Tipe Genset wajib diisi.',
+                                    ])
+                                    ->native(false)
+                                    ->label('Tipe Genset')
+                                    ->options([
+                                        'silent' => 'Silent',
+                                        'open' => 'Open',
+                                    ]),
+                                TextInput::make('kapasitas')
+                                    ->placeholder('200')
+                                    ->numeric()
+                                    ->minValue(10)
+                                    ->suffix('kVA')
+                                    ->validationMessages([
+                                        'required' => 'Kapasitas wajib diisi.',
+                                    ])
+                                    ->required(),
+                            ])->columns(2),
+                            Radio::make('status_genset')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Status wajib diisi.',
+                                ])
+                                ->label('Status')
+                                ->inline()
+                                ->default('ready')
+                                ->options([
+                                    'ready' => 'Ready',
+                                    'rent' => 'Rent',
+                                    'maintenance' => 'Maintenance'
+                                ]),
+                            FileUpload::make('spek_genset')
+                                ->label('Spesifikasi (PDF)')
+                                ->directory('pdf-genset')
+                                ->openable()
+                                ->maxSize(2048)
+                                ->acceptedFileTypes(['application/pdf']),
+                        ])->collapsible(),
+                    Section::make('Photo Genset')
+                        ->schema([
+                            FileUpload::make('images_genset')
+                                ->label('Foto')
+                                ->directory('genset')
+                                ->required()
+                                ->multiple()
+                                ->image()
+                                ->panelLayout('grid')
+                                ->openable(),
+                        ])->collapsible()
+                ])->columnSpanFull(),
             ]);
     }
 
@@ -220,6 +229,7 @@ class GensetResource extends Resource
                     })
                     ->sortable(),
             ])
+            ->defaultSort('status_genset', 'ASC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 //

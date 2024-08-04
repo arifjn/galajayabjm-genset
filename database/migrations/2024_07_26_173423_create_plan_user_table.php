@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('plan_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)
+            $table->foreignId('user_id')
                 ->nullable();
-            $table->foreignIdFor(Plan::class);
+            $table->foreignId('plan_id');
             $table->timestamps();
         });
     }

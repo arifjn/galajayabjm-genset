@@ -11,11 +11,6 @@ class Plan extends Model
 {
     use HasFactory;
 
-    protected $casts = [
-        'genset_id' => 'array',
-        'user_id' => 'array',
-    ];
-
     protected $fillable = [
         'order_id',
         'jobdesk',
@@ -29,16 +24,11 @@ class Plan extends Model
         'plat_mobil',
     ];
 
-    // protected static function booted()
-    // {
-    //     static::deleting(function (User $user) {
-    //         $user->photos()->delete();
-    //     });
-    // }
+    protected $dates = ['tanggal_job_selesai', 'tanggal_job'];
 
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class, 'order_id');
+        return $this->belongsTo(Transaction::class, 'order_id', 'order_id');
     }
 
     public function gensets(): BelongsToMany
@@ -49,7 +39,7 @@ class Plan extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(User::class, 'plan_user')
             ->using(PlanUser::class);
     }
 }

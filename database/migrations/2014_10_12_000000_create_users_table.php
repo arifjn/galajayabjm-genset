@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('status')->nullable();
             $table->text('profile_img')->nullable();
-            $table->boolean('is_admin')->default(0);
+            $table->string('role')->default('operator');
             $table->rememberToken();
             $table->timestamps();
         });

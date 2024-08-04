@@ -13,11 +13,5 @@ class PlanUser extends Pivot
             $user->status = 'bertugas';
             $user->save();
         });
-
-        static::deleting(function ($record) {
-            $user = User::find($record->user_id);
-            $user->status = 'tersedia';
-            $user->save();
-        });
     }
 }
