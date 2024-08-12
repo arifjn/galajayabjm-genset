@@ -9,8 +9,8 @@ enum BrandEngine: string implements HasLabel
     case Cummins = 'cummins';
     case Deutz = 'deutz';
     case Fawde = 'fawde';
-    case MWM = 'MWM';
-    case MAN = 'MAN';
+    case MWM = 'mwm';
+    case MAN = 'man';
     case Isuzu = 'isuzu';
     case Perkins = 'perkins';
     case Primero = 'primero';

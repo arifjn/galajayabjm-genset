@@ -14,6 +14,8 @@ use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -29,117 +31,163 @@ class DeliveryResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-truck';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?string $navigationLabel = 'Delivery';
+    protected static ?string $navigationLabel = 'Jobdesk';
 
     protected static ?string $navigationGroup = 'Manajemen Jadwal';
 
-    protected static ?string $slug = 'delivery';
+    protected static ?string $slug = 'jobdesk';
 
-    protected static ?string $breadcrumb = 'Delivery';
+    protected static ?string $breadcrumb = 'Jobdesk';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Delivery Job Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('jobdesk')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Select::make('order_id')
-                            ->label('Customer')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->native(false)
-                            ->unique(ignoreRecord: true)
-                            ->searchable()
-                            ->preload()
-                            ->relationship(
-                                name: 'transaction',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_transaksi', 'dibayar');
-                                },
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => $record->customer->perusahaan ? "{$record->customer->perusahaan}" : "{$record->customer->name}"),
-                        Forms\Components\Select::make('gensets')
-                            ->label('Genset')
-                            ->hidden(fn (string $operation): bool => $operation == 'edit')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->native(false)
-                            ->multiple()
-                            ->searchable(['brand_engine', 'kapasitas'])
-                            ->preload()
-                            ->relationship(
-                                name: 'gensets',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_genset', 'ready');
-                                },
-                            )
-                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->brand_engine} {$record->kapasitas} KVA"),
-                        Forms\Components\Select::make('users')
-                            ->label('Operator')
-                            ->hidden(fn (string $operation): bool => $operation == 'edit')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->native(false)
-                            ->multiple()
-                            ->searchable()
-                            ->preload()
-                            ->relationship(
-                                name: 'users',
-                                titleAttribute: 'name',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status', 'tersedia');
-                                },
-                            ),
-                        Forms\Components\DatePicker::make('tanggal_job')
-                            ->label('Tanggal Job')
-                            ->required()
-                            ->native(false)
-                            ->closeOnDateSelection()
-                            ->displayFormat('d F Y')
-                            ->default(now()),
-                        Forms\Components\DatePicker::make('tanggal_job_selesai')
-                            ->label('Tanggal Job Selesai')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->native(false)
-                            ->closeOnDateSelection()
-                            ->displayFormat('d F Y')
-                            ->default(now()),
-                        Forms\Components\Textarea::make('keterangan')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->maxLength(65535),
-                        Forms\Components\Radio::make('status')
-                            ->required()
-                            ->inline()
-                            ->inlineLabel(false)
-                            ->default('pending')
-                            ->options([
-                                'pending' => 'Pending',
-                                'delivery' => 'Delivery',
-                                'selesai' => 'Selesai',
-                                'cancel' => 'Cancel',
-                            ]),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-                Forms\Components\Section::make('Mob Demob Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('nama_supir')
-                            ->label('Nama Supir')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('nohp_supir')
-                            ->label('No. Telp')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('jenis_mobil')
-                            ->label('Jenis Mobil')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('plat_mobil')
-                            ->label('Plat')
-                            ->maxLength(255),
-                    ])
-                    ->collapsed(fn (string $operation): bool => $operation == 'edit' ? 1 : 0)
-                    ->columns(2),
+                Forms\Components\Split::make([
+                    Forms\Components\Section::make('Jobdesk Information')
+                        ->schema([
+                            Forms\Components\Select::make('choose_jobdesk')
+                                ->options([
+                                    'delivery' => 'Delivery',
+                                    'service' => 'Service & Maintenance Check',
+                                    'lainnya' => 'Lainnya',
+                                ])
+                                ->label('Pilih Jobdesk')
+                                ->native(false)
+                                ->live()
+                                ->required()
+                                ->placeholder('Pilih Pekerjaan')
+                                ->afterStateUpdated(function (Set $set) {
+                                    $set('jobdesk', null);
+                                    $set('genset_id', null);
+                                    $set('order_id', null);
+                                    $set('operator_id', null);
+                                }),
+                            Forms\Components\TextInput::make('jobdesk')
+                                ->visible(fn(Get $get) => $get('choose_jobdesk') == 'lainnya'),
+                            Forms\Components\DatePicker::make('tanggal_job')
+                                ->label('Tanggal Job')
+                                ->required()
+                                ->native(false)
+                                ->closeOnDateSelection()
+                                ->displayFormat('d F Y')
+                                ->default(now()),
+                            Forms\Components\DatePicker::make('tanggal_job_selesai')
+                                ->label('Tanggal Job Selesai')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->native(false)
+                                ->closeOnDateSelection()
+                                ->displayFormat('d F Y')
+                                ->default(now()),
+                        ]),
+                    Forms\Components\Section::make('Detail Job Information')
+                        ->schema([
+                            Forms\Components\Select::make('genset_id')
+                                ->label('Genset')
+                                ->placeholder('Pilih Genset')
+                                ->hidden(fn(string $operation): bool => $operation == 'edit')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->native(false)
+                                ->multiple()
+                                ->searchable(['brand_engine', 'kapasitas'])
+                                ->preload()
+                                ->live()
+                                ->relationship(
+                                    name: 'gensets',
+                                    modifyQueryUsing: function (Builder $query, Get $get) {
+                                        if ($get('choose_jobdesk') == 'delivery') {
+                                            $query->where('status_genset', 'ready');
+                                        }
+                                    },
+                                )
+                                ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
+                            Forms\Components\Select::make('order_id')
+                                ->label('Customer')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->native(false)
+                                ->unique(ignoreRecord: true)
+                                ->searchable()
+                                ->preload()
+                                ->placeholder('Pilih Customer')
+                                ->relationship(
+                                    name: 'transaction',
+                                    modifyQueryUsing: function (Builder $query, Get $get) {
+                                        if ($get('choose_jobdesk') == 'service' && $get('genset_id')) {
+                                            $order = Plan::whereHas('gensets', fn(Builder $q) => $q->where('genset_id', $get('genset_id')))->get('order_id');
+                                            $query->where('status_transaksi', 'dibayar')
+                                                ->with('plan')
+                                                ->whereIn('order_id', $order);
+                                        } else {
+                                            $query->where('status_transaksi', 'dibayar');
+                                        }
+                                    },
+                                )
+                                ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->customer->perusahaan ? "{$record->customer->perusahaan}" : "{$record->customer->name}"),
+                            Forms\Components\Select::make('operator_id')
+                                ->label('Operator')
+                                ->placeholder('Pilih Operator')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->native(false)
+                                ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery')
+                                ->options(function ($record) {
+                                    return User::where('status', 'tersedia')
+                                        // Here, we are filtering out a specific relationship.
+                                        ->when($record, function ($query, $record) {
+                                            return $query->orWhere('id', $record->operator_id);
+                                        })
+                                        ->pluck('name', 'id');
+                                }),
+                            Forms\Components\Select::make('users')
+                                ->label('Mekanik')
+                                ->placeholder('Pilih Mekanik')
+                                ->hidden(fn(string $operation): bool => $operation == 'edit')
+                                ->native(false)
+                                ->multiple()
+                                ->searchable()
+                                ->preload()
+                                ->relationship(
+                                    name: 'users',
+                                    titleAttribute: 'name',
+                                    modifyQueryUsing: function (Builder $query) {
+                                        $query->where('status', 'tersedia');
+                                    },
+                                ),
+                            Forms\Components\Textarea::make('keterangan')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->maxLength(65535),
+                            Forms\Components\Radio::make('status')
+                                ->required()
+                                ->inline()
+                                ->inlineLabel(false)
+                                ->default('pending')
+                                ->options([
+                                    'pending' => 'Pending',
+                                    'delivery' => 'Delivery',
+                                    'selesai' => 'Selesai',
+                                    'cancel' => 'Cancel',
+                                ]),
+                        ])
+                        ->collapsible(),
+                    Forms\Components\Section::make('Mob Demob Information')
+                        ->schema([
+                            Forms\Components\TextInput::make('nama_supir')
+                                ->label('Nama Supir')
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('nohp_supir')
+                                ->label('No. Telp')
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('jenis_mobil')
+                                ->label('Jenis Mobil')
+                                ->maxLength(255),
+                            Forms\Components\TextInput::make('plat_mobil')
+                                ->label('Plat')
+                                ->maxLength(255),
+                        ])
+                        ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery')
+                        ->collapsed(fn(string $operation): bool => $operation == 'edit' ? 1 : 0),
+                ])->columnSpanFull(),
 
             ]);
     }
@@ -149,17 +197,42 @@ class DeliveryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('jobdesk')
+                    ->formatStateUsing(fn(string $state): string => $state == 'service' ? 'Service & Maintenance Check' : str()->title($state))
+                    ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_job')
                     ->label('Tanggal Job')
                     ->date('d F Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('transaction.customer.perusahaan')
-                    ->label('Customer')
-                    ->sortable()
-                    ->formatStateUsing(function (Plan $record) {
-                        return $record->transaction->customer->perusahaan  ? $record->transaction->customer->perusahaan : $record->transaction->customer->name;
-                    }),
+                Tables\Columns\TextColumn::make('gensets')
+                    ->label('Genset')
+                    ->searchable(['brand_engine', 'kapasitas'])
+                    ->html()
+                    ->formatStateUsing(function ($record) {
+                        $html = '<ul class="list-inside list-disc">';
+                        foreach ($record->gensets as $genset) {
+                            $html .= '<li>' . str()->upper($genset->brand_engine) . ' ' . $genset->kapasitas . ' KVA' . '</li>';
+                        }
+                        $html .= '</ul>';
+                        return $html;
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('users.name')
+                    ->label('Mekanik')
+                    ->searchable()
+                    ->html()
+                    ->formatStateUsing(function ($record) {
+                        $html = '<ul class="list-inside list-disc">';
+                        foreach ($record->users as $user) {
+                            $html .= '<li>' . $user->name . '</li>';
+                        }
+                        if ($record->operator_id) {
+                            $html .= '<li>' . $record->operator?->name . '</li>';
+                        }
+                        $html .= '</ul>';
+                        return $html;
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.site')
                     ->label('Alamat')
                     ->limit(20)
@@ -174,29 +247,17 @@ class DeliveryResource extends Resource
                         return $state;
                     })
                     ->sortable(),
-                Tables\Columns\TextColumn::make('gensets')
-                    ->label('Genset')
-                    ->searchable(['brand_engine', 'kapasitas'])
-                    ->html()
-                    ->formatStateUsing(function ($record) {
-                        $html = '<ul class="list-inside list-disc">';
-                        foreach ($record->gensets as $genset) {
-                            $html .= '<li>' . $genset->brand_engine . ' ' . $genset->kapasitas . ' KVA' . '</li>';
-                        }
-                        $html .= '</ul>';
-                        return $html;
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('users.name')
-                    ->label('Operator')
-                    ->searchable()
-                    ->bulleted()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('transaction.customer')
+                    ->label('Customer')
+                    ->sortable()
+                    ->formatStateUsing(function (Plan $record) {
+                        return $record->transaction->customer->perusahaan  ? $record->transaction->customer->perusahaan : $record->transaction->customer->name;
+                    }),
                 Tables\Columns\SelectColumn::make('status')
                     ->searchable()
                     ->options([
                         'pending' => 'Pending',
-                        'delivery' => 'Delivery',
+                        'selesai' => 'Selesai',
                     ])
                     ->selectablePlaceholder(false),
                 Tables\Columns\TextColumn::make('created_at')
@@ -235,15 +296,20 @@ class DeliveryResource extends Resource
                                     $u->save();
                                 }
                             }
+                            if ($record->operator_id) {
+                                $u = User::find($record->operator_id);
+                                $u->status = 'tersedia';
+                                $u->save();
+                            }
                             $record->gensets()->detach();
                             $record->users()->detach();
                         }),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -282,20 +348,20 @@ class DeliveryResource extends Resource
                         ->label('Alamat Pengiriman')
                         ->columns(2),
                     TextEntry::make('status')
-                        ->formatStateUsing(fn (string $state): string => match ($state) {
+                        ->formatStateUsing(fn(string $state): string => match ($state) {
                             'pending' => 'Pending',
                             'delivery' => 'Delivery',
                             'selesai' => 'Selesai',
                             'cancel' => 'Cancel',
                         })
                         ->badge()
-                        ->color(fn (string $state): string => match ($state) {
+                        ->color(fn(string $state): string => match ($state) {
                             'pending' => 'warning',
                             'delivery' => 'info',
                             'selesai' => 'success',
                             'cancel' => 'danger',
                         })
-                        ->icon(fn (string $state): string => match ($state) {
+                        ->icon(fn(string $state): string => match ($state) {
                             'pending' => 'heroicon-o-information-circle',
                             'delivery' => 'heroicon-o-truck',
                             'selesai' => 'heroicon-o-check-badge',
@@ -313,7 +379,7 @@ class DeliveryResource extends Resource
                     TextEntry::make('plat_mobil')
                         ->label('Plat'),
                 ])
-                    ->visible(fn (Model $record) => $record->nama_supir)
+                    ->visible(fn(Model $record) => $record->nama_supir)
                     ->columns(2)->collapsible(),
             ]);
     }
@@ -321,8 +387,8 @@ class DeliveryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            UsersRelationManager::class,
             GensetsRelationManager::class,
+            UsersRelationManager::class,
         ];
     }
 

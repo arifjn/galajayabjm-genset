@@ -21,6 +21,6 @@ class ListServicePlans extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Service Plan';
+        return 'Jadwal Service';
     }
 }

@@ -67,6 +67,6 @@ class Transaction extends Model
 
     public function plan(): HasOne
     {
-        return $this->hasOne(Plan::class);
+        return $this->hasOne(Plan::class, 'order_id', 'order_id');
     }
 }

@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
@@ -90,5 +91,10 @@ class User extends Authenticatable implements FilamentUser
     public function plans(): BelongsToMany
     {
         return $this->belongsToMany(Plan::class, 'plan_user');
+    }
+
+    public function plan(): HasOne
+    {
+        return $this->hasOne(Plan::class);
     }
 }

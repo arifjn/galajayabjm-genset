@@ -24,7 +24,7 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $title = 'Operator';
+    protected static ?string $title = 'Mekanik';
 
 
     public function form(Form $form): Form
@@ -73,11 +73,11 @@ class UsersRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->label('Tambah')
-                    ->modalHeading('Pilih Operator')
+                    ->modalHeading('Pilih Mekanik (Delivery)')
                     ->color(Color::Indigo)
                     ->preloadRecordSelect()
-                    ->recordSelectOptionsQuery(fn (Builder $query) => $query->where('is_admin', '!=', 1))
-                    ->successNotificationTitle('Berhasil Tambah Operator!'),
+                    ->recordSelectOptionsQuery(fn (Builder $query) => $query->where('role', '!=', 'admin')->where('status', 'tersedia'))
+                    ->successNotificationTitle('Berhasil Tambah Mekanik!'),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -88,7 +88,7 @@ class UsersRelationManager extends RelationManager
                         $user->status = 'tersedia';
                         $user->save();
                     })
-                    ->successNotificationTitle('Berhasil Batalkan Operator!'),
+                    ->successNotificationTitle('Berhasil Batalkan Mekanik!'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

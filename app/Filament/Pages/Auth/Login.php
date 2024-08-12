@@ -10,12 +10,12 @@ class Login extends BaseAuth
 {
     public function getTitle(): string|Htmlable
     {
-        return __('Admin Login');
+        return __('Login');
     }
 
     public function getHeading(): string|Htmlable
     {
-        return __('Admin Login');
+        return __('Login');
     }
 
     protected function getFormActions(): array

@@ -20,7 +20,7 @@ class EditDelivery extends EditRecord
 
     public function getTitle(): string|Htmlable
     {
-        return 'Edit Delivery Plan';
+        return 'Edit Jobdesk';
     }
 
     protected function getRedirectUrl(): string
@@ -47,10 +47,10 @@ class EditDelivery extends EditRecord
                             $u->save();
                         }
                     }
-                    if ($record->order_id) {
-                        $order = Transaction::find($record->order_id);
-                        $order->status_transaksi = 'dibayar';
-                        $order->save();
+                    if ($record->operator_id) {
+                        $u = User::find($record->operator_id);
+                        $u->status = 'tersedia';
+                        $u->save();
                     }
                     $record->gensets()->detach();
                     $record->users()->detach();

@@ -18,11 +18,18 @@ class CreateServicePlan extends CreateRecord
 
     public function getTitle(): string|Htmlable
     {
-        return 'Tambah Data Service Plan';
+        return 'Tambah Jadwal Service';
     }
 
     public function getBreadcrumb(): string
     {
         return 'Tambah Data';
+    }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['jobdesk'] = 'service';
+
+        return $data;
     }
 }

@@ -53,15 +53,15 @@ class GensetsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('tipe_engine')
                     ->label('Tipe Engine')
-                    ->formatStateUsing(fn (string $state): string => str()->upper($state))
+                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('brand_engine')
                     ->label('Genset')
-                    ->formatStateUsing(fn ($record) => $record->brand_engine . ' ' . $record->kapasitas . ' KVA'),
+                    ->formatStateUsing(fn($record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . ' KVA'),
                 TextColumn::make('tipe_genset')
                     ->label('Tipe Genset')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->searchable()
                     ->sortable(),
             ])
@@ -76,7 +76,7 @@ class GensetsRelationManager extends RelationManager
                     ->modalHeading('Pilih Genset')
                     ->color(Color::Indigo)
                     ->preloadRecordSelect()
-                    ->recordTitle(fn (Model $record) => "{$record->brand_engine} {$record->kapasitas} KVA")
+                    ->recordTitle(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA")
                     ->successNotificationTitle('Berhasil Tambah Genset!'),
             ])
             ->actions([

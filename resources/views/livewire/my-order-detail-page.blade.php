@@ -669,26 +669,36 @@
                                                             <table class="min-w-full divide-y divide-gray-200">
                                                                 <thead class="bg-gray-50">
                                                                     <tr>
-                                                                        <th scope="col" colspan="2"
+                                                                        <th scope="col"
                                                                             class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
-                                                                            Operator</th>
+                                                                            Mekanik</th>
+                                                                        <th scope="col"
+                                                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
+                                                                            No. HP</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                    @foreach ($plan->users as $user)
+                                                                        <tr>
+                                                                            <td
+                                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                                {{ $user->name }}
+                                                                            </td>
+                                                                            <td
+                                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                                {{ $user->no_telp }}
+
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
                                                                     <tr>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            @foreach ($plan->users as $user)
-                                                                                {{ $user->name }}{{ $loop->last ? '' : ', ' }}
-                                                                            @endforeach
+                                                                            {{ $plan->operator->name }}
                                                                         </td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            <span class="font-semibold">Phone:</span>
-                                                                            @foreach ($plan->users as $user)
-                                                                                {{ $user->no_telp }}
-                                                                                {{ $loop->last ? '' : ', ' }}
-                                                                            @endforeach
+                                                                            {{ $plan->operator->no_telp }}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>

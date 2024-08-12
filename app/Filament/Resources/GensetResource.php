@@ -62,12 +62,11 @@ class GensetResource extends Resource
                                 ->validationMessages([
                                     'required' => 'Brand Engine wajib diisi.',
                                 ])
-                                ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
                                 ->required(),
                             Group::make([
                                 TextInput::make('tipe_engine')
                                     ->label('Tipe Engine')
-                                    ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
+                                    ->dehydrateStateUsing(fn(string $state): string => str()->upper($state))
                                     ->placeholder('6CTAA83-G2')
                                     ->validationMessages([
                                         'required' => 'Tipe Engine wajib diisi.',
@@ -75,6 +74,7 @@ class GensetResource extends Resource
                                     ->required(),
                                 TextInput::make('sn_engine')
                                     ->label('Serial Number')
+                                    ->dehydrateStateUsing(fn(?string $state): string => str()->upper($state))
                                     ->placeholder('93045715')
                             ])->columns(2),
                         ])
@@ -83,7 +83,7 @@ class GensetResource extends Resource
                         ->schema([
                             TextInput::make('brand_generator')
                                 ->label('Brand Generator')
-                                ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
+                                ->dehydrateStateUsing(fn(string $state): string => str()->upper($state))
                                 ->placeholder('STAMFORD')
                                 ->validationMessages([
                                     'required' => 'Brand Generator wajib diisi.',
@@ -92,7 +92,7 @@ class GensetResource extends Resource
                             Group::make([
                                 TextInput::make('tipe_generator')
                                     ->label('Tipe Generator')
-                                    ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
+                                    ->dehydrateStateUsing(fn(string $state): string => str()->upper($state))
                                     ->placeholder('UC.1274H14')
                                     ->validationMessages([
                                         'required' => 'Tipe Generator wajib diisi.',
@@ -100,6 +100,7 @@ class GensetResource extends Resource
                                     ->required(),
                                 TextInput::make('sn_generator')
                                     ->label('Serial Number')
+                                    ->dehydrateStateUsing(fn(?string $state): string => str()->upper($state))
                                     ->placeholder('X22H342459')
                             ])
                                 ->columns(2),
@@ -111,10 +112,10 @@ class GensetResource extends Resource
                     Section::make('Genset Information')
                         ->schema([
                             TextInput::make('no_genset')
-                                ->placeholder('GJB-01-200-CU')
+                                ->visible(fn(string $operation) => $operation == 'edit')
                                 ->label('Nomor Genset')
-                                ->dehydrateStateUsing(fn (string $state): string => str()->upper($state))
-                                ->unique(table: 'gensets', column: 'no_genset', ignorable: fn ($record) => $record)
+                                ->dehydrateStateUsing(fn(string $state): string => str()->upper($state))
+                                ->unique(table: 'gensets', column: 'no_genset', ignorable: fn($record) => $record)
                                 ->validationMessages([
                                     'required' => 'Nomor Genset wajib diisi.',
                                     'unique' => 'Nomor Genset sudah dipakai.',
@@ -195,12 +196,12 @@ class GensetResource extends Resource
                     ->sortable(),
                 TextColumn::make('tipe_engine')
                     ->label('Tipe Engine')
-                    ->formatStateUsing(fn (string $state): string => str()->upper($state))
+                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('brand_engine')
                     ->label('Brand Engine')
-                    ->formatStateUsing(fn (string $state): string => str()->upper($state))
+                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kapasitas')
@@ -209,20 +210,20 @@ class GensetResource extends Resource
                     ->sortable(),
                 TextColumn::make('tipe_genset')
                     ->label('Tipe Genset')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('status_genset')
                     ->label('Status')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'ready' => 'success',
                         'rent' => 'warning',
                         'maintenance' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'ready' => 'heroicon-o-check-circle',
                         'rent' => 'heroicon-o-bolt',
                         'maintenance' => 'heroicon-o-wrench-screwdriver',
@@ -239,8 +240,8 @@ class GensetResource extends Resource
                     Tables\Actions\Action::make('pdf')
                         ->label('PDF')
                         ->icon('heroicon-o-document-text')
-                        ->url(fn (Genset $record): string => url('storage', $record->spek_genset))
-                        ->hidden(fn (Genset $record): bool => $record->spek_genset == null)
+                        ->url(fn(Genset $record): string => url('storage', $record->spek_genset))
+                        ->hidden(fn(Genset $record): bool => $record->spek_genset == null)
                         ->openUrlInNewTab()
                         ->color(Color::Rose),
                     Tables\Actions\ViewAction::make()
@@ -267,18 +268,18 @@ class GensetResource extends Resource
                         ->label('Nomor Genset'),
                     TextEntry::make('tipe_genset')
                         ->label('Tipe Genset')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->title($state)),
                     TextEntry::make('kapasitas')
                         ->suffix(' kVA'),
                     TextEntry::make('brand_engine')
                         ->label('Brand Engine')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->title($state)),
                     TextEntry::make('tipe_engine')
                         ->label('Tipe Engine'),
                     TextEntry::make('sn_engine')
                         ->label('Serial Number (Engine)')
                         ->default('-')
-                        ->formatStateUsing(fn (string $state): string => str()->upper($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->upper($state)),
                     TextEntry::make('brand_generator')
                         ->label('Brand Generator'),
                     TextEntry::make('tipe_generator')
@@ -286,16 +287,16 @@ class GensetResource extends Resource
                     TextEntry::make('sn_generator')
                         ->label('Serial Number (Generator)')
                         ->default('-')
-                        ->formatStateUsing(fn (string $state): string => str()->upper($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->upper($state)),
                     TextEntry::make('status_genset')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state))
+                        ->formatStateUsing(fn(string $state): string => str()->title($state))
                         ->badge()
-                        ->color(fn (string $state): string => match ($state) {
+                        ->color(fn(string $state): string => match ($state) {
                             'ready' => 'success',
                             'rent' => 'warning',
                             'maintenance' => 'danger',
                         })
-                        ->icon(fn (string $state): string => match ($state) {
+                        ->icon(fn(string $state): string => match ($state) {
                             'ready' => 'heroicon-o-check-circle',
                             'rent' => 'heroicon-o-bolt',
                             'maintenance' => 'heroicon-o-wrench-screwdriver',
@@ -303,10 +304,10 @@ class GensetResource extends Resource
                         ->label('Status'),
                     Actions::make([
                         Action::make('spek_genset')
-                            ->visible(fn (Genset $record) => $record->spek_genset !== null)
+                            ->visible(fn(Genset $record) => $record->spek_genset !== null)
                             ->label('Spesifikasi')
                             ->icon('heroicon-o-document-text')
-                            ->url(fn (Genset $record): string => url('storage', $record->spek_genset))
+                            ->url(fn(Genset $record): string => url('storage', $record->spek_genset))
                             ->openUrlInNewTab()
                             ->color(Color::Rose),
                     ])
@@ -314,7 +315,7 @@ class GensetResource extends Resource
                 ImageEntry::make('images_genset')
                     ->columnSpanFull()
                     ->label('Foto')
-                    ->hidden(fn (Genset $record): bool => $record->images_genset == null)
+                    ->hidden(fn(Genset $record): bool => $record->images_genset == null)
                     ->simpleLightbox(),
             ]);
     }

@@ -13,6 +13,8 @@ class Plan extends Model
 
     protected $fillable = [
         'order_id',
+        'operator_id',
+        'choose_jobdesk',
         'jobdesk',
         'tanggal_job',
         'tanggal_job_selesai',
@@ -29,6 +31,11 @@ class Plan extends Model
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class, 'order_id', 'order_id');
+    }
+
+    public function operator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'operator_id', 'id');
     }
 
     public function gensets(): BelongsToMany

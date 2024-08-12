@@ -21,6 +21,6 @@ class ListDeliveries extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Delivery Plan';
+        return 'Jadwal Pekerjaan';
     }
 }
