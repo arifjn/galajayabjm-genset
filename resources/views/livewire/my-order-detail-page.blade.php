@@ -83,13 +83,13 @@
                     @endif
                 </li>
                 <li class="flex items-center">
-                    @if ($order->status_transaksi == 'dibayar' || ($plan && $plan->status == 'pending' && $currentStep == 3))
+                    @if (($plan && $plan->status == 'pending' && $currentStep == 3) || ($plan && $plan->status == 'delivery'))
                         <span class="flex items-cente text-indigo-500">
                             <span
                                 class="me-2 text-sm bg-indigo-200 rounded-full size-6 flex items-center justify-center">3</span>
                             <span class="hidden sm:inline-flex sm:ms-2">Pengiriman</span>
                         </span>
-                    @elseif ($plan && $plan->status == 'success' && $order->status_transaksi != 'cancel')
+                    @elseif (($plan && $plan->status == 'success' && $order->status_transaksi != 'cancel') || ($plan && $plan->status == 'rent'))
                         <span class="flex items-center text-teal-500">
                             <svg class="size-6 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 20 20">
@@ -229,7 +229,7 @@
                                     </div>
                                     <!-- End order cancel -->
                                 @else
-                                    @if ($order->penawaran == null)
+                                    @if ($order->genset_id == null)
                                         <!-- no quotation yet -->
                                         <div class="bg-white rounded-lg shadow-sm border p-6">
 
@@ -257,8 +257,9 @@
                                         <!-- penawaran -->
                                         <div class="bg-white rounded-lg shadow-sm border p-6">
                                             <div class="flex justify-between mb-2">
-                                                <h2 class="font-semibold mb-4">File Penawaran</h2>
-                                                <a href="{{ url('storage', $order->penawaran) }}" target="_blank">
+                                                <h2 class="font-semibold mb-4">Penawaran</h2>
+                                                <a href="{{ route('pdf.penawaran', $order->order_id) }}"
+                                                    target="_blank">
                                                     <svg class="size-6 text-red-500" aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg" width="16"
                                                         height="16" fill="none" viewBox="0 0 24 24">
@@ -266,18 +267,16 @@
                                                             stroke-linejoin="round" stroke-width="2"
                                                             d="M5 17v-5h1.5a1.5 1.5 0 1 1 0 3H5m12 2v-5h2m-2 3h2M5 10V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v6M5 19v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1M10 3v4a1 1 0 0 1-1 1H5m6 4v5h1.375A1.627 1.627 0 0 0 14 15.375v-1.75A1.627 1.627 0 0 0 12.375 12H11Z" />
                                                     </svg>
-
                                                 </a>
                                             </div>
 
                                             <div
                                                 class="flex flex-col justify-center items-center max-w-sm mb-4 rounded-lg overflow-hidden">
-                                                <iframe class="max-w-full"
-                                                    src="{{ url('storage', $order->penawaran) }}">
-                                                </iframe>
-                                                <a href="{{ url('storage', $order->penawaran) }}" target="_blank"
-                                                    class="bg-red-500 text-center text-white hover:bg-red-600 p-1.5 w-full">Lihat
-                                                    PDF</a>
+                                                <a href="{{ route('pdf.penawaran', $order->order_id) }}"
+                                                    target="_blank"
+                                                    class="bg-red-500 text-center text-white hover:bg-red-600 p-1.5 w-full">
+                                                    Lihat Penawaran
+                                                </a>
                                             </div>
 
                                             @if ($order->status_transaksi == 'penawaran')
@@ -577,8 +576,12 @@
                         <!-- End Grid -->
 
                         <div class="flex flex-col md:flex-row gap-8 mt-4">
-                            @if ($plan && $plan->status === 'pending')
-                                <div class="md:w-3/4">
+                            @if (
+                                ($plan && $plan->status === 'pending') ||
+                                    ($plan && $plan->status === 'delivery') ||
+                                    ($plan && $plan->status === 'rent') ||
+                                    ($plan && $plan->status === 'selesai'))
+                                <div class="md:w-full">
                                     <div class="flex">
                                         <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
                                             <nav class="flex space-x-1" aria-label="Tabs" role="tablist">
@@ -632,7 +635,7 @@
                                                                     <tr>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ $plan->jobdesk }}</td>
+                                                                            {{ ucwords($plan->jobdesk) }}</td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                                             {{ \Carbon\Carbon::parse($plan->tanggal_job)->format('d F Y') }}
@@ -759,7 +762,7 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="md:w-3/4">
+                                <div class="md:w-full">
                                     <div
                                         class="flex flex-col justify-center bg-white rounded-lg shadow-sm p-4 border text-center">
                                         <div class="flex flex-col gap-y-2 justify-center items-center py-12">
@@ -778,40 +781,6 @@
                                     </div>
                                 </div>
                             @endif
-                            <!-- invoice -->
-                            <div class="md:w-1/4">
-                                <div
-                                    class="max-w-sm mx-auto bg-white rounded-lg shadow-sm border overflow-hidden items-center">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                                                    Invoice</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                            <tr>
-                                                <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                                                    <button type="button"
-                                                        class="w-full py-3 px-4 inline-flex justify-between items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:pointer-events-none">
-                                                        Lihat Invoice
-                                                        <svg class="size-6" aria-hidden="true"
-                                                            xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" fill="none" viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" stroke-linecap="round"
-                                                                stroke-linejoin="round" stroke-width="2"
-                                                                d="M5 17v-5h1.5a1.5 1.5 0 1 1 0 3H5m12 2v-5h2m-2 3h2M5 10V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v6M5 19v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1M10 3v4a1 1 0 0 1-1 1H5m6 4v5h1.375A1.627 1.627 0 0 0 14 15.375v-1.75A1.627 1.627 0 0 0 12.375 12H11Z" />
-                                                        </svg>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!-- End invoice -->
                         </div>
 
                         <!-- Button Group -->

@@ -57,7 +57,7 @@ class GalleryResource extends Resource
                                         'required' => 'Judul wajib diisi.',
                                     ])
                                     ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation !== 'create' ? null : $set('slug', str()->slug($state))),
+                                    ->afterStateUpdated(fn(string $operation, $state, Set $set) => $operation !== 'create' ? null : $set('slug', str()->slug($state))),
                                 TextInput::make('slug')
                                     ->required()
                                     ->validationMessages([
@@ -106,7 +106,7 @@ class GalleryResource extends Resource
                     ->wrap()
                     ->simpleLightbox(),
                 TextColumn::make('title')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('location')

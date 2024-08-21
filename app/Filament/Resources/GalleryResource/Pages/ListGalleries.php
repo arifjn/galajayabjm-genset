@@ -5,6 +5,7 @@ namespace App\Filament\Resources\GalleryResource\Pages;
 use App\Filament\Resources\GalleryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Colors\Color;
 use Illuminate\Contracts\Support\Htmlable;
 
 class ListGalleries extends ListRecords
@@ -15,6 +16,7 @@ class ListGalleries extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+                ->icon('heroicon-o-plus')
                 ->label('Tambah'),
         ];
     }

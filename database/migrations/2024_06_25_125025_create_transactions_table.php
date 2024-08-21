@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Customer;
+use App\Models\Genset;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +19,11 @@ return new class extends Migration
             $table->string('order_id')->unique();
             $table->foreignIdFor(Customer::class)
                 ->constrained();
+            $table->foreignIdFor(Genset::class)
+                ->nullable();
+
+            $table->foreignId('sales_id')->nullable();
+
             $table->string('subject');
             $table->integer('durasi_sewa')->nullable();
             $table->text('site')->nullable();
@@ -24,7 +31,7 @@ return new class extends Migration
             $table->string('brand_engine');
             $table->string('keterangan')->nullable();
             $table->string('status_transaksi')->nullable();
-            $table->text('penawaran')->nullable();
+
             $table->text('bukti_tf')->nullable();
             $table->integer('ppn')->nullable();
             $table->decimal('harga', 10, 2)->nullable();

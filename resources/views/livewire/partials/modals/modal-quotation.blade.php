@@ -40,8 +40,8 @@
                                     autofocus>
                                     <option value="" disabled>Pilih Subjek</option>
                                     <option value="sewa">Sewa Genset</option>
-                                    <option value="pengadaan">Pengadaan Genset Baru</option>
-                                    <option value="service">Service Genset</option>
+                                    {{-- <option value="pengadaan">Pengadaan Genset Baru</option>
+                                    <option value="service">Service Genset</option> --}}
                                 </select>
                             </div>
                             @error('subject')
@@ -101,6 +101,7 @@
                                 <option value="20 KVA">20 KVA</option>
                                 <option value="22.5 KVA">22.5 KVA</option>
                                 <option value="30 KVA">30 KVA</option>
+                                <option value="40 KVA">40 KVA</option>
                                 <option value="45 KVA">45 KVA</option>
                                 <option value="50 KVA">50 KVA</option>
                                 <option value="60 KVA">60 KVA</option>

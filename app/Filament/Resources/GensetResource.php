@@ -6,16 +6,20 @@ use App\Enums\BrandEngine;
 use App\Filament\Resources\GensetResource\Pages;
 use App\Filament\Resources\GensetResource\RelationManagers;
 use App\Models\Genset;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Infolists\Components\Actions;
 use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\ImageEntry;
@@ -27,9 +31,11 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Blade;
 use stdClass;
 
 class GensetResource extends Resource
@@ -77,6 +83,41 @@ class GensetResource extends Resource
                                     ->dehydrateStateUsing(fn(?string $state): string => str()->upper($state))
                                     ->placeholder('93045715')
                             ])->columns(2),
+                            Group::make([
+                                TextInput::make('no_silinder')
+                                    ->label('Nomor Silinder')
+                                    ->numeric()
+                                    ->placeholder('4 Cylinder'),
+                                TextInput::make('kecepatan')
+                                    ->label('Kecepatan')
+                                    ->numeric()
+                                    ->suffix('RPM')
+                                    ->placeholder('1.500')
+                            ])->columns(2),
+                            Group::make([
+                                TextInput::make('piston')
+                                    ->label('Piston Displ.')
+                                    ->numeric()
+                                    ->suffix('Ltr')
+                                    ->placeholder('25.200'),
+                                TextInput::make('bore_stroke')
+                                    ->label('Bore x Stroke')
+                                    ->suffix('mm')
+                                    ->placeholder('170 x 185')
+                            ])->columns(2),
+                            Group::make([
+                                TextInput::make('pendingin')
+                                    ->label('Sistem Pendingin')
+                                    ->placeholder('Radiator Cooling'),
+                                TextInput::make('kaps_oli')
+                                    ->label('Kapasitas Oli')
+                                    ->suffix('Ltr')
+                                    ->placeholder('75')
+                            ])->columns(2),
+                            TextInput::make('bahan_bakar')
+                                ->label('Konsumsi Bahan Bakar')
+                                ->suffix('Ltr')
+                                ->placeholder('7.9 (75% Load) / 10 (100% Load)'),
                         ])
                         ->collapsible(),
                     Section::make('Generator Information')
@@ -104,6 +145,42 @@ class GensetResource extends Resource
                                     ->placeholder('X22H342459')
                             ])
                                 ->columns(2),
+                            Group::make([
+                                TextInput::make('kapasitas')
+                                    ->placeholder('200')
+                                    ->numeric()
+                                    ->minValue(10)
+                                    ->suffix('kVA')
+                                    ->validationMessages([
+                                        'required' => 'Kapasitas wajib diisi.',
+                                    ])
+                                    ->required(),
+                                TextInput::make('frekuensi')
+                                    ->placeholder('50')
+                                    ->numeric()
+                                    ->suffix('Hz'),
+                            ])->columns(2),
+                            Group::make([
+                                TextInput::make('insul_class')
+                                    ->label('Insulation Class')
+                                    ->placeholder('Class H'),
+                                TextInput::make('sist_eksitasi')
+                                    ->label('Sistem Eksitasi')
+                                    ->placeholder('Brush-less'),
+                            ])->columns(2),
+                            Group::make([
+                                TextInput::make('regulator_tegangan')
+                                    ->label('Regulator Tegangan')
+                                    ->placeholder('AVR'),
+                                TextInput::make('phase')
+                                    ->label('Phase')
+                                    ->numeric()
+                                    ->suffix('Phase')
+                                    ->placeholder('3'),
+                            ])->columns(2),
+                            TextInput::make('voltase')
+                                ->suffix('V')
+                                ->placeholder('220 / 380'),
                         ])
                         ->collapsible(),
                 ])->columnSpanFull(),
@@ -121,28 +198,17 @@ class GensetResource extends Resource
                                     'unique' => 'Nomor Genset sudah dipakai.',
                                 ])
                                 ->required(),
-                            Group::make([
-                                Select::make('tipe_genset')
-                                    ->required()
-                                    ->validationMessages([
-                                        'required' => 'Tipe Genset wajib diisi.',
-                                    ])
-                                    ->native(false)
-                                    ->label('Tipe Genset')
-                                    ->options([
-                                        'silent' => 'Silent',
-                                        'open' => 'Open',
-                                    ]),
-                                TextInput::make('kapasitas')
-                                    ->placeholder('200')
-                                    ->numeric()
-                                    ->minValue(10)
-                                    ->suffix('kVA')
-                                    ->validationMessages([
-                                        'required' => 'Kapasitas wajib diisi.',
-                                    ])
-                                    ->required(),
-                            ])->columns(2),
+                            Select::make('tipe_genset')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Tipe Genset wajib diisi.',
+                                ])
+                                ->native(false)
+                                ->label('Tipe Genset')
+                                ->options([
+                                    'silent' => 'Silent',
+                                    'open' => 'Open',
+                                ]),
                             Radio::make('status_genset')
                                 ->required()
                                 ->validationMessages([
@@ -233,7 +299,16 @@ class GensetResource extends Resource
             ->defaultSort('status_genset', 'ASC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
-                //
+                SelectFilter::make('status_genset')
+                    ->label('Status Genset')
+                    ->options([
+                        'ready' => 'Ready',
+                        'rent' => 'Rent',
+                        'maintenance' => 'Maintenance',
+                    ]),
+                SelectFilter::make('brand_engine')
+                    ->label('Brand Engine')
+                    ->options(BrandEngine::class)
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\RelationManagers\PlansRelationManager;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -26,6 +27,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -63,17 +65,17 @@ class UserResource extends Resource
                         TextInput::make('password')
                             ->password()
                             ->revealable()
-                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                            ->dehydrated(fn (?string $state): bool => filled($state))
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                            ->dehydrated(fn(?string $state): bool => filled($state))
                             ->validationMessages([
                                 'required' => 'Password wajib diisi.',
                                 'confirmed' => 'Konfirmasi Password tidak cocok.'
                             ])
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->confirmed(),
                         TextInput::make('password_confirmation')
                             ->label('Password Confirmation')
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->validationMessages([
                                 'required' => 'Konfirmasi Password wajib diisi.',
                             ])
@@ -160,7 +162,7 @@ class UserResource extends Resource
                     ->toggleable(),
                 TextColumn::make('name')
                     ->label('Nama Lengkap')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => ucwords($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('no_telp')
@@ -171,17 +173,18 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('alamat')
+                    ->formatStateUsing(fn(string $state): string => ucwords($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('status')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'tersedia' => 'success',
                         'bertugas' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'tersedia' => 'heroicon-o-check-circle',
                         'bertugas' => 'heroicon-o-bolt',
                     })
@@ -190,7 +193,12 @@ class UserResource extends Resource
             ->defaultSort('status', 'DESC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'tersedia' => 'Tersedia',
+                        'bertugas' => 'Bertugas',
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
@@ -203,6 +211,17 @@ class UserResource extends Resource
                 ]),
             ])
             ->bulkActions([
+                Tables\Actions\BulkAction::make('pdf-operator')
+                    ->label('Download PDF')
+                    ->color(Color::Rose)
+                    ->icon('heroicon-o-arrow-down-on-square')
+                    ->action(function ($records) {
+                        $pdf = Pdf::loadView('pdf.operator', ['operators' => $records])->setPaper('a4', 'portrait');
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'laporan-operator.pdf');
+                    })
+                    ->deselectRecordsAfterCompletion(),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
@@ -216,14 +235,14 @@ class UserResource extends Resource
                 ComponentsSection::make('Informasi Operator')->schema([
                     TextEntry::make('name')
                         ->label('Nama Lengkap')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->title($state)),
                     TextEntry::make('email'),
                     TextEntry::make('no_telp')
                         ->label('No. HP'),
                     TextEntry::make('status')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state))
+                        ->formatStateUsing(fn(string $state): string => str()->title($state))
                         ->badge()
-                        ->color(fn (string $state): string => match ($state) {
+                        ->color(fn(string $state): string => match ($state) {
                             'tersedia' => 'success',
                             'bertugas' => 'danger',
                         }),
@@ -259,6 +278,6 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('role', '!=', 'admin');
+        return parent::getEloquentQuery()->where('role', '!=', 'admin')->where('role', '!=', 'sales');
     }
 }

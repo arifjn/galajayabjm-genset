@@ -15,7 +15,11 @@ class Transaction extends Model
 
     protected $fillable = [
         'order_id',
+
         'customer_id',
+        'genset_id',
+        'sales_id',
+
         'subject',
         'durasi_sewa',
         'site',
@@ -23,12 +27,13 @@ class Transaction extends Model
         'brand_engine',
         'keterangan',
         'status_transaksi',
-        'penawaran',
+
         'bukti_tf',
         'ppn',
         'harga',
         'mob_demob',
         'biaya_operator',
+
         'sub_total',
         'grand_total',
     ];
@@ -63,6 +68,16 @@ class Transaction extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function sale(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'sales_id', 'id');
+    }
+
+    public function genset(): BelongsTo
+    {
+        return $this->belongsTo(Genset::class);
     }
 
     public function plan(): HasOne

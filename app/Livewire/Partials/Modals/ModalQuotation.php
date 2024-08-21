@@ -18,10 +18,6 @@ class ModalQuotation extends Component
     public $subject = '';
     public $durasi_sewa;
     public $site;
-    // $name, $perusahaan,
-    // $alamat,
-    // $email,
-    // $no_telp,
     public $kapasitas = '';
     public $brand_engine = '';
     public $keterangan;

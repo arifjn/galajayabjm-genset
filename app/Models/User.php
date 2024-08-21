@@ -34,7 +34,7 @@ class User extends Authenticatable implements FilamentUser
         'alamat',
         'status',
         'profile_img',
-        'is_admin',
+        'role',
     ];
 
     /**
@@ -95,6 +95,11 @@ class User extends Authenticatable implements FilamentUser
 
     public function plan(): HasOne
     {
-        return $this->hasOne(Plan::class);
+        return $this->hasOne(Plan::class, 'operator_id', 'id');
+    }
+
+    public function monitorings(): HasMany
+    {
+        return $this->hasMany(Plan::class);
     }
 }

@@ -16,10 +16,11 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->string('order_id')->references('order_id')->on('transactions')->unique()->nullable();
-            $table->foreignId('operator_id')->unique()->nullable();
+            $table->string('order_id')->references('order_id')->on('transactions')->nullable();
+            $table->foreignId('operator_id')->nullable();
             $table->string('choose_jobdesk');
             $table->string('jobdesk')->nullable();
+            $table->string('alamat')->nullable();
             $table->date('tanggal_job');
             $table->date('tanggal_job_selesai');
             $table->string('status');

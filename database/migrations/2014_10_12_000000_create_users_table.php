@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->string('status')->nullable();
             $table->text('profile_img')->nullable();
-            $table->string('role')->default('operator');
+            $table->string('role');
             $table->rememberToken();
             $table->timestamps();
         });

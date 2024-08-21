@@ -16,6 +16,12 @@ class ManageTransactions extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('pdf')
+                ->label('Cetak Laporan')
+                ->color(Color::Indigo)
+                ->icon('heroicon-o-printer')
+                ->url(fn() => route('pdf.order'))
+                ->openUrlInNewTab(),
             // Actions\CreateAction::make()
             //     ->label('Tambah'),
         ];

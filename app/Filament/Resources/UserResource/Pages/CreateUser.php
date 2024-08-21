@@ -25,4 +25,11 @@ class CreateUser extends CreateRecord
     {
         return 'Tambah Data';
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['role'] = 'operator';
+
+        return $data;
+    }
 }

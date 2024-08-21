@@ -41,9 +41,14 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->userMenuItems(['logout' => MenuItem::make()->label('Logout'),])
+            ->navigationGroups([
+                'Data Master',
+                'Manajemen Keuangan',
+                'Manajemen Warehouse',
+            ])
             ->font('poppins')
             ->favicon(asset('assets/logo/logo_only.png'))
-            ->brandLogo(fn () => view('filament.admin.logo'))
+            ->brandLogo(fn() => view('filament.admin.logo'))
             ->plugin(SimpleLightBoxPlugin::make())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
