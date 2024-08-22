@@ -16,6 +16,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section as ComponentsSection;
@@ -125,7 +126,7 @@ class UserResource extends Resource
                             ->directory('foto_profil')
                             ->image()
                             ->imageEditor(),
-                        Radio::make('status')
+                        ToggleButtons::make('status')
                             ->validationMessages([
                                 'required' => 'Status wajib diisi.',
                             ])
@@ -136,6 +137,14 @@ class UserResource extends Resource
                             ->options([
                                 'tersedia' => 'Tersedia',
                                 'bertugas' => 'Bertugas',
+                            ])
+                            ->colors([
+                                'tersedia' => 'success',
+                                'bertugas' => 'primary',
+                            ])
+                            ->icons([
+                                'tersedia' => 'heroicon-m-check-badge',
+                                'bertugas' => 'heroicon-m-bolt',
                             ]),
                     ])
                     ->columns(2)
@@ -211,20 +220,9 @@ class UserResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('pdf-operator')
-                    ->label('Download PDF')
-                    ->color(Color::Rose)
-                    ->icon('heroicon-o-arrow-down-on-square')
-                    ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.operator', ['operators' => $records])->setPaper('a4', 'portrait');
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'laporan-operator.pdf');
-                    })
-                    ->deselectRecordsAfterCompletion(),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -278,6 +276,6 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('role', '!=', 'admin')->where('role', '!=', 'sales');
+        return parent::getEloquentQuery()->where('role', 'operator');
     }
 }

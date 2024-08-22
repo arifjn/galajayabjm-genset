@@ -103,9 +103,13 @@ use Carbon\Carbon;
                             </td>
                             <td>{{ Carbon::parse($job->tanggal_job)->translatedFormat('d F Y') }}</td>
                             <td>
-                                @foreach ($job->gensets as $gs)
-                                    {{ str()->upper($gs->brand_engine) }} {{ $gs->kapasitas }} KVA
-                                @endforeach
+                                <ul>
+                                    @foreach ($job->gensets as $gs)
+                                        <li>
+                                            {{ str()->upper($gs->brand_engine) }} {{ $gs->kapasitas }} KVA
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </td>
                             <td>
                                 <ul>

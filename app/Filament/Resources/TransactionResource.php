@@ -28,6 +28,7 @@ use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
@@ -59,20 +60,62 @@ class TransactionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('genset_id')
                     ->label('Genset')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Genset wajib diisi.',
+                    ])
                     ->placeholder('Pilih Genset')
                     ->native(false)
                     ->relationship(
                         name: 'genset',
-                        modifyQueryUsing: function (Builder $query) {
-                            $query->where('status_genset', 'ready');
+                        modifyQueryUsing: function (Builder $query, $record) {
+                            $query->where('status_genset', 'ready')
+                                ->when($record, function ($query, $record) {
+                                    return $query->orWhere('id', $record->genset_id);
+                                });
                         },
                     )
                     ->columnSpanFull()
                     ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
+                Forms\Components\Select::make('sales_id')
+                    ->label('Sales')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Sales wajib diisi.',
+                    ])
+                    ->placeholder('Pilih Sales')
+                    ->native(false)
+                    ->relationship(
+                        name: 'sale',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: function (Builder $query) {
+                            $query->where('role', 'sales');
+                        },
+                    ),
+                Forms\Components\Select::make('customer_id')
+                    ->label('Customer')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Customer wajib diisi.',
+                    ])
+                    ->placeholder('Pilih Customer')
+                    ->native(false)
+                    ->relationship(
+                        name: 'customer',
+                        titleAttribute: 'name',
+                    )
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->perusahaan ? "{$record->perusahaan}" : "{$record->name}"),
                 Section::make('Price Information')
                     ->schema([
                         TextInput::make('harga')
-                            ->autofocus()
+                            ->label('Harga Sewa')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Harga Sewa wajib diisi.',
+                            ])
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->validationMessages([
                                 'required' => 'Harga wajib diisi.',
@@ -85,6 +128,10 @@ class TransactionResource extends Resource
                             ->prefix('Rp'),
                         TextInput::make('mob_demob')
                             ->label('Mob Demob')
+                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->reactive()
                             ->live(onBlur: true)
@@ -93,12 +140,32 @@ class TransactionResource extends Resource
                             ->prefix('Rp'),
                         TextInput::make('biaya_operator')
                             ->label('Biaya Operator')
+                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->default(0)
                             ->reactive()
                             ->live(onBlur: true)
                             ->dehydrated()
                             ->prefix('Rp'),
+
+                        TextInput::make('ppn')
+                            ->label('PPN')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'PPN wajib diisi.',
+                            ])
+                            ->validationMessages([
+                                'required' => 'PPN wajib diisi.',
+                            ])
+                            ->numeric()
+                            ->required()
+                            ->live(onBlur: true)
+                            ->dehydrated()
+                            ->suffix('%'),
+
                         Placeholder::make('sub_total_placheholder')
                             ->label('Sub Total')
                             ->content(function (Get $get, Set $set) {
@@ -112,30 +179,20 @@ class TransactionResource extends Resource
                                     $set('biaya_operator', 0);
                                 }
 
-                                if ($get('harga') > 0) {
-                                    $total = $get('harga') + $get('mob_demob') + $get('biaya_operator');
+                                if (floatval(str_replace(',', '', $get('harga'))) > 0) {
+                                    $total = floatval(str_replace(',', '', $get('harga'))) + floatval(str_replace(',', '', $get('mob_demob'))) + floatval(str_replace(',', '', $get('biaya_operator')));
                                 }
 
                                 $set('sub_total', $total);
                                 return Number::currency($total, 'IDR', 'ID');
-                            })
-                            ->columnSpanFull(),
+                            }),
 
                         Hidden::make('sub_total')
                             ->dehydrated()
                             ->default(0),
-                        TextInput::make('ppn')
-                            ->label('PPN')
-                            ->validationMessages([
-                                'required' => 'PPN wajib diisi.',
-                            ])
-                            ->numeric()
-                            ->required()
-                            ->live(onBlur: true)
-                            ->dehydrated()
-                            ->suffix('%'),
+
                         Placeholder::make('grand_total_placheholder')
-                            ->label('Grand Total')
+                            ->label('Grand Total (Include PPN)')
                             ->content(function (Get $get, Set $set) {
                                 $total = 0;
                                 if ($get('ppn') > 0) {
@@ -150,7 +207,7 @@ class TransactionResource extends Resource
                             ->default(0),
                     ])
                     ->columns(3)
-                    ->collapsible()
+                    ->collapsible(),
             ]);
     }
 
@@ -281,7 +338,7 @@ class TransactionResource extends Resource
                             ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
                         Forms\Components\Select::make('sales_id')
                             ->label('Sales')
-                            ->placeholder('Pilih Pilih')
+                            ->placeholder('Pilih Sales')
                             ->native(false)
                             ->relationship(
                                 name: 'sale',
@@ -293,7 +350,14 @@ class TransactionResource extends Resource
                         Section::make('Price Information')
                             ->schema([
                                 TextInput::make('harga')
-                                    ->autofocus()
+                                    ->label('Harga Sewa')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Harga Sewa wajib diisi.',
+                                    ])
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                                     ->numeric()
                                     ->validationMessages([
                                         'required' => 'Harga wajib diisi.',
@@ -306,6 +370,10 @@ class TransactionResource extends Resource
                                     ->prefix('Rp'),
                                 TextInput::make('mob_demob')
                                     ->label('Mob Demob')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                                     ->numeric()
                                     ->reactive()
                                     ->live(onBlur: true)
@@ -314,12 +382,32 @@ class TransactionResource extends Resource
                                     ->prefix('Rp'),
                                 TextInput::make('biaya_operator')
                                     ->label('Biaya Operator')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                    ->mask(RawJs::make('$money($input)'))
+                                    ->stripCharacters(',')
+                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                                     ->numeric()
                                     ->default(0)
                                     ->reactive()
                                     ->live(onBlur: true)
                                     ->dehydrated()
                                     ->prefix('Rp'),
+
+                                TextInput::make('ppn')
+                                    ->label('PPN')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'PPN wajib diisi.',
+                                    ])
+                                    ->validationMessages([
+                                        'required' => 'PPN wajib diisi.',
+                                    ])
+                                    ->numeric()
+                                    ->required()
+                                    ->live(onBlur: true)
+                                    ->dehydrated()
+                                    ->suffix('%'),
+
                                 Placeholder::make('sub_total_placheholder')
                                     ->label('Sub Total')
                                     ->content(function (Get $get, Set $set) {
@@ -333,30 +421,20 @@ class TransactionResource extends Resource
                                             $set('biaya_operator', 0);
                                         }
 
-                                        if ($get('harga') > 0) {
-                                            $total = $get('harga') + $get('mob_demob') + $get('biaya_operator');
+                                        if (floatval(str_replace(',', '', $get('harga'))) > 0) {
+                                            $total = floatval(str_replace(',', '', $get('harga'))) + floatval(str_replace(',', '', $get('mob_demob'))) + floatval(str_replace(',', '', $get('biaya_operator')));
                                         }
 
                                         $set('sub_total', $total);
                                         return Number::currency($total, 'IDR', 'ID');
-                                    })
-                                    ->columnSpanFull(),
+                                    }),
 
                                 Hidden::make('sub_total')
                                     ->dehydrated()
                                     ->default(0),
-                                TextInput::make('ppn')
-                                    ->label('PPN')
-                                    ->validationMessages([
-                                        'required' => 'PPN wajib diisi.',
-                                    ])
-                                    ->numeric()
-                                    ->required()
-                                    ->live(onBlur: true)
-                                    ->dehydrated()
-                                    ->suffix('%'),
+
                                 Placeholder::make('grand_total_placheholder')
-                                    ->label('Grand Total')
+                                    ->label('Grand Total (Include PPN)')
                                     ->content(function (Get $get, Set $set) {
                                         $total = 0;
                                         if ($get('ppn') > 0) {
@@ -371,7 +449,7 @@ class TransactionResource extends Resource
                                     ->default(0),
                             ])
                             ->columns(3)
-                            ->collapsible()
+                            ->collapsible(),
                     ])
                     ->action(function (Transaction $record, array $data) {
                         $record->genset_id = $data['genset_id'];
@@ -434,6 +512,7 @@ class TransactionResource extends Resource
                         ->url(fn(Transaction $record) => route('pdf.penawaran', $record->order_id))
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make()
+                        ->modalHeading('Edit Penawaran')
                         ->color(Color::Indigo),
                     Tables\Actions\ViewAction::make()
                         ->modalHeading('Lihat Transaksi')
@@ -442,17 +521,6 @@ class TransactionResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('pdf-order')
-                    ->label('Download PDF')
-                    ->color(Color::Rose)
-                    ->icon('heroicon-o-arrow-down-on-square')
-                    ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.order', ['orders' => $records])->setPaper('a4', 'landscape');
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'laporan-transaksi.pdf');
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),
@@ -539,7 +607,7 @@ class TransactionResource extends Resource
                             ->formatStateUsing(fn(Transaction $record) => Number::currency($record->sub_total, 'IDR', 'id')),
                         TextEntry::make('ppn')
                             ->label('PPN')
-                            ->suffix('%'),
+                            ->formatStateUsing(fn(Transaction $record) => Number::currency($record->sub_total * $record->ppn / 100, 'IDR', 'id')),
                         TextEntry::make('grand_total')
                             ->label('Grand Total')
                             ->formatStateUsing(fn(Transaction $record) => Number::currency($record->grand_total, 'IDR', 'id')),

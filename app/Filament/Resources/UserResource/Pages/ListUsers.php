@@ -15,12 +15,6 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('pdf')
-                ->label('Cetak Laporan')
-                ->color(Color::Indigo)
-                ->icon('heroicon-o-printer')
-                ->url(fn() => route('pdf.operator'))
-                ->openUrlInNewTab(),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
                 ->label('Tambah'),

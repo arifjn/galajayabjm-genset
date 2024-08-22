@@ -10,7 +10,7 @@ use Carbon\Carbon;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Laporan Operator</title>
+    <title>Daily Report Rental</title>
 
     <link rel="stylesheet" href="./storage/assets/laporan-css/style.css">
 
@@ -73,7 +73,7 @@ use Carbon\Carbon;
     <main>
 
         <h2 class="text-uppercase fw-bold text-center my-4">
-            Daily Operation & Maintenace Record
+            Daily Operation & Maintenance Record
         </h2>
 
         <table border="1" id="table1" class="mb-8">

@@ -81,13 +81,14 @@ use Carbon\Carbon;
                 <tr>
                     <th align="center" width="1%">No</th>
                     <th>Order ID</th>
-                    <th>Tanggal Order</th>
+                    <th>Transaksi</th>
                     <th>Customer</th>
-                    <th>Subject</th>
-                    <th>Durasi Sewa</th>
-                    <th>Genset</th>
-                    <th>Perusahaan</th>
-                    <th>Grand Total</th>
+                    <th>Tanggal Order</th>
+                    <th>Biaya Sewa</th>
+                    <th>Biaya Operator</th>
+                    <th>Kelebihan Jam</th>
+                    <th>Denda</th>
+                    <th>Pendapatan Bersih</th>
                 </tr>
             </thead>
             <tbody>
@@ -96,33 +97,36 @@ use Carbon\Carbon;
                     @foreach ($incomes as $income)
                         <tr>
                             <td align="center">{{ $no++ }}</td>
-                            <td>{{ $income->order_id }}
-                            </td>
-                            <td>{{ $income->created_at->translatedFormat('d F Y') }}</td>
-                            <td>
-                                {{ ucwords($income->customer->name) }}
+                            <td>{{ $income->transaction->order_id }}
                             </td>
                             <td>
-                                {{ ucwords($income->subject) }} Genset
+                                {{ ucwords($income->subject) }} Genset {{ $income->kapasitas }}
                             </td>
                             <td>
-                                {{ $income->durasi_sewa }} Hari
+                                {{ $income->transaction->customer->name ? ucwords($income->transaction->customer->name) : $income->transaction->customer->perusahaan }}
+                            </td>
+                            <td>{{ $income->transaction->created_at->translatedFormat('d F Y') }}</td>
+                            <td>
+                                {{ Number::currency($income->transaction->harga, 'IDR', 'id') }}
                             </td>
                             <td>
-                                {{ str()->upper($income->brand_engine) }} {{ $income->kapasitas }}
+                                {{ Number::currency($income->transaction->biaya_operator, 'IDR', 'id') }}
                             </td>
                             <td>
-                                {{ $income->customer->perusahaan ? str()->upper($income->customer->perusahaan) : '-' }}
+                                {{ $income->overtime ? $income->overtime . ' Jam' : '-' }}
                             </td>
                             <td>
-                                {{ Number::currency($income->grand_total, 'IDR', 'id') }}
+                                {{ Number::currency($income->denda, 'IDR', 'id') }}
+                            </td>
+                            <td>
+                                {{ Number::currency($income->income, 'IDR', 'id') }}
                             </td>
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="8" class="text-center fw-bold">Total Pendapatan</td>
+                        <td colspan="9" class="text-center fw-bold">Total Pendapatan</td>
                         <td class="fw-bold">
-                            {{ Number::currency($incomes->sum('grand_total'), 'IDR', 'id') }}
+                            {{ Number::currency($incomes->sum('income'), 'IDR', 'id') }}
                         </td>
                     </tr>
                 @else

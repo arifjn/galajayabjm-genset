@@ -17,6 +17,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -209,7 +210,7 @@ class GensetResource extends Resource
                                     'silent' => 'Silent',
                                     'open' => 'Open',
                                 ]),
-                            Radio::make('status_genset')
+                            ToggleButtons::make('status_genset')
                                 ->required()
                                 ->validationMessages([
                                     'required' => 'Status wajib diisi.',
@@ -221,6 +222,16 @@ class GensetResource extends Resource
                                     'ready' => 'Ready',
                                     'rent' => 'Rent',
                                     'maintenance' => 'Maintenance'
+                                ])
+                                ->colors([
+                                    'ready' => 'success',
+                                    'rent' => 'primary',
+                                    'maintenance' => 'danger',
+                                ])
+                                ->icons([
+                                    'ready' => 'heroicon-m-check-badge',
+                                    'rent' => 'heroicon-m-bolt',
+                                    'maintenance' => 'heroicon-m-wrench-screwdriver',
                                 ]),
                             FileUpload::make('spek_genset')
                                 ->label('Spesifikasi (PDF)')
@@ -235,6 +246,9 @@ class GensetResource extends Resource
                                 ->label('Foto')
                                 ->directory('genset')
                                 ->required()
+                                ->validationMessages([
+                                    'required' => 'Upload minimal 1 foto.',
+                                ])
                                 ->multiple()
                                 ->image()
                                 ->panelLayout('grid')

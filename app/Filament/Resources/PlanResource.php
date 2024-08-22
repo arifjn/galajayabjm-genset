@@ -369,17 +369,6 @@ class PlanResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('pdf-jobdesk')
-                    ->label('Download PDF')
-                    ->color(Color::Rose)
-                    ->icon('heroicon-o-arrow-down-on-square')
-                    ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.jobdesk', ['jobdesks' => $records])->setPaper('a4', 'landscape');
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'laporan-jobdesk.pdf');
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),

@@ -25,4 +25,11 @@ class ListGensets extends ListRecords
     {
         return 'Genset';
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            GensetResource\Widgets\GensetOverview::class,
+        ];
+    }
 }

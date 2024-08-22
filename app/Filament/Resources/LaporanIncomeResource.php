@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\LaporanIncomeResource\Pages;
 use App\Filament\Resources\LaporanIncomeResource\RelationManagers;
+use App\Models\Income;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
@@ -22,7 +23,7 @@ use stdClass;
 
 class LaporanIncomeResource extends Resource
 {
-    protected static ?string $model = Transaction::class;
+    protected static ?string $model = Income::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
 
@@ -30,7 +31,7 @@ class LaporanIncomeResource extends Resource
 
     protected static ?string $navigationGroup = 'Laporan';
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $slug = 'laporan-pendapatan';
 
@@ -46,51 +47,43 @@ class LaporanIncomeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('No.')->state(
-                    static function (HasTable $livewire, stdClass $rowLoop): string {
-                        return (string) ($rowLoop->iteration +
-                            ($livewire->getTableRecordsPerPage() * ($livewire->getTablePage() - 1
-                            ))
-                        );
-                    }
-                ),
-                TextColumn::make('order_id')
+                Tables\Columns\TextColumn::make('transaction.order_id')
                     ->label('Order ID')
-                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('transaction')
+                    ->label('Transaksi')
+                    ->sortable()
+                    ->formatStateUsing(
+                        fn(Model $record) => ucwords($record->transaction->subject) . ' Genset ' . $record->transaction->kapasitas
+                    ),
+                Tables\Columns\TextColumn::make('transaction.created_at')
                     ->label('Tanggal Order')
                     ->date('d F Y')
-                    ->wrap()
                     ->sortable(),
-                TextColumn::make('customer.name')
-                    ->label('Customer')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('transaction.harga')
+                    ->label('Biaya Sewa')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->transaction->harga, 'IDR', 'id'))
                     ->sortable(),
-                TextColumn::make('subject')
-                    ->label('Subject')
-                    ->formatStateUsing(fn(string $state): string => str()->title($state) . ' Genset')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('transaction.biaya_operator')
+                    ->label('Biaya Operator')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->transaction->biaya_operator, 'IDR', 'id'))
                     ->sortable(),
-                TextColumn::make('durasi_sewa')
-                    ->label('Durasi Sewa')
-                    ->suffix(' Hari'),
-                TextColumn::make('brand_engine')
-                    ->label('Brand Engine')
-                    ->formatStateUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas)
-                    ->searchable()
+                Tables\Columns\TextColumn::make('denda')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->denda, 'IDR', 'id'))
                     ->sortable(),
-                TextColumn::make('customer.perusahaan')
-                    ->label('Perusahaan')
-                    ->searchable()
-                    ->formatStateUsing(fn(Model $record) => $record->customer->perusahaan ? $record->customer->perusahaan : '-')
+                Tables\Columns\TextColumn::make('income')
+                    ->label('Pendapatan Bersih')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->income, 'IDR', 'id'))
                     ->sortable(),
-                TextColumn::make('grand_total')
-                    ->label('Grand Total')
-                    ->numeric()
-                    ->formatStateUsing(fn($state) => Number::currency($state, 'IDR', 'id'))
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('status_transaksi', 'DESC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 //
@@ -120,7 +113,7 @@ class LaporanIncomeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageIncomes::route('/'),
+            'index' => Pages\ManageLaporanIncomes::route('/'),
         ];
     }
 }

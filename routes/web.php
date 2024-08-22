@@ -5,6 +5,7 @@ use App\Http\Controllers\IncomePdfController;
 use App\Http\Controllers\MonitoringPdfController;
 use App\Http\Controllers\OperatorPdfController;
 use App\Http\Controllers\OrderPdfController;
+use App\Http\Controllers\OutcomePdfController;
 use App\Http\Controllers\PenawaranPdfController;
 use App\Http\Controllers\PlanJobPdfController;
 use App\Http\Controllers\ServicePdfController;
@@ -72,5 +73,6 @@ Route::get('pdf-operator', [OperatorPdfController::class, 'pdf'])->name('pdf.ope
 Route::get('pdf-jobdesk', [PlanJobPdfController::class, 'pdf'])->name('pdf.jobdesk');
 Route::get('pdf-order', [OrderPdfController::class, 'pdf'])->name('pdf.order');
 Route::get('pdf-income', [IncomePdfController::class, 'pdf'])->name('pdf.income');
+Route::get('pdf-outcome', [OutcomePdfController::class, 'pdf'])->name('pdf.outcome');
 Route::get('pdf-monitoring', [MonitoringPdfController::class, 'pdf'])->name('pdf.monitoring');
 Route::get('pdf-service', [ServicePdfController::class, 'pdf'])->name('pdf.service');

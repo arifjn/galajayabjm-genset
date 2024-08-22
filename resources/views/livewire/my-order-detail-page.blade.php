@@ -651,7 +651,8 @@
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                                             @foreach ($plan->gensets as $genset)
                                                                                 <ul>
-                                                                                    <li> • {{ $genset->brand_engine }}
+                                                                                    <li> •
+                                                                                        {{ ucwords($genset->brand_engine) }}
                                                                                         {{ $genset->kapasitas }} KVA
                                                                                     </li>
                                                                                 </ul>

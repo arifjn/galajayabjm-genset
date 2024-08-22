@@ -27,15 +27,15 @@ class MonitoringResource extends Resource
 {
     protected static ?string $model = Monitoring::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $navigationIcon = 'heroicon-o-signal';
 
-    protected static ?string $navigationLabel = 'Daily Report';
+    protected static ?string $navigationLabel = 'Monitoring';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationGroup = 'Manajemen Warehouse';
 
-    protected static ?string $slug = 'laporan-monitoring';
+    protected static ?string $slug = 'daily-report';
 
     protected static ?string $breadcrumb = 'Laporan Monitoring';
 
@@ -233,17 +233,6 @@ class MonitoringResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('pdf-monitoring')
-                    ->label('Download PDF')
-                    ->color(Color::Rose)
-                    ->icon('heroicon-o-arrow-down-on-square')
-                    ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.monitoring', ['monitorings' => $records])->setPaper('a4', 'landscape');
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'laporan-monitoring.pdf');
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),

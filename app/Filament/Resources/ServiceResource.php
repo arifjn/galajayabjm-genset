@@ -30,15 +30,15 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
-    protected static ?string $navigationLabel = 'Service Report';
+    protected static ?string $navigationLabel = 'Service';
 
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationGroup = 'Manajemen Warehouse';
 
-    protected static ?string $slug = 'laporan-service';
+    protected static ?string $slug = 'service-check';
 
-    protected static ?string $breadcrumb = 'Laporan Service';
+    protected static ?string $breadcrumb = 'Service & Maintenance';
 
     public static function form(Form $form): Form
     {
@@ -271,17 +271,6 @@ class ServiceResource extends Resource
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkAction::make('pdf-service')
-                    ->label('Download PDF')
-                    ->color(Color::Rose)
-                    ->icon('heroicon-o-arrow-down-on-square')
-                    ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.service', ['services' => $records])->setPaper('a4', 'landscape');
-                        return response()->streamDownload(function () use ($pdf) {
-                            echo $pdf->output();
-                        }, 'laporan-service.pdf');
-                    })
-                    ->deselectRecordsAfterCompletion(),
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),

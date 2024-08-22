@@ -17,12 +17,6 @@ class ListPlans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('pdf')
-                ->label('Cetak Laporan')
-                ->color(Color::Indigo)
-                ->icon('heroicon-o-printer')
-                ->url(fn() => route('pdf.jobdesk'))
-                ->openUrlInNewTab(),
             Actions\CreateAction::make()
                 ->icon('heroicon-o-plus')
                 ->label('Tambah'),
@@ -34,19 +28,19 @@ class ListPlans extends ListRecords
         return 'Jadwal Pekerjaan';
     }
 
-    public function getTabs(): array
-    {
-        return [
-            'Delivery' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'delivery')->where('status', 'pending')->orWhere('status', 'delivery')),
-            'Rental' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'delivery')->where('status', 'rent')),
-            'Service' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'service')->where('status', 'pending')),
-            'Lainnya' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'lainnya')),
-            'All' => Tab::make()
-                ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('status', 'DESC')),
-        ];
-    }
+    // public function getTabs(): array
+    // {
+    //     return [
+    //         'Delivery' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'delivery')->where('status', 'pending')->orWhere('status', 'delivery')),
+    //         'Rental' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'delivery')->where('status', 'rent')),
+    //         'Service' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'service')->where('status', 'pending')),
+    //         'Lainnya' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('jobdesk', 'lainnya')),
+    //         'All' => Tab::make()
+    //             ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('status', 'DESC')),
+    //     ];
+    // }
 }

@@ -6,11 +6,13 @@ use App\Filament\Resources\OutcomeResource\Pages;
 use App\Filament\Resources\OutcomeResource\RelationManagers;
 use App\Models\Outcome;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,6 +59,9 @@ class OutcomeResource extends Resource
                             ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->jobdesk) . ' Genset - ' . ($record->transaction->customer->perusahaan ? $record->transaction->customer->perusahaan : $record->transaction->customer->name) . ' (' . $record->order_id . ')'),
                         Forms\Components\TextInput::make('upd')
                             ->label('Uang Perjalanan Dinas (UPD)')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->reactive()
                             ->live(onBlur: true)
@@ -65,6 +70,9 @@ class OutcomeResource extends Resource
                             ->prefix('Rp'),
                         Forms\Components\TextInput::make('biaya_service')
                             ->label('Biaya Service')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->reactive()
                             ->live(onBlur: true)
@@ -77,6 +85,9 @@ class OutcomeResource extends Resource
                         Forms\Components\TextInput::make('biaya_lainnya')
                             ->label('Biaya Lainnya')
                             ->visible(fn(Get $get) => $get('lainnya'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
                             ->reactive()
                             ->live(onBlur: true)
@@ -96,8 +107,8 @@ class OutcomeResource extends Resource
                                     $set('biaya_lainnya', 0);
                                 }
 
-                                if ($get('upd') > 0) {
-                                    $total = $get('upd') + $get('biaya_service') + $get('biaya_lainnya');
+                                if (floatval(str_replace(',', '', $get('upd'))) > 0) {
+                                    $total = floatval(str_replace(',', '', $get('upd'))) + floatval(str_replace(',', '', $get('biaya_service'))) + floatval(str_replace(',', '', $get('biaya_lainnya')));
                                 }
 
                                 $set('outcome', $total);
@@ -117,6 +128,7 @@ class OutcomeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('plan.jobdesk')
+                    ->label('Pekerjaan')
                     ->sortable()
                     ->formatStateUsing(fn(Model $record) => ucwords($record->plan->jobdesk)),
                 Tables\Columns\TextColumn::make('plan.gensets')
