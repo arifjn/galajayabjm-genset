@@ -23,6 +23,6 @@ class ListMonitorings extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Laporan Monitoring';
+        return 'Daily Rental Check';
     }
 }

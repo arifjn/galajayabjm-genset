@@ -52,6 +52,7 @@ class CustomerResource extends Resource
                 Section::make('Account Information')
                     ->schema([
                         TextInput::make('email')
+                            ->autofocus()
                             ->required()
                             ->validationMessages([
                                 'required' => 'Email wajib diisi.',
@@ -61,9 +62,9 @@ class CustomerResource extends Resource
                         TextInput::make('password')
                             ->password()
                             ->revealable()
-                            ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                            ->dehydrated(fn (?string $state): bool => filled($state))
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                            ->dehydrated(fn(?string $state): bool => filled($state))
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->validationMessages([
                                 'required' => 'Password wajib diisi.',
                                 'confirmed' => 'Konfirmasi Password tidak cocok.'
@@ -71,7 +72,7 @@ class CustomerResource extends Resource
                             ->confirmed(),
                         TextInput::make('password_confirmation')
                             ->label('Password Confirmation')
-                            ->required(fn (string $operation): bool => $operation === 'create')
+                            ->required(fn(string $operation): bool => $operation === 'create')
                             ->validationMessages([
                                 'required' => 'Konfirmasi Password wajib diisi.',
                             ])
@@ -80,7 +81,7 @@ class CustomerResource extends Resource
                     ])
                     ->columns(2)
                     ->collapsible(),
-                Section::make('Personal Information')
+                Section::make('Customer Information')
                     ->schema([
                         TextInput::make('name')
                             ->label('Nama Lengkap')
@@ -96,7 +97,7 @@ class CustomerResource extends Resource
                             ->required(),
                         DatePicker::make('tgl_lahir')
                             ->label('Tanggal Lahir')
-                            ->displayFormat('d/m/Y')
+                            ->displayFormat('d F Y')
                             ->native(false)
                             ->required()
                             ->validationMessages([
@@ -105,22 +106,12 @@ class CustomerResource extends Resource
                             ->closeOnDateSelection(),
                         TextInput::make('no_telp')
                             ->label('No. HP')
-                            ->numeric()
+                            // ->numeric()
                             ->tel()
                             ->validationMessages([
                                 'required' => 'No. HP wajib diisi.',
                             ])
                             ->required(),
-                        Textarea::make('alamat')
-                            ->validationMessages([
-                                'required' => 'Alamat wajib diisi.',
-                            ])
-                            ->required(),
-                        FileUpload::make('profile_img')
-                            ->label('Foto')
-                            ->directory('customer')
-                            ->image()
-                            ->imageEditor(),
                         Select::make('tipe_customer')
                             ->required()
                             ->validationMessages([
@@ -132,13 +123,25 @@ class CustomerResource extends Resource
                                 'perorangan' => 'Perorangan',
                                 'perusahaan' => 'Perusahaan',
                             ])
+                            ->default('perusahaan')
                             ->live(),
                         TextInput::make('perusahaan')
                             ->requiredIf('tipe_customer', 'perusahaan')
                             ->validationMessages([
                                 'required_if' => 'Perusahaan wajib diisi.',
                             ])
-                            ->hidden(fn (Get $get) => $get('tipe_customer') !== 'perusahaan'),
+                            ->hidden(fn(Get $get) => $get('tipe_customer') == 'perorangan'),
+                        Textarea::make('alamat')
+                            ->validationMessages([
+                                'required' => 'Alamat wajib diisi.',
+                            ])
+                            ->required(),
+                        FileUpload::make('profile_img')
+                            ->label('Foto')
+                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                            ->directory('customer')
+                            ->image()
+                            ->imageEditor(),
                     ])
                     ->columns(2)
                     ->collapsible(),
@@ -164,7 +167,7 @@ class CustomerResource extends Resource
                     ->toggleable(),
                 TextColumn::make('name')
                     ->label('Nama Lengkap')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('no_telp')
@@ -179,7 +182,7 @@ class CustomerResource extends Resource
                     ->sortable(),
                 TextColumn::make('tipe_customer')
                     ->label('Tipe')
-                    ->formatStateUsing(fn (string $state): string => str()->title($state))
+                    ->formatStateUsing(fn(string $state): string => str()->title($state))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('perusahaan')
@@ -215,12 +218,12 @@ class CustomerResource extends Resource
                 ComponentsSection::make('Informasi Customer')->schema([
                     TextEntry::make('name')
                         ->label('Nama Lengkap')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state)),
+                        ->formatStateUsing(fn(string $state): string => str()->title($state)),
                     TextEntry::make('email'),
                     TextEntry::make('no_telp')
                         ->label('No. HP'),
                     TextEntry::make('tipe_customer')
-                        ->formatStateUsing(fn (string $state): string => str()->title($state))
+                        ->formatStateUsing(fn(string $state): string => str()->title($state))
                         ->label('Tipe'),
                     TextEntry::make('perusahaan')
                         ->default('-'),
@@ -228,7 +231,7 @@ class CustomerResource extends Resource
                 ])->columns(3),
                 ImageEntry::make('profile_img')
                     ->label('Foto')
-                    ->hidden(fn (Customer $record): bool => $record->profile_img == null)
+                    ->hidden(fn(Customer $record): bool => $record->profile_img == null)
                     ->simpleLightbox(),
             ]);
     }

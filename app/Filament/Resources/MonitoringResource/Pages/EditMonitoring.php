@@ -5,6 +5,7 @@ namespace App\Filament\Resources\MonitoringResource\Pages;
 use App\Filament\Resources\MonitoringResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
 
 class EditMonitoring extends EditRecord
 {
@@ -20,5 +21,10 @@ class EditMonitoring extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return 'Edit Daily Report';
     }
 }

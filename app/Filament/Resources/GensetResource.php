@@ -61,6 +61,7 @@ class GensetResource extends Resource
                     Section::make('Engine Information')
                         ->schema([
                             Select::make('brand_engine')
+                                ->autofocus()
                                 ->label('Brand Engine')
                                 ->native(false)
                                 ->searchable()
@@ -83,40 +84,48 @@ class GensetResource extends Resource
                                     ->label('Serial Number')
                                     ->dehydrateStateUsing(fn(?string $state): string => str()->upper($state))
                                     ->placeholder('93045715')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                             ])->columns(2),
                             Group::make([
                                 TextInput::make('no_silinder')
                                     ->label('Nomor Silinder')
                                     ->numeric()
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('4 Cylinder'),
                                 TextInput::make('kecepatan')
                                     ->label('Kecepatan')
                                     ->numeric()
                                     ->suffix('RPM')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('1.500')
                             ])->columns(2),
                             Group::make([
                                 TextInput::make('piston')
                                     ->label('Piston Displ.')
                                     ->numeric()
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->suffix('Ltr')
                                     ->placeholder('25.200'),
                                 TextInput::make('bore_stroke')
                                     ->label('Bore x Stroke')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->suffix('mm')
                                     ->placeholder('170 x 185')
                             ])->columns(2),
                             Group::make([
                                 TextInput::make('pendingin')
                                     ->label('Sistem Pendingin')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('Radiator Cooling'),
                                 TextInput::make('kaps_oli')
                                     ->label('Kapasitas Oli')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->suffix('Ltr')
-                                    ->placeholder('75')
+                                    ->placeholder('11')
                             ])->columns(2),
                             TextInput::make('bahan_bakar')
                                 ->label('Konsumsi Bahan Bakar')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->suffix('Ltr')
                                 ->placeholder('7.9 (75% Load) / 10 (100% Load)'),
                         ])
@@ -142,6 +151,7 @@ class GensetResource extends Resource
                                     ->required(),
                                 TextInput::make('sn_generator')
                                     ->label('Serial Number')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->dehydrateStateUsing(fn(?string $state): string => str()->upper($state))
                                     ->placeholder('X22H342459')
                             ])
@@ -158,28 +168,34 @@ class GensetResource extends Resource
                                     ->required(),
                                 TextInput::make('frekuensi')
                                     ->placeholder('50')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->numeric()
                                     ->suffix('Hz'),
                             ])->columns(2),
                             Group::make([
                                 TextInput::make('insul_class')
                                     ->label('Insulation Class')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('Class H'),
                                 TextInput::make('sist_eksitasi')
                                     ->label('Sistem Eksitasi')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('Brush-less'),
                             ])->columns(2),
                             Group::make([
                                 TextInput::make('regulator_tegangan')
                                     ->label('Regulator Tegangan')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->placeholder('AVR'),
                                 TextInput::make('phase')
                                     ->label('Phase')
+                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->numeric()
                                     ->suffix('Phase')
                                     ->placeholder('3'),
                             ])->columns(2),
                             TextInput::make('voltase')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->suffix('V')
                                 ->placeholder('220 / 380'),
                         ])
@@ -236,6 +252,7 @@ class GensetResource extends Resource
                             FileUpload::make('spek_genset')
                                 ->label('Spesifikasi (PDF)')
                                 ->directory('pdf-genset')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->openable()
                                 ->maxSize(2048)
                                 ->acceptedFileTypes(['application/pdf']),

@@ -73,7 +73,7 @@ use Carbon\Carbon;
     <main>
 
         <h2 class="text-uppercase fw-bold text-center my-4">
-            Laporan Pendapatan
+            Laporan Pendapatan Bersih
         </h2>
 
         <table border="1" id="table1">

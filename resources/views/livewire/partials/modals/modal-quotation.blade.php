@@ -52,40 +52,36 @@
 
                         <!-- durasi sewa -->
                         @if ($subject == 'sewa')
+                            <!-- Tgl sewa -->
                             <div>
-                                <div class="flex items-center mb-2 justify-between">
-                                    <div class="inline-flex items-center gap-x-0.5">
-                                        <label for="durasi_sewa" class="block text-sm">Durasi Sewa</label>
-                                        <div class="hs-tooltip inline-block">
-                                            <button type="button" class="hs-tooltip-toggle ms-1">
-                                                <svg class="inline-block size-3 text-gray-400"
-                                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                    fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                    <path
-                                                        d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                </svg>
-                                            </button>
-                                            <span
-                                                class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm"
-                                                role="tooltip">
-                                                Lewati jika bukan penawaran Rental Genset!
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-500" id="hs-input-helper-text">Opsional</span>
-                                </div>
-                                <div class="flex rounded-lg shadow-sm">
-                                    <input type="number" id="durasi_sewa" wire:model="durasi_sewa"
-                                        class="py-3 px-4 block w-full border border-gray-200 rounded-s-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none"
-                                        aria-describedby="durasi_sewa-error" placeholder="7">
-                                    <div
-                                        class="px-4 inline-flex items-center min-w-fit rounded-e-lg border border-s-0 border-gray-200 bg-gray-50">
-                                        <span class="text-sm text-gray-500">Hari</span>
-                                    </div>
+                                <label for="tgl_sewa" class="block text-sm">Tanggal Sewa</label>
+                                <div class="rounded-lg shadow-sm">
+                                    <input id="tgl_sewa" type="date" wire:model='tgl_sewa'
+                                        class="border-gray-200 border text-gray-800 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 py-2 px-3 pe-11 block w-full"
+                                        placeholder="Pilih Tanggal Mulai Sewa" />
+                                    @error('tgl_sewa')
+                                        <p class="text-xs text-red-600 mt-2" id="tgl_sewa-error">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             </div>
+                            <!-- End Tgl sewa -->
+
+                            <!-- Tgl selesai sewa -->
+                            <div>
+                                <div class="flex items-center mb-2 justify-between">
+                                    <label for="tgl_selesai" class="block text-sm">Tanggal Selesai</label>
+                                    <span class="text-sm text-gray-500" id="hs-input-helper-text">Opsional</span>
+                                </div>
+                                <div class="rounded-lg shadow-sm">
+                                    <input id="tgl_selesai" type="date" wire:model='tgl_selesai'
+                                        class="border-gray-200 border text-gray-800 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 py-2 px-3 pe-11 block w-full"
+                                        placeholder="Pilih Tanggal Selesai" />
+                                    @error('tgl_selesai')
+                                        <p class="text-xs text-red-600 mt-2" id="tgl_selesai-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                            <!-- End Tgl selesai sewa -->
                         @endif
                         <!-- End durasi sewa -->
 
@@ -95,32 +91,32 @@
                             <select id="kapasitas" wire:model="kapasitas"
                                 class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('kapasitas') border border-red-500 @enderror">
                                 <option value="" disabled>Pilih Kapasitas Genset</option>
-                                <option value="10 KVA">10 KVA</option>
-                                <option value="12.5 KVA">12.5 KVA</option>
-                                <option value="15 KVA">15 KVA</option>
-                                <option value="20 KVA">20 KVA</option>
+                                <option value="10">10 KVA</option>
+                                <option value="12.5">12.5 KVA</option>
+                                <option value="15">15 KVA</option>
+                                <option value="20">20 KVA</option>
                                 <option value="22.5 KVA">22.5 KVA</option>
-                                <option value="30 KVA">30 KVA</option>
-                                <option value="40 KVA">40 KVA</option>
-                                <option value="45 KVA">45 KVA</option>
-                                <option value="50 KVA">50 KVA</option>
-                                <option value="60 KVA">60 KVA</option>
-                                <option value="80 KVA">80 KVA</option>
-                                <option value="100 KVA">100 KVA</option>
-                                <option value="115 KVA">115 KVA</option>
-                                <option value="120 KVA">120 KVA</option>
-                                <option value="130 KVA">130 KVA</option>
-                                <option value="135 KVA">135 KVA</option>
-                                <option value="140 KVA">140 KVA</option>
-                                <option value="150 KVA">150 KVA</option>
-                                <option value="200 KVA">200 KVA</option>
-                                <option value="250 KVA">250 KVA</option>
-                                <option value="300 KVA">300 KVA</option>
-                                <option value="350 KVA">350 KVA</option>
-                                <option value="400 KVA">400 KVA</option>
-                                <option value="500 KVA">500 KVA</option>
-                                <option value="800 KVA">800 KVA</option>
-                                <option value="1000 KVA">1000 KVA</option>
+                                <option value="30">30 KVA</option>
+                                <option value="40">40 KVA</option>
+                                <option value="45">45 KVA</option>
+                                <option value="50">50 KVA</option>
+                                <option value="60">60 KVA</option>
+                                <option value="80">80 KVA</option>
+                                <option value="100">100 KVA</option>
+                                <option value="115">115 KVA</option>
+                                <option value="120">120 KVA</option>
+                                <option value="130">130 KVA</option>
+                                <option value="135">135 KVA</option>
+                                <option value="140">140 KVA</option>
+                                <option value="150">150 KVA</option>
+                                <option value="200">200 KVA</option>
+                                <option value="250">250 KVA</option>
+                                <option value="300">300 KVA</option>
+                                <option value="350">350 KVA</option>
+                                <option value="400">400 KVA</option>
+                                <option value="500">500 KVA</option>
+                                <option value="800">800 KVA</option>
+                                <option value="1000">1000 KVA</option>
                             </select>
                             @error('kapasitas')
                                 <p class="text-xs text-red-600 mt-2" id="kapasitas-error">{{ $message }}</p>
@@ -129,7 +125,7 @@
                         <!-- End kapasitas -->
 
                         <!-- brand -->
-                        <div>
+                        {{-- <div>
                             <label for="brand_engine" class="block text-sm mb-2">Brand Engine</label>
                             <select id="brand_engine" wire:model="brand_engine"
                                 class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-orange-500 focus:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none @error('brand_engine') border border-red-500 @enderror">
@@ -148,7 +144,7 @@
                             @error('brand_engine')
                                 <p class="text-xs text-red-600 mt-2" id="brand_engine-error">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
                         <!-- End brand -->
 
                         <!-- lokasi proyek -->

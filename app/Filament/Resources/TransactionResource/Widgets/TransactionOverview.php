@@ -11,7 +11,10 @@ class TransactionOverview extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('New Orders', Transaction::query()->where('status_transaksi', 'pending')->count()),
+            Stat::make('New Orders', Transaction::query()
+                ->where('status_transaksi', 'penawaran')
+                ->orWhere('status_transaksi', 'pembayaran')
+                ->count()),
             Stat::make('Order Paid', Transaction::query()->where('status_transaksi', 'dibayar')->count()),
             Stat::make('Order Completed', Transaction::query()
                 ->orWhere('status_transaksi', 'selesai')

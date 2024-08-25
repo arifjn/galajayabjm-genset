@@ -43,6 +43,7 @@ class SalesResource extends Resource
                 Section::make('Personal Information')
                     ->schema([
                         TextInput::make('name')
+                            ->autofocus()
                             ->label('Nama Lengkap')
                             ->validationMessages([
                                 'required' => 'Nama Lengkap wajib diisi.',

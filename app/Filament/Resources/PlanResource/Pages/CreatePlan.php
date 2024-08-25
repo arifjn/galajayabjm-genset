@@ -46,10 +46,8 @@ class CreatePlan extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-
         if ($data['order_id']) {
             $order = Transaction::where('order_id',  $data['order_id'])->first();
-
             $data['alamat'] = $order->site;
             // $plan['alamat'] = $plan->transaction->site;
             // $plan->save();
@@ -57,7 +55,7 @@ class CreatePlan extends CreateRecord
 
         $record =  static::getModel()::create($data);
 
-        if ($record->order_id) {
+        if ($record->order_id && $record->subject == 'sewa') {
             $message = 'Halo Kak ' . $record->transaction->customer->name . ', Pengiriman Genset sudah dijadwalkan! 😁. Silakan Cek Jadwal Pengiriman dengan Order ID #' . $record->order_id;
             $no_telp = $record->transaction->customer->no_telp;
             $token = 'jVT18@D7koZiQkm3wE4z';

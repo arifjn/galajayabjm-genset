@@ -5,9 +5,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LaporanOutcomeResource\Pages;
 use App\Filament\Resources\LaporanOutcomeResource\RelationManagers;
 use App\Models\Outcome;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,6 +43,10 @@ class LaporanOutcomeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('plan.tanggal_job')
+                    ->label('Tanggal')
+                    ->date('d F Y')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('plan.jobdesk')
                     ->sortable()
                     ->label('Pekerjaan')
@@ -79,6 +85,7 @@ class LaporanOutcomeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lainnya')
                     ->label('Keterangan')
+                    ->default('-')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('outcome')
                     ->label('Total Pengeluaran')
@@ -102,7 +109,17 @@ class LaporanOutcomeResource extends Resource
                 //
             ])
             ->bulkActions([
-                //
+                Tables\Actions\BulkAction::make('pdf-outcome')
+                    ->label('Download PDF')
+                    ->color(Color::Rose)
+                    ->icon('heroicon-o-arrow-down-on-square')
+                    ->action(function ($records) {
+                        $pdf = Pdf::loadView('pdf.outcome', ['outcomes' => $records])->setPaper('a4', 'landscape');
+                        return response()->streamDownload(function () use ($pdf) {
+                            echo $pdf->output();
+                        }, 'laporan-outcome.pdf');
+                    })
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 

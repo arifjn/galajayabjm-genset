@@ -6,8 +6,6 @@ use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Genset;
 use App\Models\Transaction;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Actions as ComponentsActions;
 use Filament\Forms\Components\Actions\Action as ComponentsActionsAction;
@@ -15,7 +13,6 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -66,6 +63,8 @@ class TransactionResource extends Resource
                     ])
                     ->placeholder('Pilih Genset')
                     ->native(false)
+                    ->searchable()
+                    ->preload()
                     ->relationship(
                         name: 'genset',
                         modifyQueryUsing: function (Builder $query, $record) {
@@ -85,6 +84,8 @@ class TransactionResource extends Resource
                     ])
                     ->placeholder('Pilih Sales')
                     ->native(false)
+                    ->searchable()
+                    ->preload()
                     ->relationship(
                         name: 'sale',
                         titleAttribute: 'name',
@@ -104,7 +105,34 @@ class TransactionResource extends Resource
                         name: 'customer',
                         titleAttribute: 'name',
                     )
+                    ->live()
                     ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->perusahaan ? "{$record->perusahaan}" : "{$record->name}"),
+                Forms\Components\DatePicker::make('tgl_sewa')
+                    ->label('Mulai Sewa')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Tanggal Sewa wajib diisi.',
+                    ])
+                    ->native(false)
+                    ->closeOnDateSelection()
+                    ->displayFormat('d F Y')
+                    ->visible(fn($operation) => $operation == 'create')
+                    ->default(now()),
+                Forms\Components\DatePicker::make('tgl_selesai')
+                    ->label('Tanggal Selesai')
+                    ->native(false)
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Tanggal Selesai wajib diisi.',
+                    ])
+                    ->visible(fn($operation) => $operation == 'create')
+                    ->closeOnDateSelection()
+                    ->displayFormat('d F Y')
+                    ->default(now()),
+                Forms\Components\Textarea::make('site')
+                    ->label('Lokasi Proyek')
+                    ->visible(fn($operation, Get $get) => $operation == 'create' && $get('customer_id'))
+                    ->columnSpanFull(),
                 Section::make('Price Information')
                     ->schema([
                         TextInput::make('harga')
@@ -236,14 +264,22 @@ class TransactionResource extends Resource
                     ->formatStateUsing(fn(string $state): string => str()->title($state) . ' Genset')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('brand_engine')
-                    ->label('Brand Engine')
-                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
+                TextColumn::make('tgl_sewa')
+                    ->label('Mulai Sewa')
+                    ->date('d F Y')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('tgl_selesai')
+                    ->label('Selesai Sewa')
+                    ->date('d F Y')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kapasitas')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->suffix(' KVA')
+                    // ->formatStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
+                    ->getStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
                 TextColumn::make('customer.perusahaan')
                     ->label('Perusahaan')
                     ->searchable()
@@ -276,7 +312,7 @@ class TransactionResource extends Resource
                         'cancel' => 'heroicon-o-x-mark',
                     }),
             ])
-            ->defaultSort('status_transaksi', 'DESC')
+            ->defaultSort('created_at', 'DESC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 SelectFilter::make('status_transaksi')
@@ -329,6 +365,8 @@ class TransactionResource extends Resource
                             ->label('Genset')
                             ->placeholder('Pilih Genset')
                             ->native(false)
+                            ->searchable()
+                            ->preload()
                             ->relationship(
                                 name: 'genset',
                                 modifyQueryUsing: function (Builder $query) {
@@ -340,6 +378,8 @@ class TransactionResource extends Resource
                             ->label('Sales')
                             ->placeholder('Pilih Sales')
                             ->native(false)
+                            ->searchable()
+                            ->preload()
                             ->relationship(
                                 name: 'sale',
                                 titleAttribute: 'name',

@@ -55,10 +55,15 @@ class PlanResource extends Resource
                                     'service' => 'Service & Maintenance Check',
                                     'lainnya' => 'Lainnya',
                                 ])
-                                ->label('Pilih Jobdesk')
+                                ->label('Pilih Pekerjaan')
                                 ->native(false)
+                                ->searchable()
+                                ->preload()
                                 ->live()
                                 ->required()
+                                ->validationMessages([
+                                    'required' => 'Pekerjaan wajib diisi.',
+                                ])
                                 ->placeholder('Pilih Pekerjaan')
                                 ->afterStateUpdated(function (Set $set) {
                                     $set('jobdesk', null);
@@ -73,6 +78,9 @@ class PlanResource extends Resource
                             Forms\Components\DatePicker::make('tanggal_job')
                                 ->label('Tanggal Job')
                                 ->required()
+                                ->validationMessages([
+                                    'required' => 'Tanggal Job wajib diisi.',
+                                ])
                                 ->native(false)
                                 ->closeOnDateSelection()
                                 ->displayFormat('d F Y')
@@ -93,11 +101,16 @@ class PlanResource extends Resource
                                 ->placeholder('Pilih Genset')
                                 ->hidden(fn(string $operation): bool => $operation == 'edit')
                                 ->native(false)
+                                ->searchable()
+                                ->preload()
                                 ->multiple()
                                 ->searchable(['brand_engine', 'kapasitas'])
                                 ->preload()
                                 ->live()
                                 ->required(fn(Get $get) => $get('choose_jobdesk') != 'lainnya')
+                                ->validationMessages([
+                                    'required' => 'Genset wajib diisi.',
+                                ])
                                 ->afterStateUpdated(function (Set $set) {
                                     $set('alamat', null);
                                     $set('order_id', null);
@@ -118,7 +131,10 @@ class PlanResource extends Resource
                                 ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
                             Forms\Components\Select::make('order_id')
                                 ->label('Customer')
-                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Customer wajib diisi.',
+                                ])
                                 ->native(false)
                                 ->searchable()
                                 ->preload()
@@ -146,6 +162,8 @@ class PlanResource extends Resource
                                 ->placeholder('Pilih Operator')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->native(false)
+                                ->searchable()
+                                ->preload()
                                 ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery')
                                 ->options(function ($record) {
                                     return User::where('status', 'tersedia')
@@ -177,7 +195,7 @@ class PlanResource extends Resource
                             Forms\Components\Textarea::make('keterangan')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(65535),
-                            Forms\Components\Radio::make('status')
+                            Forms\Components\ToggleButtons::make('status')
                                 ->required()
                                 ->inline()
                                 ->inlineLabel(false)
@@ -188,6 +206,20 @@ class PlanResource extends Resource
                                     'rent' => 'Rent',
                                     'selesai' => 'Selesai',
                                     'cancel' => 'Cancel',
+                                ])
+                                ->colors([
+                                    'pending' => 'warning',
+                                    'delivery' => 'info',
+                                    'rent' => 'primary',
+                                    'selesai' => 'success',
+                                    'cancel' => 'danger',
+                                ])
+                                ->icons([
+                                    'pending' => 'heroicon-m-exclamation-circle',
+                                    'delivery' => 'heroicon-m-truck',
+                                    'rent' => 'heroicon-m-bolt',
+                                    'selesai' => 'heroicon-m-check-badge',
+                                    'cancel' => 'heroicon-m-x-circle',
                                 ]),
                         ])
                         ->collapsible(),
@@ -195,15 +227,19 @@ class PlanResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make('nama_supir')
                                 ->label('Nama Supir')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('nohp_supir')
                                 ->label('No. Telp')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('jenis_mobil')
                                 ->label('Jenis Mobil')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
                             Forms\Components\TextInput::make('plat_mobil')
                                 ->label('Plat')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
                         ])
                         ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery')
@@ -245,7 +281,7 @@ class PlanResource extends Resource
                     ->bulleted(fn(Plan $record) => $record->users->count() > 1)
                     ->searchable()
                     ->default('-')
-                    ->wrap()
+                    // ->wrap()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operator.name')
                     ->default('-')

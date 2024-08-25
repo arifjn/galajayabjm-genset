@@ -68,9 +68,14 @@ class LaporanTransaksiResource extends Resource
                     ->formatStateUsing(fn(string $state): string => str()->title($state) . ' Genset')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('brand_engine')
-                    ->label('Brand Engine')
-                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
+                TextColumn::make('tgl_sewa')
+                    ->label('Mulai Sewa')
+                    ->date('d F Y')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('tgl_selesai')
+                    ->label('Selesai Sewa')
+                    ->date('d F Y')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kapasitas')

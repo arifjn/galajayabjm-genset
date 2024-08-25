@@ -44,6 +44,10 @@ class IncomeResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('transaction_id')
                             ->label('Transaksi')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Transaksi wajib diisi.',
+                            ])
                             ->placeholder('Pilih Transaksi')
                             ->native(false)
                             ->searchable()
@@ -52,13 +56,14 @@ class IncomeResource extends Resource
                             ->relationship(
                                 name: 'transaction',
                                 modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_transaksi', 'selesai');
+                                    $query->where('status_transaksi', 'selesai')->orWhere('status_transaksi', 'dibayar');
                                 },
                             )
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->subject) . ' Genset ' . $record->kapasitas . ' (' . $record->order_id . ')'),
+                            ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->subject) . ' Genset ' . ($record->kapasitas ? $record->kapasitas : $record->genset->kapasitas) . ' KVA' . ' (' . $record->order_id . ')'),
                         Forms\Components\TextInput::make('overtime')
                             ->label('Kelebihan Jam')
                             ->numeric()
+                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                             ->live(onBlur: true)
                             ->suffix('Jam'),
                         Forms\Components\Placeholder::make('denda_placheholder')

@@ -109,7 +109,7 @@ class LaporanOperatorResource extends Resource
                     ->color(Color::Rose)
                     ->icon('heroicon-o-arrow-down-on-square')
                     ->action(function ($records) {
-                        $pdf = Pdf::loadView('pdf.operator', ['operators' => $records])->setPaper('a4', 'landscape');
+                        $pdf = Pdf::loadView('pdf.operator', ['operators' => $records])->setPaper('a4', 'portrait');
                         return response()->streamDownload(function () use ($pdf) {
                             echo $pdf->output();
                         }, 'laporan-operator.pdf');

@@ -21,10 +21,10 @@ class Transaction extends Model
         'sales_id',
 
         'subject',
-        'durasi_sewa',
+        'tgl_sewa',
+        'tgl_selesai',
         'site',
         'kapasitas',
-        'brand_engine',
         'keterangan',
         'status_transaksi',
 
@@ -38,16 +38,15 @@ class Transaction extends Model
         'grand_total',
     ];
 
+    protected $dates = ['tgl_sewa', 'tgl_selesai'];
+
+
     protected static function boot()
     {
         parent::boot();
 
         /** @var Model $model */
         static::updating(function ($model) {
-            if ($model->isDirty('penawaran') && ($model->getOriginal('penawaran') !== null)) {
-                Storage::disk('public')->delete($model->getOriginal('penawaran'));
-            }
-
             if ($model->isDirty('bukti_tf') && ($model->getOriginal('bukti_tf') !== null)) {
                 Storage::disk('public')->delete($model->getOriginal('bukti_tf'));
             }
@@ -55,10 +54,6 @@ class Transaction extends Model
 
         /** @var Model $model */
         static::deleting(function ($model) {
-            if ($model->getOriginal('penawaran')) {
-                Storage::disk('public')->delete($model->getOriginal('penawaran'));
-            }
-
             if ($model->getOriginal('bukti_tf')) {
                 Storage::disk('public')->delete($model->getOriginal('bukti_tf'));
             }

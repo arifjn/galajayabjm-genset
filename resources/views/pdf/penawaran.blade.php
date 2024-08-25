@@ -99,7 +99,8 @@ use Carbon\Carbon;
         </span>
         <br>
         <span>
-            Sehubungan dengan adanya kebutuhan {{ ucwords($order->subject) }} Genset kapasitas {{ $order->kapasitas }}
+            Sehubungan dengan adanya kebutuhan {{ ucwords($order->subject) }} Genset kapasitas
+            {{ $order->kapasitas ? $order->kapasitas : $order->genset->kapasitas }} KVA
             tipe
             {{ ucwords($order->genset->tipe_genset) }},
             maka dengan ini kami
@@ -112,7 +113,7 @@ use Carbon\Carbon;
             <tr>
                 <td colspan="3">
                     Diesel Genset, {{ ucwords($order->genset->tipe_genset) }} Type, Capacity
-                    <b>{{ $order->kapasitas }}</b>,
+                    <b>{{ $order->kapasitas ? $order->kapasitas : $order->genset->kapasitas }} KVA</b>,
                     {{ $order->genset->voltase }} V, {{ $order->genset->phase }}
                     Phase, {{ $order->genset->frekuensi }} Hz, {{ $order->genset->kecepatan }} Rpm :
                 </td>

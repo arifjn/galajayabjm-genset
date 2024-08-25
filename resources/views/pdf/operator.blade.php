@@ -73,7 +73,7 @@ use Carbon\Carbon;
     <main>
 
         <h2 class="text-uppercase fw-bold text-center my-4">
-            Laporan Operator {{ Carbon::now()->translatedFormat('d F Y') }}
+            Laporan Operator
         </h2>
 
         <table border="1" id="table1">

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->decimal('biaya_lainnya', 10, 2)->nullable();
             $table->decimal('upd', 10, 2)->nullable();
             $table->decimal('biaya_service', 10, 2)->nullable();
+            $table->decimal('biaya_bbm', 10, 2)->nullable();
+            $table->text('bukti_pembayaran')->nullable();
             $table->decimal('outcome', 10, 2)->nullable();
             $table->timestamps();
         });

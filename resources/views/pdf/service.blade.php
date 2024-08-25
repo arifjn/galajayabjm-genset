@@ -148,7 +148,7 @@ use Carbon\Carbon;
     @foreach ($services as $service)
         <div class="page_break">
             <h2 class="text-uppercase fw-bold text-center mb-6">
-                Service & Maintenance Check Report {{ $service->genset->brand_engine }}
+                Service & Maintenance Check Report <br> {{ str()->upper($service->genset->brand_engine) }}
                 {{ $service->genset->kapasitas }} KVA
             </h2>
             <div class="mb-4">

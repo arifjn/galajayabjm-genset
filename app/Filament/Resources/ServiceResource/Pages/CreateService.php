@@ -18,7 +18,7 @@ class CreateService extends CreateRecord
 
     public function getTitle(): string|Htmlable
     {
-        return 'Tambah Laporan Service';
+        return 'Tambah Service Report';
     }
 
     public function getBreadcrumb(): string

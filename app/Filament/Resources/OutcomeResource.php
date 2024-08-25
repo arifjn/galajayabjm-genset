@@ -6,6 +6,7 @@ use App\Filament\Resources\OutcomeResource\Pages;
 use App\Filament\Resources\OutcomeResource\RelationManagers;
 use App\Models\Outcome;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -14,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +42,7 @@ class OutcomeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Outcome  Information')
+                Forms\Components\Section::make('Expenses Information')
                     ->schema([
                         Forms\Components\Select::make('plan_id')
                             ->label('Pekerjaan')
@@ -52,7 +54,7 @@ class OutcomeResource extends Resource
                             ->relationship(
                                 name: 'plan',
                                 modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status', 'selesai');
+                                    $query->where('status', 'selesai')->orWhere('status', 'rent');
                                 },
                             )
                             ->columnSpanFull()
@@ -79,12 +81,8 @@ class OutcomeResource extends Resource
                             ->default(0)
                             ->dehydrated()
                             ->prefix('Rp'),
-                        Forms\Components\TextInput::make('lainnya')
-                            ->live()
-                            ->label('Pengeluaran Lainnya'),
-                        Forms\Components\TextInput::make('biaya_lainnya')
-                            ->label('Biaya Lainnya')
-                            ->visible(fn(Get $get) => $get('lainnya'))
+                        Forms\Components\TextInput::make('biaya_bbm')
+                            ->label('Biaya BBM')
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
@@ -94,6 +92,22 @@ class OutcomeResource extends Resource
                             ->default(0)
                             ->dehydrated()
                             ->prefix('Rp'),
+                        Forms\Components\TextInput::make('biaya_lainnya')
+                            ->label('Biaya Lainnya')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                            ->numeric()
+                            ->reactive()
+                            ->live(onBlur: true)
+                            ->default(0)
+                            ->dehydrated()
+                            ->prefix('Rp'),
+                        Forms\Components\TextInput::make('lainnya')
+                            ->label('Keterangan')
+                            ->live()
+                            ->visible(fn(Get $get) => $get('biaya_lainnya'))
+                            ->required(fn(Get $get) => $get('plan_id') == null),
                         Forms\Components\Placeholder::make('outcome_placheholder')
                             ->label('Total Pengeluaran')
                             ->content(function (Get $get, Set $set) {
@@ -103,12 +117,14 @@ class OutcomeResource extends Resource
                                     $set('upd', 0);
                                 } elseif ($get('biaya_service') == null) {
                                     $set('biaya_service', 0);
+                                } elseif ($get('biaya_bbm') == null) {
+                                    $set('biaya_bbm', 0);
                                 } elseif ($get('biaya_lainnya') == null) {
                                     $set('biaya_lainnya', 0);
                                 }
 
                                 if (floatval(str_replace(',', '', $get('upd'))) > 0) {
-                                    $total = floatval(str_replace(',', '', $get('upd'))) + floatval(str_replace(',', '', $get('biaya_service'))) + floatval(str_replace(',', '', $get('biaya_lainnya')));
+                                    $total = floatval(str_replace(',', '', $get('upd'))) + floatval(str_replace(',', '', $get('biaya_service'))) + floatval(str_replace(',', '', $get('biaya_bbm'))) + floatval(str_replace(',', '', $get('biaya_lainnya')));
                                 }
 
                                 $set('outcome', $total);
@@ -120,6 +136,18 @@ class OutcomeResource extends Resource
                             ->default(0),
                     ])
                     ->columns(2),
+                Forms\Components\Section::make('Bukti Pembayaran-Pembayaran')
+                    ->schema([
+                        FileUpload::make('bukti_pembayaran')
+                            ->label('Foto')
+                            ->directory('pengeluaran')
+                            ->image()
+                            ->multiple()
+                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                            ->openable()
+                            // ->acceptedFileTypes(['application/pdf']),
+                            ->openable(),
+                    ])->collapsible()
             ]);
     }
 
@@ -158,6 +186,11 @@ class OutcomeResource extends Resource
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_service, 'IDR', 'id'))
                     ->default(0)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('biaya_bbm')
+                    ->label('Biaya BBM')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_bbm, 'IDR', 'id'))
+                    ->default(0)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('biaya_lainnya')
                     ->label('Biaya Lainnya')
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_lainnya, 'IDR', 'id'))
@@ -165,7 +198,15 @@ class OutcomeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lainnya')
                     ->label('Keterangan')
+                    ->default('-')
                     ->searchable(),
+                ImageColumn::make('bukti_pembayaran')
+                    ->label('Bukti Pembayaran')
+                    ->circular()
+                    ->stacked()
+                    ->wrap()
+                    ->simpleLightbox()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('outcome')
                     ->label('Total Pengeluaran')
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->outcome, 'IDR', 'id'))

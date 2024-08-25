@@ -16,13 +16,15 @@ class LatestOrders extends BaseWidget
 {
     protected int | string | array $columnSpan = 'full';
 
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
     public function table(Table $table): Table
     {
         return $table
             ->query(
-                TransactionResource::getEloquentQuery()->where('status_transaksi', 'pending')
+                TransactionResource::getEloquentQuery()
+                    ->where('status_transaksi', 'penawaran')
+                    ->orWhere('status_transaksi', 'pembayaran')
             )
             ->heading('Permintaan Penawaran Terbaru')
             ->defaultPaginationPageOption(5)
@@ -49,14 +51,22 @@ class LatestOrders extends BaseWidget
                     ->formatStateUsing(fn(string $state): string => str()->title($state) . ' Genset')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('brand_engine')
-                    ->label('Brand Engine')
-                    ->formatStateUsing(fn(string $state): string => str()->upper($state))
+                TextColumn::make('tgl_sewa')
+                    ->label('Mulai Sewa')
+                    ->date('d F Y')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('tgl_selesai')
+                    ->label('Selesai Sewa')
+                    ->date('d F Y')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kapasitas')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->suffix(' KVA')
+                    // ->formatStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
+                    ->getStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
                 TextColumn::make('customer.perusahaan')
                     ->label('Perusahaan')
                     ->searchable()

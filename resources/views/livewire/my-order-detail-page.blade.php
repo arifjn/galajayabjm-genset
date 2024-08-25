@@ -133,7 +133,10 @@
                                                                 Penawaran</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
-                                                                Brand Engine</th>
+                                                                Tanggal Sewa</th>
+                                                            <th scope="col"
+                                                                class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
+                                                                Tanggal Selesai</th>
                                                             <th scope="col"
                                                                 class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
                                                                 Kapasitas</th>
@@ -148,19 +151,20 @@
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                                 @if ($order->subject == 'sewa')
                                                                     Sewa Genset
-                                                                @elseif ($order->subject == 'pengadaan')
-                                                                    Pengadaan Genset Baru
-                                                                @elseif ($order->subject == 'service')
-                                                                    Service Genset
                                                                 @endif
                                                             </td>
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                {{ $order->brand_engine }}
+                                                                {{ Carbon\Carbon::parse($order->tgl_sewa)->translatedFormat('d F Y') }}
                                                             </td>
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                {{ $order->kapasitas }}
+                                                                {{ Carbon\Carbon::parse($order->tgl_selesai)->translatedFormat('d F Y') }}
+                                                            </td>
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                {{ $order->kapasitas ? $order->kapasitas : $order->genset->kapasitas }}
+                                                                KVA
                                                             </td>
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -189,7 +193,7 @@
                                                         <tr>
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                {{ $order->site }}
+                                                                {{ $order->site ? $order->site : $order->customer->alamat }}
                                                             </td>
                                                             <td
                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
@@ -282,7 +286,7 @@
                                             @if ($order->status_transaksi == 'penawaran')
                                                 <div class="flex justify-between">
                                                     <button type="button" data-hs-overlay="#hs-revisi-order-modal"
-                                                        class="py-1 px-2 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none">
+                                                        class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-semibold rounded-lg border border-transparent bg-yellow-500 text-white hover:bg-yellow-600 disabled:opacity-50 disabled:pointer-events-none">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" width="24" height="24"
                                                             stroke-width="1.5" stroke="currentColor"
@@ -293,7 +297,7 @@
                                                         Revisi
                                                     </button>
                                                     <button type="button" data-hs-overlay="#hs-confirm-order-modal"
-                                                        class="py-1 px-2 inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent bg-green-500 text-white hover:bg-green-600 disabled:opacity-50 disabled:pointer-events-none">
+                                                        class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-semibold rounded-lg border border-transparent bg-green-500 text-white hover:bg-green-600 disabled:opacity-50 disabled:pointer-events-none">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" width="24" height="24"
                                                             stroke-width="1.5" stroke="currentColor"
@@ -638,7 +642,7 @@
                                                                             {{ ucwords($plan->jobdesk) }}</td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ \Carbon\Carbon::parse($plan->tanggal_job)->format('d F Y') }}
+                                                                            {{ \Carbon\Carbon::parse($plan->tanggal_job)->translatedFormat('d F Y') }}
                                                                         </td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">

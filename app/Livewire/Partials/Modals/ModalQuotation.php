@@ -19,7 +19,8 @@ class ModalQuotation extends Component
     public $durasi_sewa;
     public $site;
     public $kapasitas = '';
-    public $brand_engine = '';
+    public $tgl_sewa;
+    public $tgl_selesai;
     public $keterangan;
     public  $validateSite = true;
 
@@ -28,7 +29,7 @@ class ModalQuotation extends Component
         $this->validate([
             'subject' => 'required',
             'kapasitas' => 'required',
-            'brand_engine' => 'required',
+            'tgl_sewa' => 'required',
         ]);
 
         $site = $this->site;
@@ -45,10 +46,10 @@ class ModalQuotation extends Component
             'order_id' => $order_id,
             'customer_id' => auth()->guard('customer')->user()->id,
             'subject' => $this->subject,
-            'durasi_sewa' => $this->durasi_sewa,
+            'tgl_sewa' => $this->tgl_sewa,
+            'tgl_selesai' => $this->tgl_selesai,
             'site' => $site,
             'kapasitas' => $this->kapasitas,
-            'brand_engine' => $this->brand_engine,
             'keterangan' => $this->keterangan,
             'status_transaksi' => 'penawaran',
         ]);

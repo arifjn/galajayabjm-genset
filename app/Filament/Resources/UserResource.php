@@ -57,6 +57,7 @@ class UserResource extends Resource
                 Section::make('Account Information')
                     ->schema([
                         TextInput::make('email')
+                            ->autofocus()
                             ->required()
                             ->validationMessages([
                                 'required' => 'Email wajib diisi.',

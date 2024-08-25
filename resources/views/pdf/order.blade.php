@@ -73,7 +73,7 @@ use Carbon\Carbon;
     <main>
 
         <h2 class="text-uppercase fw-bold text-center my-4">
-            Laporan Transaksi
+            Laporan Riwayat Transaksi
         </h2>
 
         <table border="1" id="table1">
@@ -81,10 +81,10 @@ use Carbon\Carbon;
                 <tr>
                     <th align="center" width="1%">No</th>
                     <th>Order ID</th>
-                    <th>Tanggal Order</th>
+                    <th>Tanggal Sewa</th>
+                    <th>Tanggal Selesai</th>
                     <th>Customer</th>
                     <th>Subject</th>
-                    <th>Brand Engine</th>
                     <th>Kapasitas</th>
                     <th>Perusahaan</th>
                     <th>No. Telp</th>
@@ -100,15 +100,13 @@ use Carbon\Carbon;
                             <td align="center">{{ $no++ }}</td>
                             <td>{{ $order->order_id }}
                             </td>
-                            <td>{{ $order->created_at->translatedFormat('d F Y') }}</td>
+                            <td>{{ Carbon::parse($order->tgl_sewa)->translatedFormat('d F Y') }}</td>
+                            <td>{{ Carbon::parse($order->tgl_selesai)->translatedFormat('d F Y') }}</td>
                             <td>
                                 {{ ucwords($order->customer->name) }}
                             </td>
                             <td>
                                 {{ ucwords($order->subject) }} Genset
-                            </td>
-                            <td>
-                                {{ str()->upper($order->brand_engine) }}
                             </td>
                             <td>
                                 {{ $order->kapasitas }}

@@ -18,7 +18,7 @@ class CreateMonitoring extends CreateRecord
 
     public function getTitle(): string|Htmlable
     {
-        return 'Tambah Laporan Monitoring';
+        return 'Tambah Daily Report';
     }
 
     public function getBreadcrumb(): string

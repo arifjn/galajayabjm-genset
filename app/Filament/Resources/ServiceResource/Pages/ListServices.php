@@ -23,6 +23,6 @@ class ListServices extends ListRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Laporan Service';
+        return 'Service & Maintenance Check';
     }
 }

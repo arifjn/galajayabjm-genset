@@ -14,7 +14,8 @@
                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order ID
                                 </th>
                                 <th scope="col"
-                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date</th>
+                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Tanggal
+                                    Sewa</th>
                                 <th scope="col"
                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Genset</th>
                                 <th scope="col"
@@ -40,14 +41,16 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                                             {{ $order->order_id }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                            {{ $order->created_at->format('d M Y') }}</td>
+                                            {{ Carbon\Carbon::parse($order->tgl_sewa)->translatedFormat('d F Y') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                            {{ $order->brand_engine }} {{ $order->kapasitas }}</td>
+                                            Genset
+                                            {{ $order->kapasitas ? $order->kapasitas : $order->genset->kapasitas }} KVA
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                             {{ $order->customer->perusahaan ? $order->customer->perusahaan : 'Perorangan' }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                            {{ $order->site }}
+                                            {{ $order->site ? $order->site : $order->customer->alamat }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                             @if ($order->status_transaksi == 'penawaran')

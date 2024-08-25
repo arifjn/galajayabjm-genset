@@ -49,12 +49,18 @@ class ServiceResource extends Resource
                         Forms\Components\DatePicker::make('tgl_cek')
                             ->label('Tanggal Cek')
                             ->required()
+                            ->validationMessages([
+                                'required' => 'Tanggal Cek wajib diisi.',
+                            ])
                             ->native(false)
                             ->closeOnDateSelection()
                             ->displayFormat('d F Y')
                             ->default(now()),
                         Forms\Components\Select::make('genset_id')
                             ->required()
+                            ->validationMessages([
+                                'required' => 'Genset wajib diisi.',
+                            ])
                             ->placeholder('Pilih Genset')
                             ->label('Genset')
                             ->relationship(
@@ -196,7 +202,7 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('genset.brand_engine')
                     ->label('Genset')
                     ->searchable()
-                    ->formatStateUsing(fn(Model $record) => $record->genset->brand_engine . ' ' . $record->genset->kapasitas . ' KVA'),
+                    ->formatStateUsing(fn(Model $record) => str()->upper($record->genset->brand_engine) . ' ' . $record->genset->kapasitas . ' KVA'),
                 Tables\Columns\TextColumn::make('users.name')
                     ->label('Mekanik')
                     ->bulleted()

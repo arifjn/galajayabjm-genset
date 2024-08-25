@@ -25,10 +25,10 @@ return new class extends Migration
             $table->foreignId('sales_id')->nullable();
 
             $table->string('subject');
-            $table->integer('durasi_sewa')->nullable();
+            $table->date('tgl_sewa')->nullable();
+            $table->date('tgl_selesai')->nullable();
             $table->text('site')->nullable();
-            $table->string('kapasitas');
-            $table->string('brand_engine');
+            $table->string('kapasitas')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('status_transaksi')->nullable();
 

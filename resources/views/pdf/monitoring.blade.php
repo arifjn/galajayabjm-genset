@@ -96,7 +96,8 @@ use Carbon\Carbon;
                             <td align="center">{{ $no++ }}</td>
                             <td>{{ Carbon::parse($monitoring->tgl_cek)->translatedFormat('d F Y') }}</td>
                             <td>
-                                {{ $monitoring->genset->brand_engine }} {{ $monitoring->genset->kapasitas }} KVA
+                                {{ str()->upper($monitoring->genset->brand_engine) }}
+                                {{ $monitoring->genset->kapasitas }} KVA
                             </td>
                             <td>
                                 {{ $monitoring->operator->name }}
@@ -146,11 +147,11 @@ use Carbon\Carbon;
             </h2>
             <div class="mb-4">
                 <p class="fw-bold">
-                    {{ $monitoring->genset->brand_engine }} {{ $monitoring->genset->kapasitas }}
+                    {{ str()->upper($monitoring->genset->brand_engine) }} {{ $monitoring->genset->kapasitas }}
                     KVA
                 </p>
                 <p>
-                    Operator : {{ $monitoring->operator->name }}
+                    Operator : {{ ucwords($monitoring->operator->name) }}
                 </p>
                 @foreach ($monitoring->foto_rental as $foto)
                     <img src="./storage/{{ $foto }}" alt="" height="180" class="me-2 mt-8">

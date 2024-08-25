@@ -11,13 +11,18 @@ use Illuminate\Support\Number;
 
 class StatsOverview extends BaseWidget
 {
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         $income = new Income();
         $outcome = new Outcome();
 
         return [
-            Stat::make('New Orders', Transaction::query()->where('status_transaksi', 'pending')->count()),
+            Stat::make('New Orders', Transaction::query()
+                ->where('status_transaksi', 'penawaran')
+                ->orWhere('status_transaksi', 'pembayaran')
+                ->count()),
             Stat::make('Total Pendapatan', $income->income ? Number::currency(Income::query()->avg('income'), 'IDR', 'ID') : 0),
             Stat::make('Total Pengeluaran', $outcome->outcome ? Number::currency(Outcome::query()->avg('outcome'), 'IDR', 'ID') : 0)
         ];
