@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\Filament\OperatorPanelProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -173,6 +174,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
+        OperatorPanelProvider::class,
     ])->toArray(),
 
     /*

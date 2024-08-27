@@ -98,7 +98,8 @@ class LatestOrders extends BaseWidget
                         'selesai' => 'heroicon-o-check-badge',
                         'cancel' => 'heroicon-o-x-mark',
                     }),
-            ]);
+            ])
+            ->emptyStateHeading('Belum ada data! 🙁');
         // ->actions([
         //     Tables\Actions\Action::make('View Order')
         //         ->url(fn(Transaction $record): string => Transaction::getUrl('view', ['record' => $record]))

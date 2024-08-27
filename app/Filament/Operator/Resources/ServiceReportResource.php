@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Operator\Resources;
 
-use App\Filament\Resources\MonitoringResource\Pages;
-use App\Filament\Resources\MonitoringResource\RelationManagers;
-use App\Models\Monitoring;
+use App\Filament\Operator\Resources\ServiceReportResource\Pages;
+use App\Filament\Operator\Resources\ServiceReportResource\RelationManagers;
 use App\Models\Plan;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Service;
+use App\Models\ServiceReport;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
@@ -20,30 +20,27 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Storage;
 use stdClass;
 
-class MonitoringResource extends Resource
+class ServiceReportResource extends Resource
 {
-    protected static ?string $model = Monitoring::class;
+    protected static ?string $model = Service::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-signal';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?string $navigationLabel = 'Monitoring';
+    protected static ?int $navigationSort = 3;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Service Report';
 
-    protected static ?string $navigationGroup = 'Manajemen Warehouse';
+    protected static ?string $slug = 'service-report';
 
-    protected static ?string $slug = 'daily-report';
-
-    protected static ?string $breadcrumb = 'Daily Report';
+    protected static ?string $breadcrumb = 'Service Report';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Monitoring Information')
+                Forms\Components\Section::make('Service & Check Report')
                     ->schema([
                         Forms\Components\DatePicker::make('tgl_cek')
                             ->label('Tanggal Cek')
@@ -66,8 +63,8 @@ class MonitoringResource extends Resource
                                 name: 'genset',
                                 titleAttribute: 'brand_engine',
                                 modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_genset', 'rent')
-                                        ->whereHas('plans', fn(Builder $q) => $q->where('status', 'rent'));
+                                    $query
+                                        ->whereHas('plans', fn(Builder $qr) => $qr->whereHas('users', fn(Builder $q) => $q->where('user_id', auth()->user()->id)));
                                 },
                             )
                             ->searchable()
@@ -83,6 +80,7 @@ class MonitoringResource extends Resource
                             ->label('Customer')
                             ->required()
                             ->native(false)
+                            ->unique(ignoreRecord: true)
                             ->searchable()
                             ->preload()
                             ->placeholder('Pilih Customer')
@@ -105,26 +103,23 @@ class MonitoringResource extends Resource
                                 },
                             )
                             ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->customer->perusahaan ? "{$record->customer->perusahaan}" : "{$record->customer->name}"),
-                        Forms\Components\Select::make('operator_id')
-                            ->label('Operator')
-                            ->placeholder('Pilih Operator')
+
+                        Forms\Components\Select::make('users')
+                            ->label('Mekanik')
+                            ->placeholder('Pilih Mekanik')
                             ->searchable()
                             ->preload()
+                            ->multiple()
                             ->native(false)
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                             ->visible(fn(Get $get) => $get('genset_id') && $get('order_id'))
                             ->relationship(
-                                name: 'operator',
+                                name: 'users',
                                 titleAttribute: 'name',
                                 modifyQueryUsing: function (Builder $query, Get $get) {
-                                    if ($get('genset_id')) {
-                                        $operator = Plan::whereHas('gensets', fn(Builder $q) => $q->where('genset_id', $get('genset_id')))->get('operator_id');
-                                        if ($operator[0]->operator_id) {
-                                            $query->where('status', 'bertugas')
-                                                ->whereHas('plan', fn(Builder $q) => $q->whereIn('operator_id', $operator));
-                                        } else {
-                                            $query->where('status', 'bertugas');
-                                        }
+                                    if ($get('order_id')) {
+                                        $query
+                                            // ->where('status', 'bertugas')
+                                            ->whereHas('plans', fn(Builder $q) => $q->where('order_id', $get('order_id'))->where('jobdesk', 'service'));
                                     } else {
                                         $query->where('status', 'bertugas');
                                     }
@@ -134,30 +129,47 @@ class MonitoringResource extends Resource
                     ->collapsible()
                     ->columns(2),
                 Forms\Components\Split::make([
-                    Forms\Components\Section::make('Kondisi Genset')
+                    Forms\Components\Section::make('Service Report')
                         ->schema([
-                            FileUpload::make('foto_rental')
+                            FileUpload::make('service_report')
                                 ->label('Foto')
-                                ->directory('rental')
+                                ->directory('service')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->openable()
+                                ->image(),
+                        ])->collapsible(),
+                    Forms\Components\Section::make('Check List')
+                        ->schema([
+                            FileUpload::make('check_list')
+                                ->label('Foto')
+                                ->directory('service')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->image()
+                                ->openable(),
+                        ])->collapsible()
+                ])->columnSpanFull(),
+                Forms\Components\Split::make([
+                    Forms\Components\Section::make('Foto Kondisi Genset')
+                        ->schema([
+                            FileUpload::make('foto_service')
+                                ->label('Foto')
+                                ->directory('service')
                                 ->multiple()
                                 ->image()
                                 ->panelLayout('grid')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->openable(),
                         ])->collapsible(),
-                    Forms\Components\Section::make('Daily Report')
+                    Forms\Components\Section::make('Surat Permintaan Barang')
                         ->schema([
-                            FileUpload::make('daily_report')
+                            FileUpload::make('part_request')
                                 ->label('Foto')
-                                ->directory('rental')
-                                ->image()
+                                ->directory('service')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                                ->openable()
-                                // ->acceptedFileTypes(['application/pdf']),
+                                ->image()
                                 ->openable(),
                         ])->collapsible()
-                ])->columnSpanFull()
-
+                ])->columnSpanFull(),
             ]);
     }
 
@@ -178,7 +190,7 @@ class MonitoringResource extends Resource
                     ->date('d F Y')
                     ->wrap()
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('foto_rental')
+                Tables\Columns\ImageColumn::make('foto_service')
                     ->label('Foto Rental')
                     ->circular()
                     ->stacked()
@@ -187,13 +199,15 @@ class MonitoringResource extends Resource
                     ->label('Genset')
                     ->searchable()
                     ->formatStateUsing(fn(Model $record) => str()->upper($record->genset->brand_engine) . ' ' . $record->genset->kapasitas . ' KVA'),
-                Tables\Columns\TextColumn::make('operator.name')
+                Tables\Columns\TextColumn::make('users.name')
+                    ->label('Mekanik')
+                    ->bulleted()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('transaction.customer')
                     ->label('Customer')
                     ->wrap()
                     ->searchable()
-                    ->formatStateUsing(function (Monitoring $record) {
+                    ->formatStateUsing(function (Service $record) {
                         return $record->transaction->customer->perusahaan  ? $record->transaction->customer->perusahaan : $record->transaction->customer->name;
                     }),
                 Tables\Columns\TextColumn::make('transaction.site')
@@ -201,6 +215,7 @@ class MonitoringResource extends Resource
                     ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('keterangan')
+                    ->label('Keterangan')
                     ->default('-')
                     ->wrap()
                     ->searchable(),
@@ -213,29 +228,48 @@ class MonitoringResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('tgl_cek', 'ASC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
-                Tables\Filters\SelectFilter::make('operator_id')
-                    ->label('Operator')
+                Tables\Filters\SelectFilter::make('genset_id')
+                    ->label('Genset')
                     ->relationship(
-                        name: 'operator',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '!=', 'admin')
+                        name: 'genset',
+                        titleAttribute: 'brand_engine',
+                        // modifyQueryUsing: fn(Builder $query) => $query->where('role', '!=', 'admin')
                     )
+                    ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')')
             ])
             ->actions([
-                Tables\Actions\Action::make('daily_report')
-                    ->label('Daily Report')
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('service_report')
+                        ->label('Service Report')
+                        ->icon('heroicon-o-document-text')
+                        ->url(fn(Model $record): string => url('storage', $record->service_report))
+                        ->hidden(fn(Model $record): bool => $record->service_report == null)
+                        ->openUrlInNewTab()
+                        ->color(Color::Indigo),
+                    Tables\Actions\Action::make('check_list')
+                        ->label('Check List Report')
+                        ->icon('heroicon-o-document-text')
+                        ->url(fn(Model $record): string => url('storage', $record->check_list))
+                        ->hidden(fn(Model $record): bool => $record->check_list == null)
+                        ->openUrlInNewTab()
+                        ->color(Color::Purple),
+                    Tables\Actions\Action::make('part_request')
+                        ->label('Permintaan Barang')
+                        ->icon('heroicon-o-document-text')
+                        ->url(fn(Model $record): string => url('storage', $record->part_request))
+                        ->hidden(fn(Model $record): bool => $record->part_request == null)
+                        ->openUrlInNewTab()
+                        ->color(Color::Teal),
+                ])
                     ->icon('heroicon-o-document-text')
-                    ->url(fn(Model $record): string => url('storage', $record->daily_report))
-                    ->hidden(fn(Model $record): bool => $record->daily_report == null)
-                    ->openUrlInNewTab()
                     ->color(Color::Rose),
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),
                     Tables\Actions\DeleteAction::make()
+                        ->before(fn(Model $record) => $record->users()->detach())
                 ]),
             ])
             ->bulkActions([
@@ -255,9 +289,16 @@ class MonitoringResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMonitorings::route('/'),
-            'create' => Pages\CreateMonitoring::route('/create'),
-            'edit' => Pages\EditMonitoring::route('/{record}/edit'),
+            'index' => Pages\ListServiceReports::route('/'),
+            'create' => Pages\CreateServiceReport::route('/create'),
+            'edit' => Pages\EditServiceReport::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereHas('users', function ($q) {
+            $q->where('user_id', auth()->user()->id);
+        });
     }
 }

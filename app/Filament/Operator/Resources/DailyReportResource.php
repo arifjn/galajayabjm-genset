@@ -1,39 +1,35 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Operator\Resources;
 
-use App\Filament\Resources\MonitoringResource\Pages;
-use App\Filament\Resources\MonitoringResource\RelationManagers;
+use App\Filament\Operator\Resources\DailyReportResource\Pages;
+use App\Filament\Operator\Resources\DailyReportResource\RelationManagers;
+use App\Models\DailyReport;
 use App\Models\Monitoring;
 use App\Models\Plan;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Storage;
 use stdClass;
 
-class MonitoringResource extends Resource
+class DailyReportResource extends Resource
 {
     protected static ?string $model = Monitoring::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-signal';
-
-    protected static ?string $navigationLabel = 'Monitoring';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationGroup = 'Manajemen Warehouse';
+    protected static ?string $navigationLabel = 'Daily Report';
 
     protected static ?string $slug = 'daily-report';
 
@@ -67,7 +63,7 @@ class MonitoringResource extends Resource
                                 titleAttribute: 'brand_engine',
                                 modifyQueryUsing: function (Builder $query) {
                                     $query->where('status_genset', 'rent')
-                                        ->whereHas('plans', fn(Builder $q) => $q->where('status', 'rent'));
+                                        ->whereHas('plans', fn(Builder $q) => $q->where('operator_id', auth()->user()->id));
                                 },
                             )
                             ->searchable()
@@ -216,27 +212,11 @@ class MonitoringResource extends Resource
             ->defaultSort('tgl_cek', 'ASC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
-                Tables\Filters\SelectFilter::make('operator_id')
-                    ->label('Operator')
-                    ->relationship(
-                        name: 'operator',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: fn(Builder $query) => $query->where('role', '!=', 'admin')
-                    )
+                //
             ])
             ->actions([
-                Tables\Actions\Action::make('daily_report')
-                    ->label('Daily Report')
-                    ->icon('heroicon-o-document-text')
-                    ->url(fn(Model $record): string => url('storage', $record->daily_report))
-                    ->hidden(fn(Model $record): bool => $record->daily_report == null)
-                    ->openUrlInNewTab()
-                    ->color(Color::Rose),
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()
-                        ->color(Color::Indigo),
-                    Tables\Actions\DeleteAction::make()
-                ]),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
@@ -255,9 +235,14 @@ class MonitoringResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMonitorings::route('/'),
-            'create' => Pages\CreateMonitoring::route('/create'),
-            'edit' => Pages\EditMonitoring::route('/{record}/edit'),
+            'index' => Pages\ListDailyReports::route('/'),
+            'create' => Pages\CreateDailyReport::route('/create'),
+            'edit' => Pages\EditDailyReport::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('operator_id', auth()->user()->id);
     }
 }
