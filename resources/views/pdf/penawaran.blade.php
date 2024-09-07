@@ -145,6 +145,19 @@ use Carbon\Carbon;
                     with {{ $order->genset->regulator_tegangan }}
                 </td>
             </tr>
+            <tr>
+                <td>
+                    Durasi Sewa
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    <b>{{ $durasi == '' ? '-' : $durasi }} Hari / {{ $durasi == '' ? '-' : $durasi * 8 }} Jam Maks.
+                        Pemakaian (8
+                        Jam/hari)</b>
+                </td>
+            </tr>
             <tr class="font-bold">
                 <td>
                     Harga Sewa
@@ -153,7 +166,18 @@ use Carbon\Carbon;
                     :
                 </td>
                 <td>
-                    {{ Number::currency($order->harga, 'IDR', 'id') }}/Unit (Maks. Pemakaian 360 Jam/Unit)
+                    {{ Number::currency($order->harga, 'IDR', 'id') }}/Unit
+                </td>
+            </tr>
+            <tr class="font-bold">
+                <td>
+                    Biaya Operator
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    {{ $order->biaya_operator ? Number::currency($order->biaya_operator, 'IDR', 'id') : 0 }}
                 </td>
             </tr>
             <tr class="font-bold">
@@ -267,7 +291,6 @@ use Carbon\Carbon;
         </p>
     </main>
 
-    <br>
     <br>
 
     <footer class="mt-2">

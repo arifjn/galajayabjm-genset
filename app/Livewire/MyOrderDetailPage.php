@@ -25,7 +25,7 @@ class MyOrderDetailPage extends Component
 
         if ($order->status_transaksi == 'pembayaran') {
             $this->currentStep = 2;
-        } elseif ($order->status_transaksi == 'dibayar' || $order->status_transaksi == 'delivery') {
+        } elseif ($order->status_transaksi == 'dibayar' || $order->status_transaksi == 'delivery' || $order->status_transaksi == 'selesai') {
             $this->currentStep = 3;
         } else {
             $this->currentStep = 1;

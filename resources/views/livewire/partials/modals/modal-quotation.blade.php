@@ -54,7 +54,7 @@
                         @if ($subject == 'sewa')
                             <!-- Tgl sewa -->
                             <div>
-                                <label for="tgl_sewa" class="block text-sm">Tanggal Sewa</label>
+                                <label for="tgl_sewa" class="block text-sm mb-2">Tanggal Sewa</label>
                                 <div class="rounded-lg shadow-sm">
                                     <input id="tgl_sewa" type="date" wire:model='tgl_sewa'
                                         class="border-gray-200 border text-gray-800 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 py-2 px-3 pe-11 block w-full"

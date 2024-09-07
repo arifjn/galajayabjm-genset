@@ -89,7 +89,7 @@
                                 class="me-2 text-sm bg-indigo-200 rounded-full size-6 flex items-center justify-center">3</span>
                             <span class="hidden sm:inline-flex sm:ms-2">Pengiriman</span>
                         </span>
-                    @elseif (($plan && $plan->status == 'success' && $order->status_transaksi != 'cancel') || ($plan && $plan->status == 'rent'))
+                    @elseif (($plan && $plan->status == 'selesai' && $order->status_transaksi != 'cancel') || ($plan && $plan->status == 'rent'))
                         <span class="flex items-center text-teal-500">
                             <svg class="size-6 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor" viewBox="0 0 20 20">
@@ -453,8 +453,21 @@
                             </div>
                             <!-- bukti bayar -->
                             <div class="md:w-1/4">
+
+                                @if ($order->genset_id != null)
+                                    <div class="bg-white rounded-lg shadow-sm border p-6 mb-4">
+                                        <div
+                                            class="flex flex-col justify-center items-center max-w-sm rounded-lg overflow-hidden">
+                                            <a href="{{ route('pdf.invoice', $order->order_id) }}" target="_blank"
+                                                class="bg-orange-500 text-center text-white hover:bg-orange-600 p-1.5 w-full">Lihat
+                                                Tagihan</a>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div
                                     class="max-w-sm mx-auto bg-white rounded-lg shadow-sm border overflow-hidden items-center">
+
                                     @if ($order->bukti_tf == null)
                                         <form wire:submit.prevent='save'>
                                             <div class="px-4 py-6">
@@ -702,11 +715,11 @@
                                                                     <tr>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ $plan->operator->name }}
+                                                                            {{ $plan->operator?->name }}
                                                                         </td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ $plan->operator->no_telp }}
+                                                                            {{ $plan->operator?->no_telp }}
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -815,19 +828,8 @@
                     </div>
                     <!-- End Third Content -->
                 @else
-                    <h1>Final</h1>
+                    <h1>Data Not Found!</h1>
                 @endif
-
-                <!-- Final Contnet -->
-                <div data-hs-stepper-content-item='{"isFinal": true}' style="display: none;">
-                    <div
-                        class="p-4 h-48 bg-gray-50 flex justify-center items-center border border-dashed border-gray-200 rounded-xl">
-                        <h3 class="text-gray-500">
-                            Final content
-                        </h3>
-                    </div>
-                </div>
-                <!-- End Final Contnet -->
 
             </div>
             <!-- End Stepper Content -->

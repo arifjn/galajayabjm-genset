@@ -78,6 +78,11 @@ class LaporanOutcomeResource extends Resource
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_service, 'IDR', 'id'))
                     ->default(0)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('biaya_bbm')
+                    ->label('Biaya BBM')
+                    ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_bbm, 'IDR', 'id'))
+                    ->default(0)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('biaya_lainnya')
                     ->label('Biaya Lainnya')
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->biaya_lainnya, 'IDR', 'id'))

@@ -312,7 +312,8 @@ class TransactionResource extends Resource
                         'cancel' => 'heroicon-o-x-mark',
                     }),
             ])
-            ->defaultSort('created_at', 'DESC')
+            // ->defaultSort('status_transaksi', 'DESC')
+            ->defaultSort(fn($query) => $query->orderBy('status_transaksi', 'DESC')->orderBy('created_at', 'DESC'))
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 SelectFilter::make('status_transaksi')
@@ -365,6 +366,10 @@ class TransactionResource extends Resource
                             ->label('Genset')
                             ->placeholder('Pilih Genset')
                             ->native(false)
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Genset wajib diisi.',
+                            ])
                             ->searchable()
                             ->preload()
                             ->relationship(
@@ -378,6 +383,10 @@ class TransactionResource extends Resource
                             ->label('Sales')
                             ->placeholder('Pilih Sales')
                             ->native(false)
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Sales wajib diisi.',
+                            ])
                             ->searchable()
                             ->preload()
                             ->relationship(
@@ -551,6 +560,13 @@ class TransactionResource extends Resource
                         ->color(Color::Rose)
                         ->url(fn(Transaction $record) => route('pdf.penawaran', $record->order_id))
                         ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('view_invoice')
+                        ->label('Lihat Invoice')
+                        ->visible(fn(Transaction $record) => $record->genset_id != null)
+                        ->icon('heroicon-o-document-text')
+                        ->color(Color::Lime)
+                        ->url(fn(Transaction $record) => route('pdf.invoice', $record->order_id))
+                        ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make()
                         ->modalHeading('Edit Penawaran')
                         ->color(Color::Indigo),
@@ -601,9 +617,8 @@ class TransactionResource extends Resource
                                 'cancel' => 'heroicon-o-x-mark',
                             })
                             ->label('Status'),
-                        TextEntry::make('brand_engine')
-                            ->label('Brand Engine'),
-                        TextEntry::make('kapasitas'),
+                        TextEntry::make('kapasitas')
+                            ->getStateUsing(fn(Model $record) => ($record->kapasitas ? $record->kapasitas : $record->genset->kapasitas) . ' KVA'),
                         TextEntry::make('durasi_sewa')
                             ->visible(fn(Transaction $record) => $record->durasi_sewa !== null)
                             ->suffix(' Hari'),
@@ -619,9 +634,6 @@ class TransactionResource extends Resource
                             ->label('No Telp'),
                         TextEntry::make('site')
                             ->label('Lokasi Proyek'),
-                        TextEntry::make('keterangan')
-                            ->visible(fn(Transaction $record) => $record->keterangan != null)
-                            ->columnSpan(2),
                         Actions::make([
                             ActionsAction::make('penawaran')
                                 ->visible(fn(Transaction $record) => $record->genset_id != null)
@@ -630,7 +642,11 @@ class TransactionResource extends Resource
                                 ->url(fn(Transaction $record) => route('pdf.penawaran', $record->order_id))
                                 ->openUrlInNewTab()
                                 ->color(Color::Rose),
-                        ])
+                        ]),
+                        TextEntry::make('keterangan')
+                            ->visible(fn(Transaction $record) => $record->keterangan != null)
+                            ->columnSpan(2),
+
                     ])->columns(3)->collapsible(),
                 ComponentsSection::make('Detail Harga')
                     ->schema([

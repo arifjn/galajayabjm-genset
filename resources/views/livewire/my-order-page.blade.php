@@ -88,7 +88,7 @@
 
                                                     {{ $order->status_transaksi == 'dibayar' ? 'Dibayar' : '' }}
                                                 </span>
-                                            @elseif ($order->status_transaksi == 'success')
+                                            @elseif ($order->status_transaksi == 'selesai')
                                                 <span
                                                     class="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-green-100 text-green-800 rounded-full ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none"

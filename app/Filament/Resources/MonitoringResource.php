@@ -186,8 +186,10 @@ class MonitoringResource extends Resource
                 Tables\Columns\TextColumn::make('genset.brand_engine')
                     ->label('Genset')
                     ->searchable()
+                    ->sortable()
                     ->formatStateUsing(fn(Model $record) => str()->upper($record->genset->brand_engine) . ' ' . $record->genset->kapasitas . ' KVA'),
                 Tables\Columns\TextColumn::make('operator.name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('transaction.customer')
                     ->label('Customer')
@@ -213,7 +215,7 @@ class MonitoringResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('tgl_cek', 'ASC')
+            ->defaultSort('tgl_cek', 'DESC')
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 Tables\Filters\SelectFilter::make('operator_id')

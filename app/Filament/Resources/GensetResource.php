@@ -302,7 +302,7 @@ class GensetResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('kapasitas')
-                    ->suffix(' kVA')
+                    ->suffix(' KVA')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('tipe_genset')

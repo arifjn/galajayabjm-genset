@@ -201,6 +201,7 @@ class ServiceResource extends Resource
                     ->simpleLightbox(),
                 Tables\Columns\TextColumn::make('genset.brand_engine')
                     ->label('Genset')
+                    ->sortable()
                     ->searchable()
                     ->formatStateUsing(fn(Model $record) => str()->upper($record->genset->brand_engine) . ' ' . $record->genset->kapasitas . ' KVA'),
                 Tables\Columns\TextColumn::make('users.name')

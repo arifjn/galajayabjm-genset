@@ -257,6 +257,7 @@ class PlanResource extends Resource
                 Tables\Columns\TextColumn::make('jobdesk')
                     ->formatStateUsing(fn(string $state): string => $state == 'service' ? 'Service & Maintenance Check' : str()->title($state))
                     ->wrap()
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_job')
                     ->label('Tanggal Job')
@@ -281,7 +282,6 @@ class PlanResource extends Resource
                     ->bulleted(fn(Plan $record) => $record->users->count() > 1)
                     ->searchable()
                     ->default('-')
-                    // ->wrap()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operator.name')
                     ->default('-')
@@ -290,17 +290,18 @@ class PlanResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alamat')
                     ->label('Alamat')
-                    ->limit(20)
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        $state = $column->getState();
+                    ->wrap(),
+                // ->limit(20)
+                // ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
+                //     $state = $column->getState();
 
-                        if (strlen($state) <= $column->getCharacterLimit()) {
-                            return null;
-                        }
+                //     if (strlen($state) <= $column->getCharacterLimit()) {
+                //         return null;
+                //     }
 
-                        // Only render the tooltip if the column content exceeds the length limit.
-                        return $state;
-                    }),
+                //     // Only render the tooltip if the column content exceeds the length limit.
+                //     return $state;
+                // }),
                 Tables\Columns\TextColumn::make('transaction.customer')
                     ->label('Customer')
                     ->sortable()
@@ -368,11 +369,26 @@ class PlanResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->emptyStateHeading('Belum ada data! 🙁')
+            ->defaultSort('tanggal_job', 'DESC')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('delivery_order')
+                        ->label('Cetak DO')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'delivery')
+                        ->icon('heroicon-o-document-text')
+                        ->color(Color::Rose)
+                        ->url(fn(Plan $record) => route('pdf.delivery', $record->order_id))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('service_work')
+                        ->label('Cetak ST')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'service')
+                        ->icon('heroicon-o-document-text')
+                        ->color(Color::Rose)
+                        ->url(fn(Plan $record) => route('pdf.service-work', $record->id))
+                        ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make()
                         ->color(Color::Indigo),
                     Tables\Actions\ViewAction::make()

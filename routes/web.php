@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DeliveryOrderPdfController;
 use App\Http\Controllers\GensetPdfController;
 use App\Http\Controllers\IncomePdfController;
+use App\Http\Controllers\InvoicePdfController;
 use App\Http\Controllers\MonitoringPdfController;
 use App\Http\Controllers\OperatorPdfController;
 use App\Http\Controllers\OrderPdfController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\OutcomePdfController;
 use App\Http\Controllers\PenawaranPdfController;
 use App\Http\Controllers\PlanJobPdfController;
 use App\Http\Controllers\ServicePdfController;
+use App\Http\Controllers\ServiceWorkPdfController;
 use App\Livewire\AboutPage;
 use App\Livewire\Auth\ForgotPasswordPage;
 use App\Livewire\Auth\Login;
@@ -67,6 +70,10 @@ Route::middleware('auth:customer')->group(function () {
 });
 
 Route::get('pdf-penawaran/{transaction:order_id}', [PenawaranPdfController::class, 'pdf'])->name('pdf.penawaran');
+Route::get('pdf-invoice/{transaction:order_id}', [InvoicePdfController::class, 'pdf'])->name('pdf.invoice');
+
+Route::get('pdf-delivery/{plan:order_id}', [DeliveryOrderPdfController::class, 'pdf'])->name('pdf.delivery');
+Route::get('pdf-service_work/{plan:id}', [ServiceWorkPdfController::class, 'pdf'])->name('pdf.service-work');
 
 Route::get('pdf-genset', [GensetPdfController::class, 'pdf'])->name('pdf.genset');
 Route::get('pdf-operator', [OperatorPdfController::class, 'pdf'])->name('pdf.operator');

@@ -248,7 +248,7 @@ class UserResource extends Resource
                     TextEntry::make('tempat_lahir')
                         ->label('Tempat Lahir'),
                     TextEntry::make('tgl_lahir')
-                        ->date()
+                        ->date('d F Y')
                         ->label('Tanggal Lahir'),
                     TextEntry::make('alamat')
                         ->columnSpan(2),

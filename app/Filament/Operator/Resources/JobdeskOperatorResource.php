@@ -4,11 +4,15 @@ namespace App\Filament\Operator\Resources;
 
 use App\Filament\Operator\Resources\JobdeskOperatorResource\Pages;
 use App\Filament\Operator\Resources\JobdeskOperatorResource\RelationManagers;
+use App\Models\Genset;
 use App\Models\JobdeskOperator;
 use App\Models\Plan;
+use App\Models\Transaction;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
@@ -104,29 +108,56 @@ class JobdeskOperatorResource extends Resource
                     ->formatStateUsing(function (Plan $record) {
                         return $record->transaction->customer->perusahaan  ? $record->transaction->customer->perusahaan : $record->transaction->customer->name;
                     }),
-                Tables\Columns\TextColumn::make('status')
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                Tables\Columns\SelectColumn::make('status')
+                    ->searchable()
+                    ->options([
                         'pending' => 'Pending',
                         'delivery' => 'Delivery',
                         'rent' => 'Rent',
                         'selesai' => 'Selesai',
                         'cancel' => 'Cancel',
+                    ])
+                    ->afterStateUpdated(function ($state, $record) {
+                        if ($state == 'rent') {
+                            if ($record->users) {
+                                foreach ($record->users as $user) {
+                                    $u = User::find($user->id);
+                                    $u->status = 'tersedia';
+                                    $u->save();
+                                }
+                            }
+                        } elseif ($state == 'selesai') {
+                            if ($record->users) {
+                                foreach ($record->users as $user) {
+                                    $u = User::find($user->id);
+                                    $u->status = 'tersedia';
+                                    $u->save();
+                                }
+                            }
+
+                            if ($record->gensets) {
+                                foreach ($record->gensets as $genset) {
+                                    $gs = Genset::find($genset->id);
+                                    $gs->status_genset = 'ready';
+                                    $gs->save();
+                                }
+                            }
+
+                            if ($record->operator_id) {
+                                $u = User::find($record->operator_id);
+                                $u->status = 'tersedia';
+                                $u->save();
+                            }
+
+                            if ($record->order_id) {
+                                $order = Transaction::where('order_id', $record->order_id)->first();
+                                $order->status_transaksi = 'selesai';
+                                $order->save();
+                            }
+                        }
+                        return $state;
                     })
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'delivery' => 'info',
-                        'rent' => 'primary',
-                        'selesai' => 'success',
-                        'cancel' => 'danger',
-                    })
-                    ->icon(fn(string $state): string => match ($state) {
-                        'pending' => 'heroicon-o-information-circle',
-                        'delivery' => 'heroicon-o-truck',
-                        'rent' => 'heroicon-o-bolt',
-                        'selesai' => 'heroicon-o-check-badge',
-                        'cancel' => 'heroicon-o-x-mark',
-                    }),
+                    ->selectablePlaceholder(false),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -141,7 +172,23 @@ class JobdeskOperatorResource extends Resource
                 //
             ])
             ->actions([
-                //
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\Action::make('delivery_order')
+                        ->label('Cetak DO')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'delivery')
+                        ->icon('heroicon-o-printer')
+                        ->color(Color::Rose)
+                        ->url(fn(Plan $record) => route('pdf.delivery', $record->order_id))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('service_work')
+                        ->label('Cetak ST')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'service')
+                        ->icon('heroicon-o-printer')
+                        ->color(Color::Rose)
+                        ->url(fn(Plan $record) => route('pdf.service-work', $record->id))
+                        ->openUrlInNewTab(),
+                ])
+                    ->icon('heroicon-o-document-text')
             ])
             ->bulkActions([
                 //

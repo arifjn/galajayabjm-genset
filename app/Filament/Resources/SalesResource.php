@@ -12,7 +12,12 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section as ComponentsSection;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -135,12 +140,43 @@ class SalesResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->modalHeading('Lihat Sales')
+                        ->color(Color::Orange),
+                    Tables\Actions\EditAction::make()
+                        ->color(Color::Indigo),
+                    Tables\Actions\DeleteAction::make()
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                ComponentsSection::make('Informasi Sales')->schema([
+                    TextEntry::make('name')
+                        ->label('Nama Lengkap')
+                        ->formatStateUsing(fn(string $state): string => str()->title($state)),
+                    TextEntry::make('email'),
+                    TextEntry::make('no_telp')
+                        ->label('No. HP'),
+                    TextEntry::make('tgl_lahir')
+                        ->date('d F Y')
+                        ->label('Tanggal Lahir'),
+                    TextEntry::make('tempat_lahir')
+                        ->label('Tempat Lahir'),
+                    TextEntry::make('alamat'),
+                ])->columns(2),
+                ImageEntry::make('profile_img')
+                    ->label('Foto Profil')
+                    ->simpleLightbox(),
             ]);
     }
 

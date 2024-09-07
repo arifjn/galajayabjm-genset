@@ -77,6 +77,12 @@ class EditPlan extends EditRecord
 
         $record->update($data);
 
+        if ($record->operator_id) {
+            $user = User::find($record->operator_id);
+            $user->status = 'bertugas';
+            $user->save();
+        }
+
         return $record;
     }
 }

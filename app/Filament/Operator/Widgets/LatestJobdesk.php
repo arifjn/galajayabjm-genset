@@ -19,12 +19,12 @@ class LatestJobdesk extends BaseWidget
         return $table
             ->query(
                 PlanResource::getEloquentQuery()
-                    ->where('status', 'pending')
+                    ->where('status', '!=', 'selesai')
                     ->whereHas('users', function ($q) {
                         $q->where('user_id', auth()->user()->id);
                     })
                     ->orWhere('operator_id', auth()->user()->id)
-                    ->where('status', 'pending')
+                // ->where('status', 'pending')
             )
             ->heading('Jadwal Penugasan Terbaru')
             ->columns([

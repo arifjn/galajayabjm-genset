@@ -53,8 +53,8 @@ class LaporanIncomeResource extends Resource
                 Tables\Columns\TextColumn::make('transaction')
                     ->label('Transaksi')
                     ->sortable()
-                    ->formatStateUsing(
-                        fn(Model $record) => ucwords($record->transaction->subject) . ' Genset ' . $record->transaction->kapasitas
+                    ->getStateUsing(
+                        fn(Model $record) => ucwords($record->transaction->subject) . ' Genset ' . ($record->transaction->kapasitas ? $record->transaction->kapasitas : $record->transaction->genset->kapasitas) . ' KVA'
                     ),
                 Tables\Columns\TextColumn::make('transaction.created_at')
                     ->label('Tanggal Order')

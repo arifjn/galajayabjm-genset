@@ -271,7 +271,7 @@
                         </div>
                         <div class="p-4 md:p-5">
                             <h3 class="text-lg font-bold text-gray-800">
-                                {{ str()->title($product->brand_engine) }} {{ $product->kapasitas }} kVA
+                                {{ str()->upper($product->brand_engine) }} {{ $product->kapasitas }} KVA
                             </h3>
                             <p class="text-gray-500 dark:text-neutral-400 text-sm">
                                 {{ str()->title($product->tipe_genset) }} Type
