@@ -121,7 +121,7 @@
                                             {{ str()->title($product->brand_engine) }} {{ $product->kapasitas }} kVA
                                         </h3>
                                         <p class="text-gray-500 dark:text-neutral-400 text-sm">
-                                            {{ str()->title($product->tipe_genset) }} Type
+                                            {{ Number::currency($product->harga, 'IDR', 'ID') }}/Hari
                                         </p>
                                         <div class="py-2">
                                             <span

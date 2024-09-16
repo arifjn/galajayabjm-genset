@@ -38,6 +38,7 @@ class Genset extends Model
         'phase',
 
         'tipe_genset',
+        'harga',
         'images_genset',
         'spek_genset',
         'status_genset',

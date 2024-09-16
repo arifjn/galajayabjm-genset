@@ -9,10 +9,10 @@ use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\Components\Actions as ComponentsActions;
 use Filament\Forms\Components\Actions\Action as ComponentsActionsAction;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -41,98 +41,172 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-path-rounded-square';
+    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
-    protected static ?string $navigationLabel = 'Transaksi';
+    protected static ?string $navigationLabel = 'Penawaran';
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationGroup = 'Manajemen Keuangan';
+    protected static ?string $navigationGroup = 'Transaksi';
 
-    protected static ?string $slug = 'transaksi';
+    protected static ?string $slug = 'penawaran';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('genset_id')
-                    ->label('Genset')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Genset wajib diisi.',
+                Section::make('Rent Information')
+                    ->schema([
+                        Forms\Components\Select::make('genset_id')
+                            ->label('Genset')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Genset wajib diisi.',
+                            ])
+                            ->placeholder('Pilih Genset')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->relationship(
+                                name: 'genset',
+                                modifyQueryUsing: function (Builder $query, $record) {
+                                    $query->where('status_genset', 'ready')
+                                        ->when($record, function ($query, $record) {
+                                            return $query->orWhere('id', $record->genset_id);
+                                        });
+                                },
+                            )
+                            ->columnSpanFull()
+                            ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
+                        Forms\Components\Select::make('sales_id')
+                            ->label('Sales')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Sales wajib diisi.',
+                            ])
+                            ->placeholder('Pilih Sales')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->relationship(
+                                name: 'sale',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: function (Builder $query) {
+                                    $query->where('role', 'sales');
+                                },
+                            ),
+                        Forms\Components\Select::make('customer_id')
+                            ->label('Customer')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Customer wajib diisi.',
+                            ])
+                            ->placeholder('Pilih Customer')
+                            ->native(false)
+                            ->relationship(
+                                name: 'customer',
+                                titleAttribute: 'name',
+                            )
+                            ->live()
+                            ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->perusahaan ? "{$record->perusahaan}" : "{$record->name}"),
+                        Forms\Components\DatePicker::make('tgl_sewa')
+                            ->label('Mulai Sewa')
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Tanggal Sewa wajib diisi.',
+                            ])
+                            ->native(false)
+                            ->closeOnDateSelection()
+                            ->displayFormat('d F Y')
+                            ->visible(fn($operation) => $operation == 'create')
+                            ->default(now()),
+                        Forms\Components\DatePicker::make('tgl_selesai')
+                            ->label('Tanggal Selesai')
+                            ->native(false)
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Tanggal Selesai wajib diisi.',
+                            ])
+                            ->visible(fn($operation) => $operation == 'create')
+                            ->closeOnDateSelection()
+                            ->displayFormat('d F Y')
+                            ->default(now()),
+                        Forms\Components\Textarea::make('site')
+                            ->label('Lokasi Proyek')
+                            ->visible(fn($operation, Get $get) => $operation == 'create' && $get('customer_id'))
+                            ->columnSpanFull(),
                     ])
-                    ->placeholder('Pilih Genset')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->relationship(
-                        name: 'genset',
-                        modifyQueryUsing: function (Builder $query, $record) {
-                            $query->where('status_genset', 'ready')
-                                ->when($record, function ($query, $record) {
-                                    return $query->orWhere('id', $record->genset_id);
-                                });
-                        },
-                    )
-                    ->columnSpanFull()
-                    ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
-                Forms\Components\Select::make('sales_id')
-                    ->label('Sales')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Sales wajib diisi.',
+                    ->columns(2)
+                    ->collapsible(),
+
+                Section::make('Mob Demob Information')
+                    ->schema([
+                        Select::make('jenis_mobil')
+                            ->native(false)
+                            ->label('Jenis Angkutan')
+                            ->options([
+                                'bak_terbuka' => 'Truck Bak Terbuka',
+                                'crane' => 'Truck Crane',
+                            ])
+                            ->live()
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('site')
+                            ->label('Lokasi Proyek')
+                            ->columnSpanFull(),
+                        Select::make('jarak')
+                            ->native(false)
+                            ->label('Jarak')
+                            ->live()
+                            ->options([
+                                '50' => '0 KM - 50 KM',
+                                '100' => '50 KM - 100 KM',
+                                '>100' => '> 100 KM',
+                            ]),
+                        Forms\Components\Placeholder::make('mob_demob_placheholder')
+                            ->label('Biaya Mob Demob')
+                            ->content(function (Get $get, Set $set) {
+
+                                $total =  0;
+
+                                if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '50') {
+                                    $total = 4000000;
+                                } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '100') {
+                                    $total = 7000000;
+                                } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '>100') {
+                                    $total = 12000000;
+                                } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '50') {
+                                    $total = 6500000;
+                                } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '100') {
+                                    $total = 10000000;
+                                } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '>100') {
+                                    $total = 15000000;
+                                } else {
+                                    $total = 0;
+                                }
+
+                                $set('mob_demob', $total);
+                                return Number::currency($total, 'IDR', 'ID');
+                            }),
+
+                        Forms\Components\Hidden::make('mob_demob')
+                            ->dehydrated()
+                            ->default(0),
+                        // TextInput::make('mob_demob')
+                        //     ->label('Mob Demob')
+                        //     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                        //     ->mask(RawJs::make('$money($input)'))
+                        //     ->stripCharacters(',')
+                        //     ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                        //     ->numeric()
+                        //     ->reactive()
+                        //     ->live(onBlur: true)
+                        //     ->default(0)
+                        //     ->dehydrated()
+                        //     ->prefix('Rp'),
                     ])
-                    ->placeholder('Pilih Sales')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->relationship(
-                        name: 'sale',
-                        titleAttribute: 'name',
-                        modifyQueryUsing: function (Builder $query) {
-                            $query->where('role', 'sales');
-                        },
-                    ),
-                Forms\Components\Select::make('customer_id')
-                    ->label('Customer')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Customer wajib diisi.',
-                    ])
-                    ->placeholder('Pilih Customer')
-                    ->native(false)
-                    ->relationship(
-                        name: 'customer',
-                        titleAttribute: 'name',
-                    )
-                    ->live()
-                    ->getOptionLabelFromRecordUsing(fn(Model $record) => $record->perusahaan ? "{$record->perusahaan}" : "{$record->name}"),
-                Forms\Components\DatePicker::make('tgl_sewa')
-                    ->label('Mulai Sewa')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Tanggal Sewa wajib diisi.',
-                    ])
-                    ->native(false)
-                    ->closeOnDateSelection()
-                    ->displayFormat('d F Y')
-                    ->visible(fn($operation) => $operation == 'create')
-                    ->default(now()),
-                Forms\Components\DatePicker::make('tgl_selesai')
-                    ->label('Tanggal Selesai')
-                    ->native(false)
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Tanggal Selesai wajib diisi.',
-                    ])
-                    ->visible(fn($operation) => $operation == 'create')
-                    ->closeOnDateSelection()
-                    ->displayFormat('d F Y')
-                    ->default(now()),
-                Forms\Components\Textarea::make('site')
-                    ->label('Lokasi Proyek')
-                    ->visible(fn($operation, Get $get) => $operation == 'create' && $get('customer_id'))
-                    ->columnSpanFull(),
+                    ->columns(2)
+                    ->collapsible(),
+
                 Section::make('Price Information')
                     ->schema([
                         TextInput::make('harga')
@@ -153,18 +227,6 @@ class TransactionResource extends Resource
                             ->minValue(0)
                             ->reactive()
                             ->live(onBlur: true)
-                            ->prefix('Rp'),
-                        TextInput::make('mob_demob')
-                            ->label('Mob Demob')
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->mask(RawJs::make('$money($input)'))
-                            ->stripCharacters(',')
-                            ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
-                            ->numeric()
-                            ->reactive()
-                            ->live(onBlur: true)
-                            ->default(0)
-                            ->dehydrated()
                             ->prefix('Rp'),
                         TextInput::make('biaya_operator')
                             ->label('Biaya Operator')
@@ -229,13 +291,15 @@ class TransactionResource extends Resource
 
                                 $set('grand_total', $total);
                                 return Number::currency($total, 'IDR', 'ID');
-                            }),
+                            })
+                            ->columnSpanFull(),
 
                         Hidden::make('grand_total')
                             ->default(0),
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->collapsible(),
+
             ]);
     }
 
@@ -360,42 +424,116 @@ class TransactionResource extends Resource
                 Tables\Actions\Action::make('penawaran')
                     ->mountUsing(fn(Forms\ComponentContainer $form, Transaction $record) => $form->fill([
                         'ppn' => 11,
+                        'site' => $record->site,
                     ]))
                     ->form([
-                        Forms\Components\Select::make('genset_id')
-                            ->label('Genset')
-                            ->placeholder('Pilih Genset')
-                            ->native(false)
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Genset wajib diisi.',
+                        Section::make('Rent Information')
+                            ->schema([
+                                Forms\Components\Select::make('genset_id')
+                                    ->label('Genset')
+                                    ->placeholder('Pilih Genset')
+                                    ->native(false)
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Genset wajib diisi.',
+                                    ])
+                                    ->searchable()
+                                    ->preload()
+                                    ->relationship(
+                                        name: 'genset',
+                                        modifyQueryUsing: function (Builder $query) {
+                                            $query->where('status_genset', 'ready');
+                                        },
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
+                                Forms\Components\Select::make('sales_id')
+                                    ->label('Sales')
+                                    ->placeholder('Pilih Sales')
+                                    ->native(false)
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Sales wajib diisi.',
+                                    ])
+                                    ->searchable()
+                                    ->preload()
+                                    ->relationship(
+                                        name: 'sale',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: function (Builder $query) {
+                                            $query->where('role', 'sales');
+                                        },
+                                    ),
+                            ])->columns(2)
+                            ->collapsible(),
+
+                        Section::make('Mob Demob Information')
+                            ->schema([
+                                Select::make('jenis_mobil')
+                                    ->native(false)
+                                    ->label('Jenis Angkutan')
+                                    ->options([
+                                        'bak_terbuka' => 'Truck Bak Terbuka',
+                                        'crane' => 'Truck Crane',
+                                    ])
+                                    ->live()
+                                    ->columnSpanFull(),
+                                Forms\Components\Textarea::make('site')
+                                    ->label('Lokasi Proyek')
+                                    ->columnSpanFull(),
+                                Select::make('jarak')
+                                    ->native(false)
+                                    ->label('Jarak')
+                                    ->live()
+                                    ->options([
+                                        '50' => '0 KM - 50 KM',
+                                        '100' => '50 KM - 100 KM',
+                                        '>100' => '> 100 KM',
+                                    ]),
+                                Forms\Components\Placeholder::make('mob_demob_placheholder')
+                                    ->label('Biaya Mob Demob')
+                                    ->content(function (Get $get, Set $set) {
+
+                                        $total =  0;
+
+                                        if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '50') {
+                                            $total = 4000000;
+                                        } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '100') {
+                                            $total = 7000000;
+                                        } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '>100') {
+                                            $total = 12000000;
+                                        } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '50') {
+                                            $total = 6500000;
+                                        } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '100') {
+                                            $total = 10000000;
+                                        } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '>100') {
+                                            $total = 15000000;
+                                        } else {
+                                            $total = 0;
+                                        }
+
+                                        $set('mob_demob', $total);
+                                        return Number::currency($total, 'IDR', 'ID');
+                                    }),
+
+                                Forms\Components\Hidden::make('mob_demob')
+                                    ->dehydrated()
+                                    ->default(0),
+                                // TextInput::make('mob_demob')
+                                //     ->label('Mob Demob')
+                                //     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                //     ->mask(RawJs::make('$money($input)'))
+                                //     ->stripCharacters(',')
+                                //     ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                                //     ->numeric()
+                                //     ->reactive()
+                                //     ->live(onBlur: true)
+                                //     ->default(0)
+                                //     ->dehydrated()
+                                //     ->prefix('Rp'),
                             ])
-                            ->searchable()
-                            ->preload()
-                            ->relationship(
-                                name: 'genset',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_genset', 'ready');
-                                },
-                            )
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
-                        Forms\Components\Select::make('sales_id')
-                            ->label('Sales')
-                            ->placeholder('Pilih Sales')
-                            ->native(false)
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Sales wajib diisi.',
-                            ])
-                            ->searchable()
-                            ->preload()
-                            ->relationship(
-                                name: 'sale',
-                                titleAttribute: 'name',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('role', 'sales');
-                                },
-                            ),
+                            ->columns(2)
+                            ->collapsible(),
+
                         Section::make('Price Information')
                             ->schema([
                                 TextInput::make('harga')
@@ -417,18 +555,18 @@ class TransactionResource extends Resource
                                     ->reactive()
                                     ->live(onBlur: true)
                                     ->prefix('Rp'),
-                                TextInput::make('mob_demob')
-                                    ->label('Mob Demob')
-                                    ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                                    ->mask(RawJs::make('$money($input)'))
-                                    ->stripCharacters(',')
-                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
-                                    ->numeric()
-                                    ->reactive()
-                                    ->live(onBlur: true)
-                                    ->default(0)
-                                    ->dehydrated()
-                                    ->prefix('Rp'),
+                                // TextInput::make('mob_demob')
+                                //     ->label('Mob Demob')
+                                //     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                //     ->mask(RawJs::make('$money($input)'))
+                                //     ->stripCharacters(',')
+                                //     ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                                //     ->numeric()
+                                //     ->reactive()
+                                //     ->live(onBlur: true)
+                                //     ->default(0)
+                                //     ->dehydrated()
+                                //     ->prefix('Rp'),
                                 TextInput::make('biaya_operator')
                                     ->label('Biaya Operator')
                                     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
@@ -492,13 +630,14 @@ class TransactionResource extends Resource
 
                                         $set('grand_total', $total);
                                         return Number::currency($total, 'IDR', 'ID');
-                                    }),
+                                    })
+                                    ->columnSpanFull(),
 
                                 Hidden::make('grand_total')
                                     ->default(0),
                             ])
-                            ->columns(3)
-                            ->collapsible(),
+                            ->columns(2)
+                            ->collapsible()
                     ])
                     ->action(function (Transaction $record, array $data) {
                         $record->genset_id = $data['genset_id'];

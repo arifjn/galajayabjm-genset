@@ -44,7 +44,7 @@ class ManageTransactions extends ManageRecords
 
     public function getTitle(): string|Htmlable
     {
-        return 'Transaksi';
+        return 'Penawaran Harga';
     }
 
     protected function getHeaderWidgets(): array

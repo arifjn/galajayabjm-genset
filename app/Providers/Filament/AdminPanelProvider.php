@@ -48,6 +48,7 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems(['logout' => MenuItem::make()->label('Logout'),])
             ->navigationGroups([
                 'Data Master',
+                'Transaksi',
                 'Manajemen Keuangan',
                 'Manajemen Warehouse',
             ])

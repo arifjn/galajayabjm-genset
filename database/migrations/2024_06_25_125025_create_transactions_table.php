@@ -39,6 +39,8 @@ return new class extends Migration
             $table->decimal('biaya_operator', 10, 2)->nullable();
             $table->decimal('sub_total', 10, 2)->nullable();
             $table->decimal('grand_total', 10, 2)->nullable();
+
+            $table->decimal('denda', 10, 2)->nullable();
             $table->timestamps();
         });
     }

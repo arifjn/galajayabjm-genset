@@ -79,7 +79,7 @@
                             </svg>
 
                             <p>
-                                Free Jasa Troubleshooting / Maintenace 1x Kunjungan (S&K)
+                                Free Jasa Troubleshooting / Maintenance 1x Kunjungan (S&K)
                             </p>
                         </li>
                         <li class="flex space-x-3">
@@ -97,6 +97,7 @@
                             </p>
                         </li>
                     </ul>
+
                     @if (count($genset->images_genset) > 1)
                         <div class="flex flex-wrap">
                             @foreach ($genset->images_genset as $image)
@@ -163,7 +164,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                 :</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                {{ $genset->kapasitas * 800 }}</td>
+                                                {{ $genset->kapasitas * 0.8 }}</td>
                                         </tr>
 
                                         <tr>
@@ -185,6 +186,20 @@
                                         </tr>
 
                                     </tbody>
+                                    <tfoot>
+                                        <tr class="bg-gray-50">
+                                            <th scope="col"
+                                                class="px-6 py-2 text-start font-medium text-gray-800 uppercase">
+                                                Perkiraan Harga Sewa</th>
+                                            <th scope="col"
+                                                class="px-6 py-2 text-start font-medium text-gray-800 uppercase">
+                                                :</th>
+                                            <th scope="col"
+                                                class="px-6 py-2 text-start font-medium text-gray-800 uppercase">
+                                                {{ Number::currency($genset->harga, 'IDR', 'ID') }}/Hari
+                                            </th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

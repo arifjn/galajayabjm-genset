@@ -38,6 +38,7 @@ return new class extends Migration
             $table->integer('phase')->nullable();
 
             $table->string('tipe_genset');
+            $table->decimal('harga', 10, 2);
             $table->text('images_genset');
             $table->text('spek_genset')->nullable();
             $table->string('status_genset')->default('ready');

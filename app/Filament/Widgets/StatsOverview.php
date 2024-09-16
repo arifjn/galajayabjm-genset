@@ -27,7 +27,7 @@ class StatsOverview extends BaseWidget
                 ->count()),
             Stat::make('Total Pendapatan', $income ? Number::currency(Income::query()->sum('income'), 'IDR', 'ID') : 0),
             Stat::make('Total Pengeluaran', $outcome ? Number::currency(Outcome::query()->sum('outcome'), 'IDR', 'ID') : 0),
-            Stat::make('Laba Bersih', $laba ? Number::currency($laba, 'IDR', 'ID') : 0)
+            Stat::make('Laba Bersih', $laba ? Number::currency($laba, 'IDR', 'ID') : Number::currency(0, 'IDR', 'ID'))
         ];
     }
 }

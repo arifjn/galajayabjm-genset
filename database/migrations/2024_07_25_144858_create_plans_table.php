@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Genset;
-use App\Models\Transaction;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,6 +20,9 @@ return new class extends Migration
             $table->string('alamat')->nullable();
             $table->date('tanggal_job');
             $table->date('tanggal_job_selesai');
+
+            $table->date('tanggal_kembali');
+
             $table->string('status');
             $table->text('keterangan')->nullable();
             $table->string('nama_supir')->nullable();

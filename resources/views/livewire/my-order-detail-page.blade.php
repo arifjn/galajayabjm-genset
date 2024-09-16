@@ -637,14 +637,13 @@
                                                                             Plan</th>
                                                                         <th scope="col"
                                                                             class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
+                                                                            Genset</th>
+                                                                        <th scope="col"
+                                                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
                                                                             Customer</th>
                                                                         <th scope="col"
                                                                             class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
                                                                             Alamat</th>
-                                                                        <th scope="col"
-                                                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 uppercase">
-                                                                            Genset</th>
-
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody
@@ -659,13 +658,6 @@
                                                                         </td>
                                                                         <td
                                                                             class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ $plan->transaction->customer->perusahaan ? $plan->transaction->customer->perusahaan : $plan->transaction->customer->name }}
-                                                                        </td>
-                                                                        <td
-                                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                            {{ $plan->transaction->site }}</td>
-                                                                        <td
-                                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                                             @foreach ($plan->gensets as $genset)
                                                                                 <ul>
                                                                                     <li> •
@@ -675,7 +667,13 @@
                                                                                 </ul>
                                                                             @endforeach
                                                                         </td>
-
+                                                                        <td
+                                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                            {{ $plan->transaction->customer->perusahaan ? $plan->transaction->customer->perusahaan : $plan->transaction->customer->name }}
+                                                                        </td>
+                                                                        <td
+                                                                            class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                            {{ $plan->transaction->site }}</td>
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
@@ -800,6 +798,633 @@
                                 </div>
                             @endif
                         </div>
+
+                        @if (
+                            ($plan && ($plan && $plan->status === 'delivery')) ||
+                                ($plan && $plan->status === 'rent') ||
+                                ($plan && $plan->status === 'selesai'))
+                            <div class="flex flex-col md:flex-row gap-8 mt-4">
+
+                                <div class="md:w-full">
+                                    <div class="hs-accordion-group">
+                                        <div class="hs-accordion hs-accordion-active:border-gray-200 bg-white border border-transparent rounded-xl p-4 active"
+                                            id="hs-basic-nested-heading-one">
+                                            <button
+                                                class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400"
+                                                aria-expanded="false"
+                                                aria-controls="hs-basic-with-arrow-collapse-two">
+                                                <svg class="hs-accordion-active:hidden block size-4"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="m6 9 6 6 6-6"></path>
+                                                </svg>
+                                                <svg class="hs-accordion-active:block hidden size-4"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="m18 15-6-6-6 6"></path>
+                                                </svg>
+                                                SOP Pengoperasian Genset
+                                            </button>
+                                            <div id="hs-basic-nested-collapse-one"
+                                                class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300"
+                                                role="region" aria-labelledby="hs-basic-nested-heading-one">
+                                                <div class="hs-accordion-group ps-6">
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-one">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-two">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Persiapan
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-one"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-one">
+                                                            <ol class="list-decimal list-inside text-gray-800">
+                                                                <li>Pastikan area sekitar genset bersih dan
+                                                                    bebas
+                                                                    dari benda-benda yang mudah terbakar.</li>
+                                                                <li>Periksa level bahan bakar dan oli mesin.
+                                                                    Tambahkan bahan bakar dan oli jika perlu.
+                                                                </li>
+                                                                <li>Pastikan sistem pendingin genset berfungsi
+                                                                    dengan baik.</li>
+                                                                <li>Periksa kondisi aki dan kabel-kabelnya.</li>
+                                                                <li>Nyalakan panel kontrol genset.</li>
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-two">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-two">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Memulai Mesin
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-two"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-two">
+                                                            <ol class="list-decimal list-inside text-gray-800">
+                                                                <li>Putar kunci kontak ke posisi “Start”.</li>
+                                                                <li>Tunggu beberapa saat hingga mesin menyala.
+                                                                </li>
+                                                                <li>Periksa apakah ada kebocoran bahan bakar
+                                                                    atau
+                                                                    oli.
+                                                                </li>
+                                                                <li>Biarkan mesin genset memanas selama beberapa
+                                                                    menit
+                                                                    sebelum dibebani.</li>
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-three">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-three">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Mengoperasikan Genset
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-three"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-three">
+                                                            <ol class="list-decimal list-inside text-gray-800">
+                                                                <li>Hubungkan genset ke beban dengan cara yang
+                                                                    benar.
+                                                                </li>
+                                                                <li>Pantau indikator pada panel kontrol genset,
+                                                                    seperti
+                                                                    tegangan, arus, dan frekuensi.</li>
+                                                                <li>Atur beban genset sesuai dengan
+                                                                    kapasitasnya.
+                                                                </li>
+                                                                <li>Hindari overloading genset.</li>
+                                                                <li>Periksa genset secara berkala selama
+                                                                    operasinya.
+                                                                </li>
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-four">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-four">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Mematikan Mesin
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-four"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-four">
+                                                            <ol class="list-decimal list-inside text-gray-800">
+                                                                <li>Kurangi beban genset secara bertahap.</li>
+                                                                <li>Matikan semua peralatan yang terhubung ke
+                                                                    genset.
+                                                                </li>
+                                                                <li>Biarkan mesin genset berjalan idle selama
+                                                                    beberapa
+                                                                    menit.</li>
+                                                                <li>Putar kunci kontak ke posisi “Off”.</li>
+                                                                <li>Matikan panel kontrol genset.</li>
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-five">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-five">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Tips Keamanan
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-five"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-five">
+                                                            <ul
+                                                                class="list-disc list-inside text-gray-800 dark:text-white">
+                                                                <li>Jangan pernah menyentuh bagian yang bergerak
+                                                                    pada
+                                                                    genset saat mesin sedang hidup.</li>
+                                                                <li>Hindari mengoperasikan genset di ruangan
+                                                                    tertutup.
+                                                                </li>
+                                                                <li>Gunakan genset sesuai dengan kapasitasnya.
+                                                                </li>
+                                                                <li>Lakukan service genset secara berkala.</li>
+                                                                <li>Gunakan peralatan pelindung diri (APD) saat
+                                                                    mengoperasikan genset.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="hs-accordion hs-accordion-active:border-gray-200 bg-white border border-transparent rounded-xl p-4"
+                                            id="hs-basic-nested-heading-two">
+                                            <button
+                                                class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                aria-expanded="false"
+                                                aria-controls="hs-basic-with-arrow-collapse-two">
+                                                <svg class="hs-accordion-active:hidden block size-4"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="m6 9 6 6 6-6"></path>
+                                                </svg>
+                                                <svg class="hs-accordion-active:block hidden size-4"
+                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="m18 15-6-6-6 6"></path>
+                                                </svg>
+                                                Daily Check Genset
+                                            </button>
+                                            <div id="hs-basic-nested-collapse-two"
+                                                class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                role="region" aria-labelledby="hs-basic-nested-heading-two">
+                                                <div class="hs-accordion-group ps-6">
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-one">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-one">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Pengecekan Level Oli Mesin
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-one"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-one">
+                                                            <p class="text-gray-800">
+                                                                Cek Level Oli mesin saat sebelum mengoperasikan
+                                                                Genset, bertujuan untuk memastikan Level Oli
+                                                                sesuai
+                                                                Level Indikator Normal (Middle), dan menghindari
+                                                                Genset dijalankan pada kondisi kekurangan oli di
+                                                                Mesin yang bisa menyebabkan kerusakan yang
+                                                                lumayan
+                                                                serius.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-two">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-two">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Pengecekan Level Bahan Bakar (Fuel Level)
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-two"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-two">
+                                                            <p class="text-gray-800">
+                                                                Cek Level Bahan Bakar rutin secara harian atau
+                                                                tiap
+                                                                akan mengoperasikan Genset, dan Pastikan
+                                                                Janganlah
+                                                                sampai bahan bakar ada pada level bawah, atau
+                                                                upayakan level bahan bakar minimum pada tingkat
+                                                                tengah (Middle), ini bertujuan supaya Kotoran
+                                                                yang
+                                                                ada di bahan bakar tidak sampai terserap ke
+                                                                mesin,
+                                                                dan Supaya Mesin Genset tidak sampai mengalami
+                                                                kosong bahan bakar (Masuk angin).
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-three">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-three">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Drain Air yang ada di Filter Bahan Bakar
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-three"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-three">
+                                                            <p class="text-gray-800">
+                                                                Di saluran Bahan Bakar ke Mesin Genset, biasanya
+                                                                dipasang Fuel Filter, yang berperan sebagai
+                                                                penangkap kotoran dan kandungan air (Water Trap)
+                                                                yang berasal dari Bahan Bakar, serta Fuel Filter
+                                                                ini
+                                                                umumnya dilengkapi Keran untuk Drain air di
+                                                                bagian
+                                                                bawahnya.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-four">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-four">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Pengecekan Level Air Baterai (Aki)
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-four"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-four">
+                                                            <p class="text-gray-800">
+                                                                Level air Baterai juga penting untuk diperiksa
+                                                                dengan teratur, untuk pastikan supaya Keadaan
+                                                                Baterai masih tetap baik serta lebih tahan lama,
+                                                                karena bila Tingkat air pada Baterai/Accu
+                                                                kurang,
+                                                                maka mengakibatkan Battery cepat rusak.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-five">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-five">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Pengecekan Level Air Radiator
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-five"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-five">
+                                                            <p class="text-gray-800">
+                                                                Pengecekan Kondisi atau Level Air pada Radiator
+                                                                dilakukan secara rutin, dan mempunyai tujuan
+                                                                untuk
+                                                                melindungi agar air dalam Radiator masih tetap
+                                                                Penuh, karena Bila Kekurangan air di Radiator
+                                                                bisa
+                                                                mengakibatkan Mesin Overheat dan bisa Mengalami
+                                                                kerusakan yang lumayan serius, disamping itu
+                                                                Radiator akan gampang rusak, bocor dan keropos
+                                                                jika
+                                                                level air kurang.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="hs-accordion" id="hs-basic-nested-sub-heading-six">
+                                                        <button
+                                                            class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                            aria-expanded="false"
+                                                            aria-controls="hs-basic-with-arrow-collapse-six">
+                                                            <svg class="hs-accordion-active:hidden block size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m6 9 6 6 6-6"></path>
+                                                            </svg>
+                                                            <svg class="hs-accordion-active:block hidden size-4"
+                                                                xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round">
+                                                                <path d="m18 15-6-6-6 6"></path>
+                                                            </svg>
+                                                            Pengecekan Performa Mesin (General)
+                                                        </button>
+                                                        <div id="hs-basic-nested-sub-collapse-six"
+                                                            class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                            role="region"
+                                                            aria-labelledby="hs-basic-nested-sub-heading-six">
+                                                            <p class="text-gray-800">
+                                                                Disamping beberapa hal di atas, untuk memastikan
+                                                                jika keadaan mesin genset dalam keadaan Baik,
+                                                                karena
+                                                                itu saat Genset dioperasikan lakukan pengecekan
+                                                                secara Visual terhadap kondisi mesin, Pastikan
+                                                                Baut-baut pengikat tidak ada yang kendur, Cek
+                                                                adakah
+                                                                kebocoran Oli, air atau Bahan bakar, Perhatikan
+                                                                suara mesin, Temperatur dan Getaran, adakah yang
+                                                                tidak normal, Bila ditemukan satu hal yang tidak
+                                                                normal maka segera hentikan mesin genset dan
+                                                                lakukan
+                                                                pengecekan serta perbaikan.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if ($services->count() !== 0)
+                                            <div class="hs-accordion hs-accordion-active:border-gray-200 bg-white border border-transparent rounded-xl p-4"
+                                                id="hs-basic-heading-three">
+                                                <button
+                                                    class="hs-accordion-toggle hs-accordion-active:text-indigo-500 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none"
+                                                    aria-expanded="false"
+                                                    aria-controls="hs-basic-with-arrow-collapse-three">
+                                                    <svg class="hs-accordion-active:hidden block size-4"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="m6 9 6 6 6-6"></path>
+                                                    </svg>
+                                                    <svg class="hs-accordion-active:block hidden size-4"
+                                                        xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="m18 15-6-6-6 6"></path>
+                                                    </svg>
+                                                    Jadwal Maintenance
+                                                </button>
+                                                <div id="hs-basic-collapse-three"
+                                                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+                                                    role="region" aria-labelledby="hs-basic-heading-three">
+                                                    @foreach ($services as $service)
+                                                        <!-- Timeline -->
+                                                        <div>
+                                                            <!-- Heading -->
+                                                            <div class="ps-2 my-2 first:mt-0">
+                                                                <h3
+                                                                    class="text-xs font-medium uppercase text-gray-500">
+                                                                    {{ Carbon\Carbon::parse($service->tanggal_job)->translatedFormat('d F Y') }}
+                                                                </h3>
+                                                            </div>
+                                                            <!-- End Heading -->
+
+                                                            <!-- Item -->
+                                                            <div class="flex gap-x-3">
+                                                                <!-- Icon -->
+                                                                <div
+                                                                    class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200">
+                                                                    <div
+                                                                        class="relative z-10 size-7 flex justify-center items-center">
+                                                                        <div class="size-2 rounded-full bg-gray-400">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- End Icon -->
+
+                                                                <!-- Right Content -->
+                                                                <div class="grow pt-0.5 pb-8">
+                                                                    <h3
+                                                                        class="flex gap-x-1.5 font-semibold text-gray-800">
+
+                                                                        @if ($service->status == 'selesai')
+                                                                            <span
+                                                                                class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-500 text-white">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    fill="none" viewBox="0 0 24 24"
+                                                                                    stroke-width="1.5" width="24"
+                                                                                    height="24"
+                                                                                    stroke="currentColor"
+                                                                                    class="shrink-0 size-4 mt-1">
+                                                                                    <path stroke-linecap="round"
+                                                                                        stroke-linejoin="round"
+                                                                                        d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                                                                </svg>
+
+                                                                                Service & Maintenance Check
+                                                                            </span>
+                                                                        @else
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                fill="none" viewBox="0 0 24 24"
+                                                                                stroke-width="1.5"
+                                                                                stroke="currentColor" width="24"
+                                                                                height="24"
+                                                                                class="shrink-0 size-4 mt-1">
+                                                                                <path stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                                                                            </svg>
+                                                                            Service & Maintenance Check
+                                                                        @endif
+
+                                                                    </h3>
+                                                                    <p class="mt-1">
+                                                                        @foreach ($service->gensets as $genset)
+                                                                            <ul class="text-sm text-gray-600">
+                                                                                <li> • Genset
+                                                                                    {{ ucwords($genset->brand_engine) }}
+                                                                                    {{ $genset->kapasitas }} KVA
+                                                                                </li>
+                                                                            </ul>
+                                                                        @endforeach
+                                                                    </p>
+                                                                    @foreach ($service->users as $user)
+                                                                        <button type="button"
+                                                                            class="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none">
+                                                                            <img class="shrink-0 size-4 rounded-full"
+                                                                                src="{{ $service->profile_img ? url('storage', $service->profile_img) : asset('assets/images/no-image.jpg') }}"
+                                                                                alt="Avatar">
+                                                                            {{ $user->name }}
+                                                                        </button>
+                                                                    @endforeach
+                                                                </div>
+                                                                <!-- End Right Content -->
+                                                            </div>
+                                                            <!-- End Item -->
+
+                                                        </div>
+                                                        <!-- End Timeline -->
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                         <!-- Button Group -->
                         <div class="mt-5 flex justify-between items-center gap-x-2">

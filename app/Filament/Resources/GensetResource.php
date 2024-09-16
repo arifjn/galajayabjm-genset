@@ -29,14 +29,17 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Number;
 use stdClass;
 
 class GensetResource extends Resource
@@ -61,7 +64,6 @@ class GensetResource extends Resource
                     Section::make('Engine Information')
                         ->schema([
                             Select::make('brand_engine')
-                                ->autofocus()
                                 ->label('Brand Engine')
                                 ->native(false)
                                 ->searchable()
@@ -226,6 +228,26 @@ class GensetResource extends Resource
                                     'silent' => 'Silent',
                                     'open' => 'Open',
                                 ]),
+                            TextInput::make('harga')
+                                ->label('Harga Sewa (/Hari)')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Harga Sewa wajib diisi.',
+                                ])
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                                ->numeric()
+                                ->validationMessages([
+                                    'required' => 'Harga wajib diisi.',
+                                ])
+                                ->required()
+                                ->default(0)
+                                ->minValue(0)
+                                ->reactive()
+                                ->live(onBlur: true)
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Perkiraan harga sewa Genset per harinya')
+                                ->prefix('Rp'),
                             ToggleButtons::make('status_genset')
                                 ->required()
                                 ->validationMessages([
@@ -249,13 +271,6 @@ class GensetResource extends Resource
                                     'rent' => 'heroicon-m-bolt',
                                     'maintenance' => 'heroicon-m-wrench-screwdriver',
                                 ]),
-                            FileUpload::make('spek_genset')
-                                ->label('Spesifikasi (PDF)')
-                                ->directory('pdf-genset')
-                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                                ->openable()
-                                ->maxSize(2048)
-                                ->acceptedFileTypes(['application/pdf']),
                         ])->collapsible(),
                     Section::make('Photo Genset')
                         ->schema([
@@ -270,6 +285,13 @@ class GensetResource extends Resource
                                 ->image()
                                 ->panelLayout('grid')
                                 ->openable(),
+                            FileUpload::make('spek_genset')
+                                ->label('Spesifikasi (PDF)')
+                                ->directory('pdf-genset')
+                                ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
+                                ->openable()
+                                ->maxSize(2048)
+                                ->acceptedFileTypes(['application/pdf']),
                         ])->collapsible()
                 ])->columnSpanFull(),
             ]);
@@ -408,6 +430,10 @@ class GensetResource extends Resource
                             'maintenance' => 'heroicon-o-wrench-screwdriver',
                         })
                         ->label('Status'),
+                    TextEntry::make('harga')
+                        ->label('Harga Sewa')
+                        ->formatStateUsing(fn(Model $record) => Number::currency($record->harga, 'IDR', 'id'))
+                        ->suffix('/Hari'),
                     Actions::make([
                         Action::make('spek_genset')
                             ->visible(fn(Genset $record) => $record->spek_genset !== null)

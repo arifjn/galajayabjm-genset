@@ -41,6 +41,7 @@ class MyOrderDetailPage extends Component
                 })
                 ->firstOrFail(),
             'plan' => Plan::where('order_id', $this->order_id)->first(),
+            'services' => Plan::where('order_id', $this->order_id)->where('jobdesk', 'service')->get(),
         ]);
     }
 
