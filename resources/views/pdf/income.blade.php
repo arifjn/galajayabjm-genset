@@ -86,7 +86,6 @@ use Carbon\Carbon;
                     <th>Tanggal Order</th>
                     <th>Biaya Sewa</th>
                     <th>Biaya Operator</th>
-                    <th>Kelebihan Jam</th>
                     <th>Denda</th>
                     <th>Pendapatan Bersih</th>
                 </tr>
@@ -100,7 +99,8 @@ use Carbon\Carbon;
                             <td>{{ $income->transaction->order_id }}
                             </td>
                             <td>
-                                {{ ucwords($income->subject) }} Genset {{ $income->kapasitas }}
+                                {{ ucwords($income->transaction->subject) }} Genset
+                                {{ $income->transaction->kapasitas }} KVA
                             </td>
                             <td>
                                 {{ $income->transaction->customer->name ? ucwords($income->transaction->customer->name) : $income->transaction->customer->perusahaan }}
@@ -110,13 +110,10 @@ use Carbon\Carbon;
                                 {{ Number::currency($income->transaction->harga, 'IDR', 'id') }}
                             </td>
                             <td>
-                                {{ Number::currency($income->transaction->biaya_operator, 'IDR', 'id') }}
+                                {{ $income->transaction->biaya_operator ? Number::currency($income->transaction->biaya_operator, 'IDR', 'id') : Number::currency(0, 'IDR', 'id') }}
                             </td>
                             <td>
-                                {{ $income->overtime ? $income->overtime . ' Jam' : '-' }}
-                            </td>
-                            <td>
-                                {{ Number::currency($income->denda, 'IDR', 'id') }}
+                                {{ $income->transaction->denda ? Number::currency($income->transaction->denda, 'IDR', 'id') : Number::currency(0, 'IDR', 'id') }}
                             </td>
                             <td>
                                 {{ Number::currency($income->income, 'IDR', 'id') }}
@@ -124,7 +121,7 @@ use Carbon\Carbon;
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="9" class="text-center fw-bold">Total Pendapatan</td>
+                        <td colspan="8" class="text-center fw-bold">Total Pendapatan</td>
                         <td class="fw-bold">
                             {{ Number::currency($incomes->sum('income'), 'IDR', 'id') }}
                         </td>

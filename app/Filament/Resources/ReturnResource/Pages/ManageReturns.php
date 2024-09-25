@@ -14,9 +14,9 @@ class ManageReturns extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->label('Tambah')
-                ->icon('heroicon-o-plus'),
+            // Actions\CreateAction::make()
+            //     ->label('Tambah')
+            //     ->icon('heroicon-o-plus'),
         ];
     }
 

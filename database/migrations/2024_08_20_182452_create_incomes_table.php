@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Transaction::class)
                 ->constrained();
-            $table->integer('overtime')->nullable();
-            $table->decimal('denda', 10, 2)->nullable();
+            // $table->integer('overtime')->nullable();
+            // $table->decimal('denda', 10, 2)->nullable();
             $table->decimal('income', 10, 2)->nullable();
             $table->timestamps();
         });

@@ -53,6 +53,9 @@ class LaporanIncomeResource extends Resource
                 Tables\Columns\TextColumn::make('transaction')
                     ->label('Transaksi')
                     ->sortable()
+                    // ->formatStateUsing(
+                    //     fn(Model $record) => ucwords($record->transaction->subject) . ' Genset ' . $record->transaction->kapasitas
+                    // )
                     ->getStateUsing(
                         fn(Model $record) => ucwords($record->transaction->subject) . ' Genset ' . ($record->transaction->kapasitas ? $record->transaction->kapasitas : $record->transaction->genset->kapasitas) . ' KVA'
                     ),
@@ -66,13 +69,14 @@ class LaporanIncomeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.biaya_operator')
                     ->label('Biaya Operator')
-                    ->formatStateUsing(fn(Model $record) => Number::currency($record->transaction->biaya_operator, 'IDR', 'id'))
+                    ->formatStateUsing(fn(Model $record) => $record->transaction->biaya_operator != null ? Number::currency($record->transaction->biaya_operator, 'IDR', 'id') : Number::currency(0, 'IDR', 'id'))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('denda')
-                    ->formatStateUsing(fn(Model $record) => Number::currency($record->denda, 'IDR', 'id'))
+                Tables\Columns\TextColumn::make('transaction.denda')
+                    ->label('Denda Overtime')
+                    ->formatStateUsing(fn(Model $record) => $record->transaction->denda != null ? Number::currency($record->transaction->denda, 'IDR', 'id') : Number::currency(0, 'IDR', 'id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('income')
-                    ->label('Pendapatan Bersih')
+                    ->label('Total Pendapatan')
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->income, 'IDR', 'id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

@@ -6,6 +6,7 @@ use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Genset;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Components\Actions as ComponentsActions;
 use Filament\Forms\Components\Actions\Action as ComponentsActionsAction;
@@ -14,6 +15,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -64,6 +66,12 @@ class TransactionResource extends Resource
                                 'required' => 'Genset wajib diisi.',
                             ])
                             ->placeholder('Pilih Genset')
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $gs = Genset::where('id', $get('genset_id'))->first();
+
+                                $gs != null ? $set('harga', $gs->harga) : $set('harga', 0);
+                            })
                             ->native(false)
                             ->searchable()
                             ->preload()
@@ -210,7 +218,7 @@ class TransactionResource extends Resource
                 Section::make('Price Information')
                     ->schema([
                         TextInput::make('harga')
-                            ->label('Harga Sewa')
+                            ->label('Harga Sewa (Perhari)')
                             ->required()
                             ->validationMessages([
                                 'required' => 'Harga Sewa wajib diisi.',
@@ -219,17 +227,20 @@ class TransactionResource extends Resource
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
                             ->numeric()
-                            ->validationMessages([
-                                'required' => 'Harga wajib diisi.',
-                            ])
-                            ->required()
                             ->default(0)
                             ->minValue(0)
                             ->reactive()
                             ->live(onBlur: true)
                             ->prefix('Rp'),
+
+                        Toggle::make('operator')
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $get('operator') ? $set('biaya_operator', 100000) : $set('biaya_operator', 0);
+                            })
+                            ->default(true),
                         TextInput::make('biaya_operator')
-                            ->label('Biaya Operator')
+                            ->label('Biaya Operator (Perhari)')
                             ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
@@ -239,7 +250,42 @@ class TransactionResource extends Resource
                             ->reactive()
                             ->live(onBlur: true)
                             ->dehydrated()
+                            ->visible(fn(Get $get) => $get('operator'))
                             ->prefix('Rp'),
+                        TextInput::make('durasi_sewa')
+                            ->label('Durasi Sewa')
+                            ->live()
+                            ->numeric()
+                            ->validationMessages([
+                                'required' => 'Durasi Sewa wajib diisi.',
+                            ])
+                            ->required()
+                            ->suffix('Hari'),
+
+                        Placeholder::make('sub_total_placheholder')
+                            ->label('Sub Total')
+                            ->content(function (Get $get, Set $set) {
+                                $total = 0;
+
+                                if ($get('harga') == null) {
+                                    $set('harga', 0);
+                                } elseif ($get('mob_demob') == null) {
+                                    $set('mob_demob', 0);
+                                } elseif ($get('biaya_operator') == null) {
+                                    $set('biaya_operator', 0);
+                                }
+
+                                if (floatval(str_replace(',', '', $get('harga'))) > 0) {
+                                    $total = (floatval(str_replace(',', '', $get('harga'))) * $get('durasi_sewa')) + floatval(str_replace(',', '', $get('mob_demob'))) + (floatval(str_replace(',', '', $get('biaya_operator'))) * $get('durasi_sewa'));
+                                }
+
+                                $set('sub_total', $total);
+                                return Number::currency($total, 'IDR', 'ID');
+                            }),
+
+                        Hidden::make('sub_total')
+                            ->dehydrated()
+                            ->default(0),
 
                         TextInput::make('ppn')
                             ->label('PPN')
@@ -256,30 +302,6 @@ class TransactionResource extends Resource
                             ->dehydrated()
                             ->suffix('%'),
 
-                        Placeholder::make('sub_total_placheholder')
-                            ->label('Sub Total')
-                            ->content(function (Get $get, Set $set) {
-                                $total = 0;
-
-                                if ($get('harga') == null) {
-                                    $set('harga', 0);
-                                } elseif ($get('mob_demob') == null) {
-                                    $set('mob_demob', 0);
-                                } elseif ($get('biaya_operator') == null) {
-                                    $set('biaya_operator', 0);
-                                }
-
-                                if (floatval(str_replace(',', '', $get('harga'))) > 0) {
-                                    $total = floatval(str_replace(',', '', $get('harga'))) + floatval(str_replace(',', '', $get('mob_demob'))) + floatval(str_replace(',', '', $get('biaya_operator')));
-                                }
-
-                                $set('sub_total', $total);
-                                return Number::currency($total, 'IDR', 'ID');
-                            }),
-
-                        Hidden::make('sub_total')
-                            ->dehydrated()
-                            ->default(0),
 
                         Placeholder::make('grand_total_placheholder')
                             ->label('Grand Total (Include PPN)')
@@ -291,13 +313,12 @@ class TransactionResource extends Resource
 
                                 $set('grand_total', $total);
                                 return Number::currency($total, 'IDR', 'ID');
-                            })
-                            ->columnSpanFull(),
+                            }),
 
                         Hidden::make('grand_total')
                             ->default(0),
                     ])
-                    ->columns(2)
+                    ->aside()
                     ->collapsible(),
 
             ]);
@@ -425,6 +446,7 @@ class TransactionResource extends Resource
                     ->mountUsing(fn(Forms\ComponentContainer $form, Transaction $record) => $form->fill([
                         'ppn' => 11,
                         'site' => $record->site,
+                        'durasi_sewa' => Carbon::parse($record->tgl_sewa)->diffInDays(Carbon::parse($record->tgl_selesai)),
                     ]))
                     ->form([
                         Section::make('Rent Information')
@@ -433,6 +455,12 @@ class TransactionResource extends Resource
                                     ->label('Genset')
                                     ->placeholder('Pilih Genset')
                                     ->native(false)
+                                    ->live()
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        $gs = Genset::where('id', $get('genset_id'))->first();
+
+                                        $gs != null ? $set('harga', $gs->harga) : $set('harga', 0);
+                                    })
                                     ->required()
                                     ->validationMessages([
                                         'required' => 'Genset wajib diisi.',
@@ -537,48 +565,74 @@ class TransactionResource extends Resource
                         Section::make('Price Information')
                             ->schema([
                                 TextInput::make('harga')
-                                    ->label('Harga Sewa')
+                                    ->label('Harga Sewa (Perhari)')
                                     ->required()
                                     ->validationMessages([
                                         'required' => 'Harga Sewa wajib diisi.',
                                     ])
                                     ->mask(RawJs::make('$money($input)'))
                                     ->stripCharacters(',')
-                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                                    ->dehydrateStateUsing(fn($state, Get $get) => floatval(str_replace(',', '', $state)) * $get('durasi_sewa'))
                                     ->numeric()
-                                    ->validationMessages([
-                                        'required' => 'Harga wajib diisi.',
-                                    ])
-                                    ->required()
                                     ->default(0)
                                     ->minValue(0)
                                     ->reactive()
                                     ->live(onBlur: true)
                                     ->prefix('Rp'),
-                                // TextInput::make('mob_demob')
-                                //     ->label('Mob Demob')
-                                //     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                                //     ->mask(RawJs::make('$money($input)'))
-                                //     ->stripCharacters(',')
-                                //     ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
-                                //     ->numeric()
-                                //     ->reactive()
-                                //     ->live(onBlur: true)
-                                //     ->default(0)
-                                //     ->dehydrated()
-                                //     ->prefix('Rp'),
+
+                                Toggle::make('operator')
+                                    ->live()
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        $get('operator') ? $set('biaya_operator', 100000) : $set('biaya_operator', 0);
+                                    })
+                                    ->default(true),
                                 TextInput::make('biaya_operator')
-                                    ->label('Biaya Operator')
+                                    ->label('Biaya Operator (Perhari)')
                                     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                     ->mask(RawJs::make('$money($input)'))
                                     ->stripCharacters(',')
-                                    ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
+                                    ->dehydrateStateUsing(fn($state, Get $get) => floatval(str_replace(',', '', $state)) * $get('durasi_sewa'))
                                     ->numeric()
                                     ->default(0)
                                     ->reactive()
                                     ->live(onBlur: true)
                                     ->dehydrated()
+                                    ->visible(fn(Get $get) => $get('operator'))
                                     ->prefix('Rp'),
+                                TextInput::make('durasi_sewa')
+                                    ->label('Durasi Sewa')
+                                    ->live()
+                                    ->numeric()
+                                    ->validationMessages([
+                                        'required' => 'Durasi Sewa wajib diisi.',
+                                    ])
+                                    ->required()
+                                    ->suffix('Hari'),
+
+                                Placeholder::make('sub_total_placheholder')
+                                    ->label('Sub Total')
+                                    ->content(function (Get $get, Set $set) {
+                                        $total = 0;
+
+                                        if ($get('harga') == null) {
+                                            $set('harga', 0);
+                                        } elseif ($get('mob_demob') == null) {
+                                            $set('mob_demob', 0);
+                                        } elseif ($get('biaya_operator') == null) {
+                                            $set('biaya_operator', 0);
+                                        }
+
+                                        if (floatval(str_replace(',', '', $get('harga'))) > 0) {
+                                            $total = (floatval(str_replace(',', '', $get('harga'))) * $get('durasi_sewa')) + floatval(str_replace(',', '', $get('mob_demob'))) + (floatval(str_replace(',', '', $get('biaya_operator'))) * $get('durasi_sewa'));
+                                        }
+
+                                        $set('sub_total', $total);
+                                        return Number::currency($total, 'IDR', 'ID');
+                                    }),
+
+                                Hidden::make('sub_total')
+                                    ->dehydrated()
+                                    ->default(0),
 
                                 TextInput::make('ppn')
                                     ->label('PPN')
@@ -595,30 +649,6 @@ class TransactionResource extends Resource
                                     ->dehydrated()
                                     ->suffix('%'),
 
-                                Placeholder::make('sub_total_placheholder')
-                                    ->label('Sub Total')
-                                    ->content(function (Get $get, Set $set) {
-                                        $total = 0;
-
-                                        if ($get('harga') == null) {
-                                            $set('harga', 0);
-                                        } elseif ($get('mob_demob') == null) {
-                                            $set('mob_demob', 0);
-                                        } elseif ($get('biaya_operator') == null) {
-                                            $set('biaya_operator', 0);
-                                        }
-
-                                        if (floatval(str_replace(',', '', $get('harga'))) > 0) {
-                                            $total = floatval(str_replace(',', '', $get('harga'))) + floatval(str_replace(',', '', $get('mob_demob'))) + floatval(str_replace(',', '', $get('biaya_operator')));
-                                        }
-
-                                        $set('sub_total', $total);
-                                        return Number::currency($total, 'IDR', 'ID');
-                                    }),
-
-                                Hidden::make('sub_total')
-                                    ->dehydrated()
-                                    ->default(0),
 
                                 Placeholder::make('grand_total_placheholder')
                                     ->label('Grand Total (Include PPN)')
@@ -630,13 +660,12 @@ class TransactionResource extends Resource
 
                                         $set('grand_total', $total);
                                         return Number::currency($total, 'IDR', 'ID');
-                                    })
-                                    ->columnSpanFull(),
+                                    }),
 
                                 Hidden::make('grand_total')
                                     ->default(0),
                             ])
-                            ->columns(2)
+                            ->aside()
                             ->collapsible()
                     ])
                     ->action(function (Transaction $record, array $data) {
@@ -803,6 +832,10 @@ class TransactionResource extends Resource
                         TextEntry::make('ppn')
                             ->label('PPN')
                             ->formatStateUsing(fn(Transaction $record) => Number::currency($record->sub_total * $record->ppn / 100, 'IDR', 'id')),
+                        TextEntry::make('denda')
+                            ->label('Denda Overtime')
+                            ->visible(fn(Transaction $record) => $record->denda !== null)
+                            ->formatStateUsing(fn(Transaction $record) => $record->denda ? Number::currency($record->denda, 'IDR', 'id') : Number::currency(0, 'IDR', 'id')),
                         TextEntry::make('grand_total')
                             ->label('Grand Total')
                             ->formatStateUsing(fn(Transaction $record) => Number::currency($record->grand_total, 'IDR', 'id')),
@@ -815,6 +848,7 @@ class TransactionResource extends Resource
                                 ->openUrlInNewTab()
                                 ->color(Color::Green),
                         ])
+                            ->columnSpanFull(),
                     ])->columns(3)->collapsible()
             ]);
     }

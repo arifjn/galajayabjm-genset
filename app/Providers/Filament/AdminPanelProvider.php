@@ -49,8 +49,8 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Data Master',
                 'Transaksi',
-                'Manajemen Keuangan',
                 'Manajemen Warehouse',
+                'Manajemen Keuangan',
             ])
             ->font('poppins')
             ->favicon(asset('assets/logo/logo_only.png'))

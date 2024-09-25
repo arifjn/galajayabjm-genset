@@ -20,6 +20,7 @@ class Plan extends Model
         'alamat',
         'tanggal_job',
         'tanggal_job_selesai',
+        'tanggal_kembali',
         'status',
         'keterangan',
         'nama_supir',

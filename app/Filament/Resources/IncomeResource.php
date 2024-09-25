@@ -40,82 +40,142 @@ class IncomeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Order Information')
-                    ->schema([
-                        Forms\Components\Select::make('transaction_id')
-                            ->label('Transaksi')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Transaksi wajib diisi.',
-                            ])
-                            ->placeholder('Pilih Transaksi')
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
-                            ->live()
-                            ->relationship(
-                                name: 'transaction',
-                                modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status_transaksi', 'selesai')->orWhere('status_transaksi', 'dibayar');
-                                },
-                            )
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->subject) . ' Genset ' . ($record->kapasitas ? $record->kapasitas : $record->genset->kapasitas) . ' KVA' . ' (' . $record->order_id . ')'),
-                        Forms\Components\TextInput::make('overtime')
-                            ->label('Kelebihan Jam')
-                            ->numeric()
-                            ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                            ->live(onBlur: true)
-                            ->suffix('Jam'),
-                        Forms\Components\Placeholder::make('denda_placheholder')
-                            ->label('Denda Kelebihan Jam Sewa')
-                            ->content(function (Get $get, Set $set) {
-                                $total = 0;
+                Forms\Components\Split::make([
+                    Forms\Components\Section::make('Income Information')
+                        ->schema([
+                            Forms\Components\Select::make('transaction_id')
+                                ->label('Transaksi')
+                                ->required()
+                                ->validationMessages([
+                                    'required' => 'Transaksi wajib diisi.',
+                                ])
+                                ->placeholder('Pilih Transaksi')
+                                ->native(false)
+                                ->searchable()
+                                ->preload()
+                                ->live()
+                                ->afterStateUpdated(function (Get $get, Set $set) {
+                                    $transaction = Transaction::where('id', $get('transaction_id'))->first();
 
-                                if ($get('transaction_id') == null) {
-                                    $denda = 0;
-                                }
+                                    if ($transaction != null) {
+                                        $transaction->customer->name ? $set('customer', $transaction->customer->name) : $set('customer', $transaction->customer->perusahaan);
+                                        $set('order_id', $transaction->order_id);
+                                        $set('site', $transaction->site);
+                                        $set('status', $transaction->status_transaksi);
+                                    }
+                                })
+                                ->relationship(
+                                    name: 'transaction',
+                                    modifyQueryUsing: function (Builder $query, $record) {
+                                        $query->where('status_transaksi', '!=', 'selesai')->where('status_transaksi', 'dibayar');
+                                    },
+                                )
+                                ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->subject) . ' Genset ' . ($record->kapasitas ? $record->kapasitas : $record->genset->kapasitas) . ' KVA' . ' (' . $record->order_id . ')')
+                                ->columnSpanFull(),
 
-                                if ($get('transaction_id')) {
+                            Forms\Components\Placeholder::make('sewa_placheholder')
+                                ->label('Pendapatan Sewa')
+                                ->content(function (Get $get, Set $set) {
+
                                     $order = Transaction::where('id', $get('transaction_id'))->first();
-                                    $denda = ($order->harga * 0.295) / 100;
-                                }
+                                    $total =  0;
 
-                                if ($get('overtime') > 0) {
-                                    $total = $get('overtime') * $denda;
-                                }
+                                    if ($order) {
+                                        $total = $order->harga;
+                                    }
 
-                                $set('denda', $total);
-                                return Number::currency($total, 'IDR', 'ID');
-                            }),
+                                    return Number::currency($total, 'IDR', 'ID');
+                                }),
 
-                        Forms\Components\Hidden::make('denda')
-                            ->dehydrated()
-                            ->default(0),
-                        Forms\Components\Placeholder::make('income_placheholder')
-                            ->label('Pendapatan Bersih')
-                            ->content(function (Get $get, Set $set) {
+                            Forms\Components\Placeholder::make('biaya_operator_placheholder')
+                                ->label('Pendapatan Jasa Operator')
+                                ->content(function (Get $get, Set $set) {
 
-                                $order = Transaction::where('id', $get('transaction_id'))->first();
-                                $total =  0;
+                                    $order = Transaction::where('id', $get('transaction_id'))->first();
+                                    $total =  0;
 
-                                if ($order) {
-                                    $total = $order->harga;
-                                }
+                                    if ($order && $order->biaya_operator != null) {
+                                        $total = $order->biaya_operator;
+                                    }
 
-                                if ($get('denda') > 0) {
-                                    $total = $get('denda') + $order->harga + $order->biaya_operator;
-                                }
+                                    return Number::currency($total, 'IDR', 'ID');
+                                }),
 
-                                $set('income', $total);
-                                return Number::currency($total, 'IDR', 'ID');
-                            }),
+                            Forms\Components\Placeholder::make('denda_placheholder')
+                                ->label('Pendapatan Denda Overtime')
+                                ->content(function (Get $get, Set $set) {
 
-                        Forms\Components\Hidden::make('income')
-                            ->dehydrated()
-                            ->default(0),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
+                                    $order = Transaction::where('id', $get('transaction_id'))->first();
+                                    $total =  0;
+
+                                    if ($order && $order->denda != null) {
+                                        $total = $order->denda;
+                                    }
+
+                                    return Number::currency($total, 'IDR', 'ID');
+                                }),
+
+                            Forms\Components\Placeholder::make('income_placheholder')
+                                ->label('Total Pendapatan')
+                                ->content(function (Get $get, Set $set) {
+
+                                    $order = Transaction::where('id', $get('transaction_id'))->first();
+                                    $total =  0;
+
+                                    if ($order) {
+                                        $total = $order->harga + $order->biaya_operator + $order->denda;
+                                    }
+
+                                    $set('income', $total);
+                                    return Number::currency($total, 'IDR', 'ID');
+                                })
+                                ->columnSpanFull(),
+
+                            Forms\Components\Hidden::make('income')
+                                ->dehydrated()
+                                ->default(0),
+                        ])
+                        ->collapsible(),
+                    Forms\Components\Section::make('Order Details')
+                        ->schema([
+                            Forms\Components\TextInput::make('order_id')
+                                ->label('Order ID')
+                                ->disabled(),
+                            Forms\Components\TextInput::make('customer')
+                                ->label('Customer')
+                                ->disabled(),
+                            Forms\Components\TextInput::make('site')
+                                ->label('Lokasi Proyek')
+                                ->disabled(),
+                            Forms\Components\ToggleButtons::make('status')
+                                ->disabled()
+                                ->inline()
+                                ->inlineLabel(false)
+                                ->options([
+                                    'penawaran' => 'Proses Penawaran',
+                                    'pembayaran' => 'Proses Pembayaran',
+                                    'dibayar' => 'Dibayar',
+                                    'selesai' => 'Selesai',
+                                    'cancel' => 'Cancel',
+                                ])
+                                ->colors([
+                                    'penawaran' => 'warning',
+                                    'pembayaran' => 'primary',
+                                    'dibayar' => 'success',
+                                    'selesai' => 'success',
+                                    'cancel' => 'danger',
+                                ])
+                                ->icons([
+                                    'penawaran' => 'heroicon-o-arrow-path',
+                                    'pembayaran' => 'heroicon-o-banknotes',
+                                    'dibayar' => 'heroicon-o-check-badge',
+                                    'selesai' => 'heroicon-o-check-badge',
+                                    'cancel' => 'heroicon-o-x-mark',
+                                ]),
+                        ]),
+                ])
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -145,13 +205,14 @@ class IncomeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction.biaya_operator')
                     ->label('Biaya Operator')
-                    ->formatStateUsing(fn(Model $record) => Number::currency($record->transaction->biaya_operator, 'IDR', 'id'))
+                    ->formatStateUsing(fn(Model $record) => $record->transaction->biaya_operator != null ? Number::currency($record->transaction->biaya_operator, 'IDR', 'id') : Number::currency(0, 'IDR', 'id'))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('denda')
-                    ->formatStateUsing(fn(Model $record) => Number::currency($record->denda, 'IDR', 'id'))
+                Tables\Columns\TextColumn::make('transaction.denda')
+                    ->label('Denda Overtime')
+                    ->formatStateUsing(fn(Model $record) => $record->transaction->denda != null ? Number::currency($record->transaction->denda, 'IDR', 'id') : Number::currency(0, 'IDR', 'id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('income')
-                    ->label('Pendapatan Bersih')
+                    ->label('Total Pendapatan')
                     ->formatStateUsing(fn(Model $record) => Number::currency($record->income, 'IDR', 'id'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -169,15 +230,23 @@ class IncomeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make()
-                        ->color(Color::Indigo),
-                    Tables\Actions\DeleteAction::make(),
+                    // Tables\Actions\EditAction::make()
+                    //     ->color(Color::Indigo),
+                    Tables\Actions\DeleteAction::make()
+                        ->before(function (Income $record) {
+                            if ($record->transaction_id) {
+                                $transaction = Transaction::find($record->transaction_id);
+
+                                $transaction->status_transaksi = 'dibayar';
+                                $transaction->save();
+                            }
+                        }),
                 ]),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -193,7 +262,7 @@ class IncomeResource extends Resource
         return [
             'index' => Pages\ListIncomes::route('/'),
             'create' => Pages\CreateIncome::route('/create'),
-            'edit' => Pages\EditIncome::route('/{record}/edit'),
+            // 'edit' => Pages\EditIncome::route('/{record}/edit'),
         ];
     }
 }

@@ -36,6 +36,8 @@ class Transaction extends Model
 
         'sub_total',
         'grand_total',
+
+        'denda',
     ];
 
     protected $dates = ['tgl_sewa', 'tgl_selesai'];

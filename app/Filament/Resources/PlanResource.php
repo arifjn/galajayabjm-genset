@@ -233,10 +233,14 @@ class PlanResource extends Resource
                                 ->label('No. Telp')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make('jenis_mobil')
-                                ->label('Jenis Mobil')
+                            Forms\Components\Select::make('jenis_mobil')
+                                ->native(false)
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
-                                ->maxLength(255),
+                                ->label('Jenis Angkutan')
+                                ->options([
+                                    'bak_terbuka' => 'Truck Bak Terbuka',
+                                    'crane' => 'Truck Crane',
+                                ]),
                             Forms\Components\TextInput::make('plat_mobil')
                                 ->label('Plat')
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
@@ -432,7 +436,8 @@ class PlanResource extends Resource
         return $infolist
             ->schema([
                 Section::make('Informasi Pengiriman')->schema([
-                    TextEntry::make('jobdesk'),
+                    TextEntry::make('jobdesk')
+                        ->formatStateUsing(fn(string $state): string => $state == 'service' ? 'Service & Maintenance Check' : str()->title($state)),
                     TextEntry::make('tanggal_job')
                         ->label('Tanggal Job')
                         ->date('d F Y'),
@@ -450,7 +455,7 @@ class PlanResource extends Resource
                         ->formatStateUsing(function ($record) {
                             $html = '<ul class="list-inside list-disc">';
                             foreach ($record->gensets as $genset) {
-                                $html .= '<li>' . $genset->brand_engine . ' ' . $genset->kapasitas . ' KVA' . '</li>';
+                                $html .= '<li>' . str()->upper($genset->brand_engine) . ' ' . $genset->kapasitas . ' KVA' . '</li>';
                             }
                             $html .= '</ul>';
                             return $html;
@@ -465,6 +470,7 @@ class PlanResource extends Resource
                         ->formatStateUsing(fn(string $state): string => match ($state) {
                             'pending' => 'Pending',
                             'delivery' => 'Delivery',
+                            'rent' => 'Rent',
                             'selesai' => 'Selesai',
                             'cancel' => 'Cancel',
                         })
@@ -472,12 +478,14 @@ class PlanResource extends Resource
                         ->color(fn(string $state): string => match ($state) {
                             'pending' => 'warning',
                             'delivery' => 'info',
+                            'rent' => 'primary',
                             'selesai' => 'success',
                             'cancel' => 'danger',
                         })
                         ->icon(fn(string $state): string => match ($state) {
                             'pending' => 'heroicon-o-information-circle',
                             'delivery' => 'heroicon-o-truck',
+                            'rent' => 'heroicon-m-bolt',
                             'selesai' => 'heroicon-o-check-badge',
                             'cancel' => 'heroicon-o-x-mark',
                         })
@@ -489,7 +497,14 @@ class PlanResource extends Resource
                     TextEntry::make('nohp_supir')
                         ->label('No. HP'),
                     TextEntry::make('jenis_mobil')
-                        ->label('Jenis Mobil'),
+                        ->label('Jenis Mobil')
+                        ->formatStateUsing(function (string $state): string {
+                            if ($state == 'bak_terbuka') {
+                                return 'Truck Bak Terbuka';
+                            } else if ($state == 'crane') {
+                                return 'Truck Crane';
+                            }
+                        }),
                     TextEntry::make('plat_mobil')
                         ->label('Plat'),
                 ])

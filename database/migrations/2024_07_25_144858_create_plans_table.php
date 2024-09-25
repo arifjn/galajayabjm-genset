@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('tanggal_job');
             $table->date('tanggal_job_selesai');
 
-            $table->date('tanggal_kembali');
+            $table->date('tanggal_kembali')->nullable();
 
             $table->string('status');
             $table->text('keterangan')->nullable();

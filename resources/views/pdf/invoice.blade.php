@@ -14,6 +14,12 @@ use Carbon\Carbon;
 
     <link rel="stylesheet" href="./storage/assets/laporan-css/style.css">
 
+    <style>
+        * {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -76,7 +82,7 @@ use Carbon\Carbon;
             INVOICE
         </h2>
 
-        <table class="font-bold">
+        <table style="font-weight: bold">
             <tr>
                 <td>
                     Nomor
@@ -113,7 +119,7 @@ use Carbon\Carbon;
             </tr>
         </table>
 
-        <table border="1" id="table1" class="font-bold">
+        <table border="1" id="table1" style="font-weight: bold">
             <thead>
                 <tr>
                     <th align="center" width="1%">No</th>
@@ -184,7 +190,7 @@ use Carbon\Carbon;
         <p>
             Keterangan :
         </p>
-        <table class="font-bold">
+        <table style="font-weight: bold">
             <tr>
                 <td>
                     Sistem Pembayaran

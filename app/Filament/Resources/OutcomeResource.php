@@ -54,13 +54,18 @@ class OutcomeResource extends Resource
                             ->relationship(
                                 name: 'plan',
                                 modifyQueryUsing: function (Builder $query) {
-                                    $query->where('status', 'selesai')->orWhere('status', 'rent');
+                                    $query->where('status', 'selesai');
+                                    // $query->where('status', 'selesai')->orWhere('status', 'rent');
                                 },
                             )
                             ->columnSpanFull()
                             ->getOptionLabelFromRecordUsing(fn(Model $record) => ucwords($record->jobdesk) . ' Genset - ' . ($record->transaction->customer->perusahaan ? $record->transaction->customer->perusahaan : $record->transaction->customer->name) . ' (' . $record->order_id . ')'),
                         Forms\Components\TextInput::make('upd')
                             ->label('Uang Perjalanan Dinas (UPD)')
+                            ->hintIcon(
+                                'heroicon-o-information-circle',
+                                tooltip: 'Optional'
+                            )
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
@@ -72,6 +77,10 @@ class OutcomeResource extends Resource
                             ->prefix('Rp'),
                         Forms\Components\TextInput::make('biaya_service')
                             ->label('Biaya Service')
+                            ->hintIcon(
+                                'heroicon-o-information-circle',
+                                tooltip: 'Optional'
+                            )
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
@@ -83,6 +92,10 @@ class OutcomeResource extends Resource
                             ->prefix('Rp'),
                         Forms\Components\TextInput::make('biaya_bbm')
                             ->label('Biaya BBM')
+                            ->hintIcon(
+                                'heroicon-o-information-circle',
+                                tooltip: 'Optional'
+                            )
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
@@ -94,6 +107,10 @@ class OutcomeResource extends Resource
                             ->prefix('Rp'),
                         Forms\Components\TextInput::make('biaya_lainnya')
                             ->label('Biaya Lainnya')
+                            ->hintIcon(
+                                'heroicon-o-information-circle',
+                                tooltip: 'Optional'
+                            )
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
                             ->dehydrateStateUsing(fn($state) => floatval(str_replace(',', '', $state)))
@@ -105,6 +122,10 @@ class OutcomeResource extends Resource
                             ->prefix('Rp'),
                         Forms\Components\TextInput::make('lainnya')
                             ->label('Keterangan')
+                            ->hintIcon(
+                                'heroicon-o-information-circle',
+                                tooltip: 'Optional'
+                            )
                             ->live()
                             ->visible(fn(Get $get) => $get('biaya_lainnya'))
                             ->required(fn(Get $get) => $get('plan_id') == null),
