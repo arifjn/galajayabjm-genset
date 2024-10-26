@@ -79,7 +79,7 @@ use Carbon\Carbon;
     <main style="font-size: 15px">
 
         <h2 class="fw-bold text-center my-4">
-            INVOICE
+            INVOICE DENDA
         </h2>
 
         <table style="font-weight: bold">
@@ -119,14 +119,15 @@ use Carbon\Carbon;
             </tr>
         </table>
 
-        <table border="1" id="table1" style="font-weight: bold">
+        <table border="1" id="table1" style="background-color: rgb(230, 230, 230)">
             <thead>
                 <tr>
                     <th align="center" width="1%">No</th>
-                    <th>Keterangan</th>
-                    <th>Qty</th>
-                    <th>Unit</th>
-                    <th>Harga</th>
+                    <th>Genset</th>
+                    <th>Tanggal Sewa</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Tanggal Kembali</th>
+                    <th>Durasi Sewa</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,42 +137,44 @@ use Carbon\Carbon;
                         {{ $order->genset ? str()->upper($order->genset->tipe_genset) : '-' }} TYPE
                         {{ $order->kapasitas ? $order->kapasitas : $order->genset->kapasitas }} KVA
                     </td>
-                    <td>1</td>
-                    <td>Unit</td>
-                    <td>{{ Number::currency($order->harga, 'IDR', 'id') }}</td>
+                    <td>{{ Carbon::parse($order->tgl_sewa)->translatedFormat('d F Y') }}</td>
+                    <td>{{ Carbon::parse($order->tgl_selesai)->translatedFormat('d F Y') }}</td>
+                    <td>{{ Carbon::parse($plan->tanggal_kembali)->translatedFormat('d F Y') }}</td>
+                    <td>{{ $durasi == '' ? '-' : $durasi }} Hari</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table border="1" id="table1" style="font-weight: bold">
+            <thead>
+                <tr>
+                    <th align="center" width="1%">No</th>
+                    <th>Kelebihan Jam Sewa</th>
+                    <th>Total Denda</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td align="center">1</td>
+                    <td>
+                        {{ $order->overtime }} Jam
+                    </td>
+                    <td>{{ Number::currency(($order->harga * 0.295 * $order->overtime) / 100, 'IDR', 'ID') }}</td>
                 </tr>
                 <tr>
                     <td align="center">2</td>
                     <td>
-                        MOB DEMOB
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ $order->mob_demob ? Number::currency($order->mob_demob, 'IDR', 'id') : 0 }}</td>
-                </tr>
-                <tr>
-                    <td align="center">3</td>
-                    <td>
-                        OPERATOR
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>{{ $order->biaya_operator ? Number::currency($order->biaya_operator, 'IDR', 'id') : 0 }}</td>
-                </tr>
-                <tr>
-                    <td align="center">4</td>
-                    <td colspan="3">
                         PPN {{ $order->ppn }}%
                     </td>
-                    <td>{{ $order->ppn ? Number::currency(($order->sub_total * $order->ppn) / 100, 'IDR', 'id') : 0 }}
+                    <td>{{ Number::currency(((($order->harga * 0.295 * $order->overtime) / 100) * $order->ppn) / 100, 'IDR', 'ID') }}
                     </td>
                 </tr>
-                <tr>
-                    <td align="center">5</td>
-                    <td colspan="3">
-                        GRAND TOTAL
-                    </td>
-                    <td>{{ $order->grand_total ? Number::currency($order->grand_total, 'IDR', 'id') : 0 }}</td>
+
+                <td colspan="2" class="text-center">
+                    Grand Total
+                </td>
+                <td>{{ Number::currency(($order->harga * 0.295 * $order->overtime) / 100 + ((($order->harga * 0.295 * $order->overtime) / 100) * $order->ppn) / 100, 'IDR', 'ID') }}
+                </td>
                 </tr>
             </tbody>
         </table>
@@ -187,17 +190,6 @@ use Carbon\Carbon;
             Keterangan :
         </p>
         <table style="font-weight: bold">
-            <tr>
-                <td>
-                    Sistem Pembayaran
-                </td>
-                <td>
-                    :
-                </td>
-                <td>
-                    Pelunasan 100% barang akan dikirim selambat – lambatnya 1 minggu setelah pelunasan
-                </td>
-            </tr>
             <tr>
                 <td>
                     Bank Account

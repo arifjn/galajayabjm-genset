@@ -37,6 +37,8 @@ class CreatePlan extends CreateRecord
             $data['jobdesk'] = 'delivery';
         } else if ($data['choose_jobdesk'] == 'service') {
             $data['jobdesk'] = 'service';
+        } else if ($data['choose_jobdesk'] == 'penarikan') {
+            $data['jobdesk'] = 'penarikan';
         } else {
             return $data;
         }

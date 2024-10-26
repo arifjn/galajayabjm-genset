@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('subject');
             $table->date('tgl_sewa')->nullable();
             $table->date('tgl_selesai')->nullable();
+            $table->boolean('operator')->default(0);
             $table->text('site')->nullable();
             $table->string('kapasitas')->nullable();
             $table->string('keterangan')->nullable();
@@ -40,7 +41,9 @@ return new class extends Migration
             $table->decimal('sub_total', 10, 2)->nullable();
             $table->decimal('grand_total', 10, 2)->nullable();
 
+            $table->integer('overtime')->nullable();
             $table->decimal('denda', 10, 2)->nullable();
+            $table->text('tf_denda')->nullable();
             $table->timestamps();
         });
     }

@@ -195,7 +195,7 @@ class ServiceResource extends Resource
                     ->wrap()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('foto_service')
-                    ->label('Foto Rental')
+                    ->label('Foto Service')
                     ->circular()
                     ->stacked()
                     ->simpleLightbox(),

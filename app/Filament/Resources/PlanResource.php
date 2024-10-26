@@ -53,6 +53,7 @@ class PlanResource extends Resource
                                 ->options([
                                     'delivery' => 'Delivery',
                                     'service' => 'Service & Maintenance Check',
+                                    'penarikan' => 'Penarikan',
                                     'lainnya' => 'Lainnya',
                                 ])
                                 ->label('Pilih Pekerjaan')
@@ -120,7 +121,12 @@ class PlanResource extends Resource
                                     modifyQueryUsing: function (Builder $query, Get $get) {
                                         if ($get('choose_jobdesk') == 'delivery') {
                                             $query->where('status_genset', 'ready');
-                                        } elseif ($get('choose_jobdesk') == 'service') {
+                                        }
+                                        // elseif ($get('choose_jobdesk') == 'service') {
+                                        //     $query->where('status_genset', 'rent')
+                                        //         ->whereHas('plans', fn(Builder $q) => $q->where('status', 'rent'));
+                                        // }
+                                        elseif ($get('choose_jobdesk') == 'penarikan') {
                                             $query->where('status_genset', 'rent')
                                                 ->whereHas('plans', fn(Builder $q) => $q->where('status', 'rent'));
                                         } else {
@@ -131,7 +137,7 @@ class PlanResource extends Resource
                                 ->getOptionLabelFromRecordUsing(fn(Model $record) => str()->upper($record->brand_engine) . ' ' . $record->kapasitas . " KVA" . ' (' . $record->no_genset . ')'),
                             Forms\Components\Select::make('order_id')
                                 ->label('Customer')
-                                ->required()
+                                ->required(fn(Get $get) => $get('choose_jobdesk') !== 'service')
                                 ->validationMessages([
                                     'required' => 'Customer wajib diisi.',
                                 ])
@@ -147,6 +153,11 @@ class PlanResource extends Resource
                                     name: 'transaction',
                                     modifyQueryUsing: function (Builder $query, Get $get) {
                                         if ($get('choose_jobdesk') == 'service' && $get('genset_id')) {
+                                            $order = Plan::whereHas('gensets', fn(Builder $q) => $q->where('genset_id', $get('genset_id')))->get('order_id');
+                                            $query->where('status_transaksi', 'dibayar')
+                                                ->whereHas('plan', fn(Builder $q) => $q->where('status', 'rent')->whereIn('order_id', $order))
+                                            ;
+                                        } else if ($get('choose_jobdesk') == 'penarikan' && $get('genset_id')) {
                                             $order = Plan::whereHas('gensets', fn(Builder $q) => $q->where('genset_id', $get('genset_id')))->get('order_id');
                                             $query->where('status_transaksi', 'dibayar')
                                                 ->whereHas('plan', fn(Builder $q) => $q->where('status', 'rent')->whereIn('order_id', $order))
@@ -246,7 +257,7 @@ class PlanResource extends Resource
                                 ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                                 ->maxLength(255),
                         ])
-                        ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery')
+                        ->visible(fn(Get $get) => $get('choose_jobdesk') == 'delivery' || $get('choose_jobdesk') == 'penarikan')
                         ->collapsible(),
                     // ->collapsed(fn(string $operation): bool => $operation == 'edit' ? 1 : 0),
                 ])->columnSpanFull(),
@@ -340,7 +351,7 @@ class PlanResource extends Resource
                                 }
                             }
 
-                            if ($record->gensets) {
+                            if ($record->gensets && $record->subject == 'sewa') {
                                 foreach ($record->gensets as $genset) {
                                     $gs = Genset::find($genset->id);
                                     $gs->status_genset = 'ready';
@@ -354,7 +365,7 @@ class PlanResource extends Resource
                                 $u->save();
                             }
 
-                            if ($record->order_id) {
+                            if ($record->order_id && $record->subject == 'sewa') {
                                 $order = Transaction::where('order_id', $record->order_id)->first();
                                 $order->status_transaksi = 'selesai';
                                 $order->save();
@@ -373,7 +384,8 @@ class PlanResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->emptyStateHeading('Belum ada data! 🙁')
-            ->defaultSort('tanggal_job', 'DESC')
+            // ->defaultSort('tanggal_job', 'DESC')
+            ->defaultSort(fn($query) => $query->orderByRaw("FIELD(status , 'pending', 'delivery', 'rent') DESC")->orderBy('tanggal_job', 'ASC'))
             ->filters([
                 //
             ])
@@ -386,11 +398,25 @@ class PlanResource extends Resource
                         ->color(Color::Rose)
                         ->url(fn(Plan $record) => route('pdf.delivery', $record->order_id))
                         ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('operator_work')
+                        ->label('Cetak ST')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'delivery')
+                        ->icon('heroicon-o-clipboard-document-list')
+                        ->color(Color::Fuchsia)
+                        ->url(fn(Plan $record) => route('pdf.operator-work', $record->id))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('penarikan')
+                        ->label('SPK Penarikan')
+                        ->visible(fn(Plan $record) => $record->jobdesk == 'penarikan')
+                        ->icon('heroicon-o-document-text')
+                        ->color(Color::Pink)
+                        ->url(fn(Plan $record) => route('pdf.spk-penarikan', $record->id))
+                        ->openUrlInNewTab(),
                     Tables\Actions\Action::make('service_work')
                         ->label('Cetak ST')
                         ->visible(fn(Plan $record) => $record->jobdesk == 'service')
-                        ->icon('heroicon-o-document-text')
-                        ->color(Color::Rose)
+                        ->icon('heroicon-o-clipboard-document-list')
+                        ->color(Color::Fuchsia)
                         ->url(fn(Plan $record) => route('pdf.service-work', $record->id))
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make()

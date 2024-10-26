@@ -12,7 +12,12 @@ class Navbar extends Component
         $orders = [];
 
         if (auth()->guard('customer')->user()) {
-            $orders = Transaction::query()->where('status_transaksi', 'penawaran')->whereHas('customer', fn ($q) => $q->where('id', auth()->guard('customer')->user()->id))->get();
+            $orders = Transaction::query()
+                ->where('status_transaksi', 'penawaran')
+                ->whereHas('customer', fn($q) => $q->where('id', auth()->guard('customer')->user()->id))
+                ->orWhere('overtime', '!=', 0)
+                ->whereHas('customer', fn($q) => $q->where('id', auth()->guard('customer')->user()->id))
+                ->get();
         }
         return view('livewire.partials.navbar', [
             'orders' => $orders,

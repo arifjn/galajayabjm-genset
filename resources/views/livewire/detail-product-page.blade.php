@@ -115,7 +115,7 @@
             <!-- End produk -->
 
             <!-- table spek -->
-            <div class="mt-12 grid lg:grid-cols-3 grid-cols-1  gap-4 lg:px-8 gap-y-8">
+            <div class="mt-12 grid lg:grid-cols-3 grid-cols-1 gap-4 lg:px-8 gap-y-8">
                 <div class="col-span-2">
                     <div class="-m-1.5 overflow-x-auto">
                         <div class="p-1.5 min-w-full inline-block align-middle">
@@ -182,7 +182,8 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                 :</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                {{ ucfirst($genset->tipe_generator) }}</td>
+                                                {{ ucfirst($genset->tipe_generator) }}
+                                            </td>
                                         </tr>
 
                                     </tbody>

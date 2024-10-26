@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('bore_stroke')->nullable();
             $table->integer('piston')->nullable();
             $table->string('pendingin')->nullable();
-            $table->integer('kaps_oli')->nullable();
+            $table->string('kaps_oli')->nullable();
             $table->string('bahan_bakar')->nullable();
 
             $table->string('brand_generator');

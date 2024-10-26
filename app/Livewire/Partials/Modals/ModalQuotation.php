@@ -21,6 +21,7 @@ class ModalQuotation extends Component
     public $kapasitas = '';
     public $tgl_sewa;
     public $tgl_selesai;
+    public $operator = 0;
     public $keterangan;
     public  $validateSite = true;
 
@@ -48,6 +49,7 @@ class ModalQuotation extends Component
             'subject' => $this->subject,
             'tgl_sewa' => $this->tgl_sewa,
             'tgl_selesai' => $this->tgl_selesai,
+            'operator' => $this->operator,
             'site' => $site,
             'kapasitas' => $this->kapasitas,
             'keterangan' => $this->keterangan,

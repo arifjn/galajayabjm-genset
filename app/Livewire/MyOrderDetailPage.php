@@ -14,6 +14,7 @@ class MyOrderDetailPage extends Component
 
     public $order_id;
     public $bukti_tf;
+    public $tf_denda;
 
     public $currentStep = 1;
 
@@ -25,7 +26,7 @@ class MyOrderDetailPage extends Component
 
         if ($order->status_transaksi == 'pembayaran') {
             $this->currentStep = 2;
-        } elseif ($order->status_transaksi == 'dibayar' || $order->status_transaksi == 'delivery' || $order->status_transaksi == 'selesai') {
+        } elseif ($order->status_transaksi == 'dibayar' || $order->status_transaksi == 'denda' || $order->status_transaksi == 'delivery' || $order->status_transaksi == 'selesai') {
             $this->currentStep = 3;
         } else {
             $this->currentStep = 1;
@@ -90,6 +91,40 @@ class MyOrderDetailPage extends Component
             'timer' => 3000,
             'toast' => true,
             'text' => 'Bukti Pembayaran berhasil dikirim!',
+            'timerProgressBar' => true,
+        ]);
+
+        return redirect()->to(route('order.show', [auth()->guard('customer')->user()->id, $this->order_id]));
+    }
+
+    public function save_denda()
+    {
+        $order = Transaction::where('order_id', $this->order_id)->firstOrFail();
+
+        $this->validate([
+            'tf_denda' => 'mimes:pdf|max:20000',
+        ]);
+
+        $file = "";
+
+        //upload image
+        if ($this->tf_denda == null) {
+            $file = null;
+        } else {
+            $file = $this->tf_denda;
+            $file->storeAs('public/pdf-buktibayar_denda/', $file->hashName());
+            $file_bukti = 'pdf-buktibayar_denda/' . $file->hashName();
+        }
+
+        $order->update([
+            'tf_denda' => $file_bukti
+        ]);
+
+        $this->flash('success', 'Success!', [
+            'position' => 'top-end',
+            'timer' => 3000,
+            'toast' => true,
+            'text' => 'Bukti Pembayaran Denda berhasil dikirim!',
             'timerProgressBar' => true,
         ]);
 

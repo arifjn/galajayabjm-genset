@@ -166,16 +166,60 @@ class ReturnResource extends Resource
                             ->live()
                             ->label('Kelebihan Jam Sewa Genset')
                             ->default(false),
+
                         Forms\Components\TextInput::make('overtime')
                             ->visible(fn(Get $get) => $get('hour_meter'))
                             ->label('Kelebihan Jam')
                             ->numeric()
+                            ->default(0)
                             ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
                             ->live(onBlur: true)
                             ->suffix('Jam'),
+
+
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('overtime_placheholder')
+                                ->visible(fn(Get $get) => $get('hour_meter'))
+                                ->label('Denda')
+                                ->content(function (Get $get, Set $set) {
+                                    $total = 0;
+
+                                    if ($get('order_id')) {
+                                        $order = Transaction::where('order_id', $get('order_id'))->first();
+                                        $denda = ($order->harga * 0.295) / 100;
+                                    }
+
+                                    if ($get('overtime') > 0) {
+                                        $total = $get('overtime') * $denda;
+                                    }
+
+                                    return Number::currency($total, 'IDR', 'ID');
+                                }),
+
+                            Forms\Components\Placeholder::make('ppn_placheholder')
+                                ->visible(fn(Get $get) => $get('hour_meter'))
+                                ->label('PPN')
+                                ->content(function (Get $get) {
+                                    $total = 0;
+
+                                    if ($get('order_id')) {
+                                        $order = Transaction::where('order_id', $get('order_id'))->first();
+                                        $denda = ($order->harga * 0.295) / 100;
+                                    }
+
+                                    if ($get('overtime') > 0) {
+                                        $total = $get('overtime') * $denda * $order->ppn / 100;
+                                    }
+
+                                    return Number::currency($total, 'IDR', 'ID');
+                                }),
+                        ])
+                            ->live()
+                            ->columns(2),
+
                         Forms\Components\Placeholder::make('denda_placheholder')
                             ->visible(fn(Get $get) => $get('hour_meter'))
-                            ->label('Denda Kelebihan Jam Sewa')
+                            ->label('Grand Total')
                             ->content(function (Get $get, Set $set) {
                                 $total = 0;
 
@@ -185,7 +229,7 @@ class ReturnResource extends Resource
                                 }
 
                                 if ($get('overtime') > 0) {
-                                    $total = $get('overtime') * $denda;
+                                    $total = ($get('overtime') * $denda) + ($get('overtime') * $denda * $order->ppn / 100);
                                 }
 
                                 $set('denda', $total);
@@ -227,8 +271,11 @@ class ReturnResource extends Resource
                         $record->save();
 
                         $transaction = Transaction::where('order_id', $data['order_id'])->first();
+                        $transaction->overtime = $data['hour_meter'] ? $data['overtime'] : 0;
                         $transaction->denda = $data['denda'];
-                        // $transaction->status_transaksi = 'selesai';
+                        if ($transaction->overtime > 0) {
+                            $transaction->status_transaksi = 'denda';
+                        }
                         $transaction->save();
                     })
                     ->requiresConfirmation()

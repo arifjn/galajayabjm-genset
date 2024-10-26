@@ -15,9 +15,12 @@ class TransactionOverview extends BaseWidget
                 ->where('status_transaksi', 'penawaran')
                 ->orWhere('status_transaksi', 'pembayaran')
                 ->count()),
-            Stat::make('Order Paid', Transaction::query()->where('status_transaksi', 'dibayar')->count()),
-            Stat::make('Order Completed', Transaction::query()
+            Stat::make('Order Paid', Transaction::query()
+                ->where('status_transaksi', 'dibayar')
                 ->orWhere('status_transaksi', 'selesai')
+                ->count()),
+            Stat::make('Order Completed', Transaction::query()
+                ->where('status_transaksi', 'selesai')
                 ->count()),
         ];
     }

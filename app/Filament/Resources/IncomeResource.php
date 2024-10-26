@@ -58,7 +58,7 @@ class IncomeResource extends Resource
                                     $transaction = Transaction::where('id', $get('transaction_id'))->first();
 
                                     if ($transaction != null) {
-                                        $transaction->customer->name ? $set('customer', $transaction->customer->name) : $set('customer', $transaction->customer->perusahaan);
+                                        $transaction->customer->perusahaan ? $set('customer', $transaction->customer->perusahaan) : $set('customer', $transaction->customer->name);
                                         $set('order_id', $transaction->order_id);
                                         $set('site', $transaction->site);
                                         $set('status', $transaction->status_transaksi);

@@ -11,9 +11,8 @@ use Carbon\Carbon;
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Surat Tugas Mekanik</title>
+    <title>SPK Penarikan</title>
 
-    {{-- <link rel="stylesheet" href="{{ url('assets/laporan-css/style.css') }}"> --}}
     <link rel="stylesheet" href="./storage/assets/laporan-css/style.css">
 
     <style>
@@ -41,7 +40,7 @@ use Carbon\Carbon;
         }
 
         #tableTtd td {
-            font-size: 11px;
+            /* font-size: 11px; */
         }
     </style>
 
@@ -59,10 +58,10 @@ use Carbon\Carbon;
                                     class="my-4">
                             </td>
                             <td class="fw-bold">
-                                <span style="font-size: 18px">
+                                <span style="font-size: 20px">
                                     PT. GALA JAYA BANJARMASIN <br>
                                 </span>
-                                <span style="font-size: 12px">
+                                <span style="font-size: 16px">
                                     Jl. Pramuka No. 19, RT.32 RW.06; Telp. 0511-3276688 <br>
                                     BANJARMASIN
                                 </span>
@@ -78,16 +77,15 @@ use Carbon\Carbon;
 
     <main style="margin-top: -1rem;">
 
-        <div class="text-uppercase fw-bold text-center my-4" style="margin-top: -12px">
-            <p class="uppercase">
-                SURAT TUGAS MEKANIK
-            </p>
-            <p style="margin-top: -12px; font-size: 11px">
-                No : {{ $plan->id }}/GJ-BJM/STM/{{ $plan->created_at->format('Y') }}
+        <div class="text-uppercase fw-bold text-center mt-4" style="margin-top: -12px">
+            <p class="uppercase" style="font-size: 22px">
+                SURAT PERINTAH KERJA (SPK)
+                <br>
+                PENARIKAN GENSET
             </p>
         </div>
 
-        <table style="font-size: 12px">
+        <table style="font-size: 14px">
             <thead>
                 <tr>
                     <th colspan="3" class="text-start">
@@ -106,17 +104,10 @@ use Carbon\Carbon;
                     </td>
                 </tr>
                 <tr>
-                    <td>Alat Transportasi</td>
+                    <td>Tanggal</td>
                     <td>
                         :
-                        ...........................................
-                    </td>
-                </tr>
-                <tr>
-                    <td>Deskripsi Job</td>
-                    <td>
-                        :
-                        Service & Maintenance Check
+                        {{ Carbon::parse($plan->tanggal_job)->translatedFormat('d F Y') }}
                     </td>
                 </tr>
                 <tr>
@@ -137,7 +128,7 @@ use Carbon\Carbon;
 
         <br>
 
-        <table style="font-size: 12px">
+        <table style="font-size: 14px">
             <thead>
                 <tr>
                     <th colspan="3" class="text-start">
@@ -154,7 +145,7 @@ use Carbon\Carbon;
                     </td>
                 </tr>
                 <tr>
-                    <td>Alamat</td>
+                    <td>Lokasi</td>
                     <td>
                         :
                         {{ $plan->transaction->customer->alamat }}
@@ -179,74 +170,53 @@ use Carbon\Carbon;
 
         <br>
 
-        <table style="font-size: 12px">
-            <thead>
-                <tr>
-                    <th colspan="3" class="text-start">
-                        <u>Tanggal (Hari/Tanggal/Jam)</u>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Berangkat</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Tiba Lokasi</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Kembali Lokasi</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Sampai Kantor</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div style="font-size: 14px; margin-top: -14px">
+            <p class="mb-5">
+                Sehubungan dengan berakhirnya masa sewa Genset di lokasi {{ $plan->transaction->customer->alamat }} pada
+                tanggal {{ Carbon::parse($plan->transaction->tgl_selesai)->translatedFormat('d F Y') }}, melalui surat
+                ini kami
+                memerintahkan Saudara
+                @foreach ($plan->users as $u)
+                    {{ ucwords($u->name) }}{{ $loop->last ? '' : ', ' }}
+                @endforeach beserta tim untuk melakukan penarikan genset tersebut.
+            </p>
+            {{-- <span>Berikut rincian genset yang akan ditarik:</span> --}}
+            <table border="1" id="table1" style="background-color: rgb(230, 230, 230); margin-top: 0px">
+                <thead>
+                    <tr>
+                        <th align="center" width="1%">No</th>
+                        <th>Genset</th>
+                        <th>Tanggal Sewa</th>
+                        <th>Tanggal Selesai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">1</td>
+                        <td>
+                            @foreach ($plan->gensets as $gs)
+                                {{ str()->upper($gs->brand_engine) }}
+                                {{ $gs->kapasitas }} KVA
+                                @if (!$loop->last)
+                                    <br>
+                                @endif
+                            @endforeach
+                        </td>
+                        <td>{{ Carbon::parse($plan->transaction->tgl_sewa)->translatedFormat('d F Y') }}</td>
+                        <td>{{ Carbon::parse($plan->transaction->tgl_selesai)->translatedFormat('d F Y') }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <br>
-
-        <table style="font-size: 12px">
-            <thead>
-                <tr>
-                    <th>
-                        Hasil Pekerjaan Mekanik :
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Baik
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Cukup
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Tidak Baik
-                    </th>
-                </tr>
-            </thead>
-        </table>
+            <p class="mt-5">
+                Demikian surat pengembalian ini kami sampaikan. Kami ucapkan terima kasih atas kepercayaan dan
+                kerjasamanya selama masa sewa. Semoga kita dapat menjalin kerja sama kembali di masa yang akan datang.
+            </p>
+        </div>
 
     </main>
 
-
-    <footer style="font-size: 12px;">
+    <footer style="font-size: 14px;">
         <table id="tableTtd" class="text-center">
             <tr>
                 <td>Mekanik</td>

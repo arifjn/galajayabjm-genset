@@ -592,12 +592,147 @@
                         @livewire('partials.cards.card-order', ['order' => $order, 'plan' => $plan])
                         <!-- End Grid -->
 
+                        <!-- bukti bayar -->
+                        @if ($order->overtime)
+                            <div class="flex flex-col md:flex-row gap-8 mt-4">
+                                <div class="md:w-3/4">
+                                    <div
+                                        class="flex flex-col gap-y-4 md:justify-between md:flex-row bg-gray-100 border border-gray-200 shadow-sm rounded-xl p-5 md:px-8 md:py-5 mb-4">
+                                        <div>
+                                            <p class="text-sm">Nama Bank :</p>
+                                            <p class="font-semibold text-sm md:text-base uppercase">Bank Central Asia
+                                                (BCA)
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm">Atas Nama :</p>
+                                            <p class="font-semibold text-sm md:text-base uppercase">PT. Gala Jaya
+                                                Banjarmasin
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm">No. Rekening :</p>
+                                            <p class="font-semibold text-sm md:text-base uppercase">0511-788-578</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col bg-white rounded-lg shadow-sm p-4 border">
+                                        <div class="-m-1.5 overflow-x-auto">
+                                            <div class="p-1.5 min-w-full inline-block align-middle">
+                                                <div class="overflow-hidden">
+                                                    <table class="min-w-full divide-y divide-gray-200">
+                                                        <tr>
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800 uppercase">
+                                                                Kelebihan Jam Sewa
+                                                            </td>
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                :
+                                                                {{ $order->overtime }} Jam
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="bg-gray-100 font-semibold">
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 uppercase">
+                                                                Total Denda
+                                                            </td>
+                                                            <td
+                                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                                                                :
+                                                                {{ $order->denda ? Number::currency($order->denda, 'IDR', 'id') : 0 }}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="md:w-1/4">
+
+                                    <div class="bg-white rounded-lg shadow-sm border p-6 mb-4">
+                                        <div
+                                            class="flex flex-col justify-center items-center max-w-sm rounded-lg overflow-hidden">
+                                            <a href="{{ route('pdf.denda', $order->order_id) }}" target="_blank"
+                                                class="bg-rose-500 text-center text-white hover:bg-rose-600 p-1.5 w-full flex items-center justify-center gap-x-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="size-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                                                </svg>
+
+                                                Lihat Denda
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    @if ($order->tf_denda == null)
+                                        <p class="text-sm my-2">Upload Bukti Pembayaran</p>
+
+                                        <form wire:submit.prevent='save_denda' class="max-w-sm">
+                                            <label for="tf_denda" class="sr-only">Choose file</label>
+                                            <input type="file" wire:model="tf_denda" id="tf_denda"
+                                                class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4">
+
+                                            <div class="flex items-center justify-center my-4">
+                                                <div class="w-full" wire:loading.remove wire:target='save_denda'>
+                                                    <button type="submit"
+                                                        class="w-full text-white bg-green-500 hover:bg-green-500/90 focus:ring-4 focus:outline-none focus:ring-green-500/50 font-medium rounded-lg text-sm px-5 py-2.5 flex items-center justify-center mr-2 mb-2 cursor-pointer">
+                                                        <span class="text-center ml-2">Kirim</span>
+                                                    </button>
+                                                </div>
+                                                <div class="w-full" wire:loading wire:target='save_denda'>
+                                                    <label
+                                                        class="w-full text-white bg-green-500/75 font-medium rounded-lg text-sm px-5 py-2.5 justify-center mr-2 mb-2 inline-flex items-center gap-x-2">
+                                                        <div
+                                                            class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full">
+                                                            <span class="sr-only">Loading...</span>
+                                                        </div>
+                                                        Uploading ...
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    @else
+                                        <div class="bg-white rounded-lg shadow-sm border p-6">
+                                            <div class="flex justify-between mb-2">
+                                                <h2 class="font-semibold mb-4">Bukti Pembayaran</h2>
+                                                <a href="{{ url('storage', $order->tf_denda) }}" target="_blank">
+                                                    <svg class="size-6 text-red-500" aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        height="16" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" stroke-linecap="round"
+                                                            stroke-linejoin="round" stroke-width="2"
+                                                            d="M5 17v-5h1.5a1.5 1.5 0 1 1 0 3H5m12 2v-5h2m-2 3h2M5 10V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1v6M5 19v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1M10 3v4a1 1 0 0 1-1 1H5m6 4v5h1.375A1.627 1.627 0 0 0 14 15.375v-1.75A1.627 1.627 0 0 0 12.375 12H11Z" />
+                                                    </svg>
+
+                                                </a>
+                                            </div>
+
+                                            <div
+                                                class="flex flex-col justify-center items-center max-w-sm mb-4 rounded-lg overflow-hidden">
+                                                <iframe class="max-w-full"
+                                                    src="{{ url('storage', $order->tf_denda) }}">
+                                                </iframe>
+                                                <a href="{{ url('storage', $order->tf_denda) }}" target="_blank"
+                                                    class="bg-rose-500 text-center text-white hover:bg-rose-600 p-1.5 w-full">Lihat
+                                                    PDF</a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+                        <!-- End bukti bayar -->
+
                         <div class="flex flex-col md:flex-row gap-8 mt-4">
                             @if (
                                 ($plan && $plan->status === 'pending') ||
                                     ($plan && $plan->status === 'delivery') ||
                                     ($plan && $plan->status === 'rent') ||
                                     ($plan && $plan->status === 'selesai'))
+
                                 <div class="md:w-full">
                                     <div class="flex">
                                         <div class="flex bg-gray-100 hover:bg-gray-200 rounded-lg transition p-1">
@@ -762,7 +897,12 @@
                                                                                 {{ $plan->nohp_supir }}</td>
                                                                             <td
                                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                                                                {{ $plan->jenis_mobil }}</td>
+                                                                                @if ($plan->jenis_mobil == 'bak_terbuka')
+                                                                                    Truck Bak Terbuka
+                                                                                @elseif($plan->jenis_mobil == 'crane')
+                                                                                    Truck Crane
+                                                                                @endif
+                                                                            </td>
                                                                             <td
                                                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                                                                                 {{ $plan->plat_mobil }}</td>

@@ -11,9 +11,8 @@ use Carbon\Carbon;
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Surat Tugas Mekanik</title>
+    <title>Surat Tugas Operator</title>
 
-    {{-- <link rel="stylesheet" href="{{ url('assets/laporan-css/style.css') }}"> --}}
     <link rel="stylesheet" href="./storage/assets/laporan-css/style.css">
 
     <style>
@@ -41,7 +40,7 @@ use Carbon\Carbon;
         }
 
         #tableTtd td {
-            font-size: 11px;
+            /* font-size: 11px; */
         }
     </style>
 
@@ -59,10 +58,10 @@ use Carbon\Carbon;
                                     class="my-4">
                             </td>
                             <td class="fw-bold">
-                                <span style="font-size: 18px">
+                                <span style="font-size: 20px">
                                     PT. GALA JAYA BANJARMASIN <br>
                                 </span>
-                                <span style="font-size: 12px">
+                                <span style="font-size: 16px">
                                     Jl. Pramuka No. 19, RT.32 RW.06; Telp. 0511-3276688 <br>
                                     BANJARMASIN
                                 </span>
@@ -78,16 +77,16 @@ use Carbon\Carbon;
 
     <main style="margin-top: -1rem;">
 
-        <div class="text-uppercase fw-bold text-center my-4" style="margin-top: -12px">
-            <p class="uppercase">
-                SURAT TUGAS MEKANIK
+        <div class="text-uppercase fw-bold text-center mt-4" style="margin-top: -12px">
+            <p class="uppercase" style="font-size: 22px">
+                SURAT TUGAS OPERATOR
             </p>
-            <p style="margin-top: -12px; font-size: 11px">
-                No : {{ $plan->id }}/GJ-BJM/STM/{{ $plan->created_at->format('Y') }}
+            <p style="margin-top: -18px; font-size: 13px">
+                No : {{ $plan->id }}/GJ-BJM/SPK/{{ str_replace('GJ-', '', $plan->order_id) }}
             </p>
         </div>
 
-        <table style="font-size: 12px">
+        <table style="font-size: 14px">
             <thead>
                 <tr>
                     <th colspan="3" class="text-start">
@@ -97,26 +96,24 @@ use Carbon\Carbon;
             </thead>
             <tbody>
                 <tr>
-                    <td>Nama Mekanik</td>
+                    <td>Nama Operator</td>
                     <td>
                         :
-                        @foreach ($plan->users as $u)
-                            {{ ucwords($u->name) }}{{ $loop->last ? '' : ', ' }}
-                        @endforeach
+                        {{ $plan->operator_id ? $plan->operator->name : '-' }}
                     </td>
                 </tr>
                 <tr>
-                    <td>Alat Transportasi</td>
+                    <td>Tanggal Mulai</td>
                     <td>
                         :
-                        ...........................................
+                        {{ Carbon::parse($plan->tanggal_job)->translatedFormat('d F Y') }}
                     </td>
                 </tr>
                 <tr>
-                    <td>Deskripsi Job</td>
+                    <td>Tanggal Selesai</td>
                     <td>
                         :
-                        Service & Maintenance Check
+                        {{ Carbon::parse($plan->tanggal_kembali)->translatedFormat('d F Y') }}
                     </td>
                 </tr>
                 <tr>
@@ -137,7 +134,7 @@ use Carbon\Carbon;
 
         <br>
 
-        <table style="font-size: 12px">
+        <table style="font-size: 14px">
             <thead>
                 <tr>
                     <th colspan="3" class="text-start">
@@ -154,7 +151,7 @@ use Carbon\Carbon;
                     </td>
                 </tr>
                 <tr>
-                    <td>Alamat</td>
+                    <td>Lokasi</td>
                     <td>
                         :
                         {{ $plan->transaction->customer->alamat }}
@@ -179,77 +176,29 @@ use Carbon\Carbon;
 
         <br>
 
-        <table style="font-size: 12px">
-            <thead>
-                <tr>
-                    <th colspan="3" class="text-start">
-                        <u>Tanggal (Hari/Tanggal/Jam)</u>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Berangkat</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Tiba Lokasi</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Kembali Lokasi</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-                <tr>
-                    <td>Sampai Kantor</td>
-                    <td>
-                        :
-                        ................, ................... Pkl ............. WITA
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <br>
-
-        <table style="font-size: 12px">
-            <thead>
-                <tr>
-                    <th>
-                        Hasil Pekerjaan Mekanik :
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Baik
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Cukup
-                    </th>
-                    <th>
-                        <span style="font-family: DejaVu Sans, sans-serif;">▢</span>
-                        Tidak Baik
-                    </th>
-                </tr>
-            </thead>
-        </table>
+        <div style="font-size: 14px">
+            <p>Adapun tugas yang harus dilaksanakan adalah sebagai berikut :</p>
+            <ol>
+                <li><b>Pemeliharaan Rutin Genset</b> – Melakukan pengecekan dan pemeliharaan genset secara berkala,
+                    termasuk
+                    pemeriksaan oli, filter, dan komponen lainnya.</li>
+                <li><b>Pengoperasian genset</b> – Menjalankan genset sesuai dengan prosedur operasional, terutama saat
+                    terjadi pemadaman listrik atau ketika dibutuhkan.</li>
+                <li><b>Monitoring kinerja genset</b> – Memastikan kinerja genset selalu optimal dengan melakukan
+                    pengawasan terhadap semua indikator fungsi genset.</li>
+                <li><b>Pelaporan</b> – Melaporkan kondisi genset secara rutin kepada manajemen atau bagian terkait serta
+                    memberikan laporan jika terdapat kendala atau kerusakan.</li>
+                <li><b>Tindakan preventif</b> – Mengantisipasi masalah teknis yang mungkin terjadi dan mengambil
+                    langkah-langkah untuk mencegah kerusakan pada genset.</li>
+            </ol>
+        </div>
 
     </main>
 
-
-    <footer style="font-size: 12px;">
+    <footer style="font-size: 14px;">
         <table id="tableTtd" class="text-center">
             <tr>
-                <td>Mekanik</td>
+                <td>Operator</td>
                 <td>Pemberi Tugas</td>
                 <td>Customer</td>
             </tr>

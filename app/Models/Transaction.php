@@ -23,6 +23,7 @@ class Transaction extends Model
         'subject',
         'tgl_sewa',
         'tgl_selesai',
+        'operator',
         'site',
         'kapasitas',
         'keterangan',
@@ -37,7 +38,9 @@ class Transaction extends Model
         'sub_total',
         'grand_total',
 
+        'overtime',
         'denda',
+        'tf_denda',
     ];
 
     protected $dates = ['tgl_sewa', 'tgl_selesai'];

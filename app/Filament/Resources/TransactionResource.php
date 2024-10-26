@@ -21,6 +21,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists\Components\Actions;
 use Filament\Infolists\Components\Actions\Action as ActionsAction;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section as ComponentsSection;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -29,6 +30,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
@@ -365,6 +367,16 @@ class TransactionResource extends Resource
                     ->suffix(' KVA')
                     // ->formatStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
                     ->getStateUsing(fn(Model $record) => $record->kapasitas ? $record->kapasitas : $record->genset->kapasitas),
+                IconColumn::make('operator')
+                    ->icon(fn(string $state): string => match ($state) {
+                        '0' => 'heroicon-o-x-circle',
+                        '1' => 'heroicon-o-check-circle',
+                    })
+                    ->color(fn(string $state): string => match ($state) {
+                        '0' => 'danger',
+                        '1' => 'success',
+                        default => 'gray',
+                    }),
                 TextColumn::make('customer.perusahaan')
                     ->label('Perusahaan')
                     ->searchable()
@@ -376,6 +388,7 @@ class TransactionResource extends Resource
                         'penawaran' => 'Proses Penawaran',
                         'pembayaran' => 'Proses Pembayaran',
                         'dibayar' => 'Dibayar',
+                        'denda' => 'Denda',
                         'selesai' => 'Selesai',
                         'cancel' => 'Cancel',
                     })
@@ -386,6 +399,7 @@ class TransactionResource extends Resource
                         'penawaran' => 'warning',
                         'pembayaran' => 'primary',
                         'dibayar' => 'success',
+                        'denda' => 'danger',
                         'selesai' => 'success',
                         'cancel' => 'danger',
                     })
@@ -393,12 +407,13 @@ class TransactionResource extends Resource
                         'penawaran' => 'heroicon-o-arrow-path',
                         'pembayaran' => 'heroicon-o-banknotes',
                         'dibayar' => 'heroicon-o-check-badge',
+                        'denda' => 'heroicon-o-banknotes',
                         'selesai' => 'heroicon-o-check-badge',
                         'cancel' => 'heroicon-o-x-mark',
                     }),
             ])
-            // ->defaultSort('status_transaksi', 'DESC')
-            ->defaultSort(fn($query) => $query->orderBy('status_transaksi', 'DESC')->orderBy('created_at', 'DESC'))
+            // ->defaultSort(fn($query) => $query->orderBy('status_transaksi','DESC')->orderBy('created_at', 'DESC'))
+            ->defaultSort(fn($query) => $query->orderByRaw("FIELD(status_transaksi , 'penawaran', 'pembayaran') DESC"))
             ->emptyStateHeading('Belum ada data! 🙁')
             ->filters([
                 SelectFilter::make('status_transaksi')
@@ -442,6 +457,37 @@ class TransactionResource extends Resource
                         $action->color('success')
                     )
                     ->modalDescription('Cek Bukti Pembayaran terlebih dulu!'),
+                Tables\Actions\Action::make('tf_denda')
+                    ->visible(fn(Transaction $record) => $record->tf_denda !== null && $record->status_transaksi === 'denda')
+                    ->label('Bukti Pembayaran')
+                    ->modalHeading('Bukti Pembayaran Denda')
+                    ->color(Color::Red)
+                    ->icon('heroicon-o-document-text')
+                    ->form([
+                        ComponentsActions::make([
+                            ComponentsActionsAction::make('tf_denda')
+                                ->label('Lihat Bukti Pembayaran Denda')
+                                ->icon('heroicon-o-document-text')
+                                ->url(fn(Transaction $record): string => url('storage', $record->tf_denda))
+                                ->openUrlInNewTab()
+                                ->color(Color::Gray),
+                        ])
+                            ->alignCenter()
+                            ->fullWidth()
+                    ])
+                    ->action(function (Transaction $record) {
+                        $record->status_transaksi = 'selesai';
+                        $record->save();
+                    })
+                    ->requiresConfirmation()
+                    ->modalIcon('heroicon-o-bell-alert')
+                    ->modalIconColor('success')
+                    ->modalSubmitActionLabel('Konfirmasi')
+                    ->modalSubmitAction(
+                        fn(\Filament\Actions\StaticAction $action) =>
+                        $action->color('success')
+                    )
+                    ->modalDescription('Cek Bukti Pembayaran Denda terlebih dulu!'),
                 Tables\Actions\Action::make('penawaran')
                     ->mountUsing(fn(Forms\ComponentContainer $form, Transaction $record) => $form->fill([
                         'ppn' => 11,
@@ -524,17 +570,17 @@ class TransactionResource extends Resource
                                         $total =  0;
 
                                         if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '50') {
-                                            $total = 4000000;
+                                            $total = 2000000;
                                         } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '100') {
-                                            $total = 7000000;
+                                            $total = 3500000;
                                         } else if ($get('jenis_mobil') == 'bak_terbuka' && $get('jarak') == '>100') {
-                                            $total = 12000000;
+                                            $total = 8500000;
                                         } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '50') {
-                                            $total = 6500000;
+                                            $total = 3500000;
                                         } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '100') {
-                                            $total = 10000000;
+                                            $total = 8000000;
                                         } else if ($get('jenis_mobil') == 'crane' && $get('jarak') == '>100') {
-                                            $total = 15000000;
+                                            $total = 12500000;
                                         } else {
                                             $total = 0;
                                         }
@@ -584,8 +630,7 @@ class TransactionResource extends Resource
                                     ->live()
                                     ->afterStateUpdated(function (Get $get, Set $set) {
                                         $get('operator') ? $set('biaya_operator', 100000) : $set('biaya_operator', 0);
-                                    })
-                                    ->default(true),
+                                    }),
                                 TextInput::make('biaya_operator')
                                     ->label('Biaya Operator (Perhari)')
                                     ->hintIcon('heroicon-o-information-circle', tooltip: 'Optional')
@@ -672,7 +717,7 @@ class TransactionResource extends Resource
                         $record->genset_id = $data['genset_id'];
                         $record->harga = $data['harga'];
                         $record->mob_demob = $data['mob_demob'];
-                        $record->biaya_operator = $data['biaya_operator'];
+                        $record->biaya_operator = $data['operator'] ? $data['biaya_operator'] : 0;
                         $record->sub_total = $data['sub_total'];
                         $record->ppn = $data['ppn'];
                         $record->grand_total = $data['grand_total'];
@@ -729,11 +774,18 @@ class TransactionResource extends Resource
                         ->url(fn(Transaction $record) => route('pdf.penawaran', $record->order_id))
                         ->openUrlInNewTab(),
                     Tables\Actions\Action::make('view_invoice')
-                        ->label('Lihat Invoice')
+                        ->label('Invoice')
                         ->visible(fn(Transaction $record) => $record->genset_id != null)
                         ->icon('heroicon-o-document-text')
                         ->color(Color::Lime)
                         ->url(fn(Transaction $record) => route('pdf.invoice', $record->order_id))
+                        ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('view_denda')
+                        ->label('Invoice Denda')
+                        ->visible(fn(Transaction $record) => $record->overtime != 0)
+                        ->icon('heroicon-o-document-text')
+                        ->color(Color::Slate)
+                        ->url(fn(Transaction $record) => route('pdf.denda', $record->order_id))
                         ->openUrlInNewTab(),
                     Tables\Actions\EditAction::make()
                         ->modalHeading('Edit Penawaran')
@@ -766,6 +818,7 @@ class TransactionResource extends Resource
                                 'penawaran' => 'Proses Penawaran',
                                 'pembayaran' => 'Proses Pembayaran',
                                 'dibayar' => 'Dibayar',
+                                'denda' => 'Denda',
                                 'selesai' => 'Selesai',
                                 'cancel' => 'Cancel',
                             })
@@ -774,6 +827,7 @@ class TransactionResource extends Resource
                                 'penawaran' => 'warning',
                                 'pembayaran' => 'primary',
                                 'dibayar' => 'success',
+                                'denda' => 'danger',
                                 'selesai' => 'success',
                                 'cancel' => 'danger',
                             })
@@ -781,6 +835,7 @@ class TransactionResource extends Resource
                                 'penawaran' => 'heroicon-o-arrow-path',
                                 'pembayaran' => 'heroicon-o-banknotes',
                                 'dibayar' => 'heroicon-o-check-badge',
+                                'denda' => 'heroicon-o-banknotes',
                                 'selesai' => 'heroicon-o-check-badge',
                                 'cancel' => 'heroicon-o-x-mark',
                             })
@@ -790,6 +845,16 @@ class TransactionResource extends Resource
                         TextEntry::make('durasi_sewa')
                             ->visible(fn(Transaction $record) => $record->durasi_sewa !== null)
                             ->suffix(' Hari'),
+                        IconEntry::make('operator')
+                            ->icon(fn(string $state): string => match ($state) {
+                                '0' => 'heroicon-o-x-circle',
+                                '1' => 'heroicon-o-check-circle',
+                            })
+                            ->color(fn(string $state): string => match ($state) {
+                                '0' => 'danger',
+                                '1' => 'success',
+                                default => 'gray',
+                            }),
                         TextEntry::make('customer.name')
                             ->label('Customer')
                             ->formatStateUsing(fn(string $state): string => str()->title($state)),
@@ -812,8 +877,7 @@ class TransactionResource extends Resource
                                 ->color(Color::Rose),
                         ]),
                         TextEntry::make('keterangan')
-                            ->visible(fn(Transaction $record) => $record->keterangan != null)
-                            ->columnSpan(2),
+                            ->visible(fn(Transaction $record) => $record->keterangan != null),
 
                     ])->columns(3)->collapsible(),
                 ComponentsSection::make('Detail Harga')
@@ -849,7 +913,10 @@ class TransactionResource extends Resource
                                 ->color(Color::Green),
                         ])
                             ->columnSpanFull(),
-                    ])->columns(3)->collapsible()
+                    ])
+                    ->visible(fn(Transaction $record) => $record->genset_id)
+                    ->columns(3)
+                    ->collapsible()
             ]);
     }
 

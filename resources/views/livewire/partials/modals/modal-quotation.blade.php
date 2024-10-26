@@ -82,6 +82,14 @@
                                 </div>
                             </div>
                             <!-- End Tgl selesai sewa -->
+
+                            <label for="operator"
+                                class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                                <input type="checkbox"
+                                    class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    id="operator" wire:model='operator'>
+                                <span class="ms-3">Operator</span>
+                            </label>
                         @endif
                         <!-- End durasi sewa -->
 
