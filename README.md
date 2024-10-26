@@ -18,3 +18,4 @@
 - Jalankan perintah npm install
 - Jalankan perintah npm run dev
 - Buka command prompt atau terminal baru dan jalankan php artisan serve
+- Buka browser dan akses localhost:8000/admin untuk mengakses admin panel
